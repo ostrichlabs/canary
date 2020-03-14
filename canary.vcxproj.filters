@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="gl4">
+      <UniqueIdentifier>{e2e3588d-b16d-4a0f-9ac8-d3b22cb89c9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="win32">
+      <UniqueIdentifier>{1bd84346-f25d-4f77-ad0c-ed0818aba7bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="external">
+      <UniqueIdentifier>{fbba8570-7cbb-49ae-9f1d-95f6c65220ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="game">
+      <UniqueIdentifier>{8ad08c03-7f14-4498-809f-429e4dacd1fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{b709448d-b00c-4e14-9f24-48ed20074f5e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="win32\win_display.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\win_input.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\win_main.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="win32\win_wndproc.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ost_main.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\ost_message.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="gl4\gl4_renderer.cpp">
+      <Filter>gl4</Filter>
+    </ClCompile>
+    <ClCompile Include="common\console.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\datetime.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\filesystem.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\signal.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\utility.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="win32\win_display.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="win32\win_input.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="win32\win_wndproc.h">
+      <Filter>win32</Filter>
+    </ClInclude>
+    <ClInclude Include="game\i_display.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\i_input.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\i_renderer.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ost_events.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ost_inputmessage.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ost_main.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ost_message.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\ost_version.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="gl4\gl4_renderer.h">
+      <Filter>gl4</Filter>
+    </ClInclude>
+    <ClInclude Include="external\gl\glcorearb.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="external\gl\glext.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="external\gl\glxext.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="external\gl\wgl.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="external\gl\wglext.h">
+      <Filter>external</Filter>
+    </ClInclude>
+    <ClInclude Include="common\console.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\datetime.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\error.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\filesystem.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\ost_common.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\signal.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\utility.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="game\keydef.h">
+      <Filter>game</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
