@@ -9,10 +9,11 @@ Utility functions that don't quite belong anywhere else
 */
 
 #include "ost_common.h"
-#include "sys_utility.h"
+#include "utility.h"
 
 #if (OST_WINDOWS == 1)
 #   pragma warning(disable : 4996) // yes I know codecvt is deprecated, gimme something standard to use and I'll switch...
+#   define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 #endif
 
 #include <codecvt>

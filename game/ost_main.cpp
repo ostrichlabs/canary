@@ -10,9 +10,9 @@ Main game object
 
 #include "ost_main.h"
 #include "ost_version.h"
-#include "signal.h"
 #include "../common/datetime.h"
 #include "../common/error.h"
+#include "../common/signal.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

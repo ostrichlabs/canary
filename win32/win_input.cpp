@@ -88,5 +88,5 @@ std::pair<ostrich::Button, int32_t> ostrich::InputWindows::TranslateKey(int32_t 
         default:
             return std::pair(ostrich::Button::NONE, 0);
     }
-    return std::pair(ostrich::Button::NONE, 0);
+    //return std::pair(ostrich::Button::NONE, 0);
 }

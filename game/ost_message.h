@@ -15,7 +15,7 @@ This class can be inherited in order to pass other kinds of messages that may re
 
 #include <ctime>
 #include <string_view>
-#include "../system/ost_common.h"
+#include "../common/ost_common.h"
 
 namespace ostrich {
 
