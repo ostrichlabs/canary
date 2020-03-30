@@ -1,7 +1,5 @@
 /*
 ==========================================
-win_input.cpp
-
 Copyright (c) 2020 Ostrich Labs
 
 Interface for retrieving input information from Windows

@@ -1,7 +1,5 @@
 /*
 ==========================================
-i_display.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Common interface for initializing and accessing the display

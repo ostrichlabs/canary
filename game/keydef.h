@@ -1,8 +1,6 @@
 /*
 ==========================================
-keydef.h
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
 Definitions of internal keys and key state
 ==========================================

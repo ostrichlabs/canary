@@ -1,7 +1,5 @@
 /*
 ==========================================
-gl4_renderer.h
-
 Copyright (c) 2020 Ostrich Labs
 
 OpenGL 4.0 interface

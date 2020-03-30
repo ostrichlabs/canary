@@ -1,7 +1,5 @@
 /*
 ==========================================
-signal.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Signal handling

@@ -1,7 +1,5 @@
 /*
 ==========================================
-win_wndproc.cpp
-
 Copyright (c) 2020 Ostrich Labs
 
 Windows message pump

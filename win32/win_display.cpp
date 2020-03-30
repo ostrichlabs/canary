@@ -1,7 +1,5 @@
 /*
 ==========================================
-win_display.cpp
-
 Copyright (c) 2020 Ostrich Labs
 
 IDisplay implementation for Windows

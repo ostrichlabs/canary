@@ -1,7 +1,5 @@
 /*
 ==========================================
-i_renderer.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Common interface for a renderer class

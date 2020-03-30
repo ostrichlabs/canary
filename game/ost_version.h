@@ -1,7 +1,5 @@
 /*
 ==========================================
-ost_version.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Game/engine version defines

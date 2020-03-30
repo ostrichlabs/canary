@@ -1,7 +1,5 @@
 /*
 ==========================================
-ost_common.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Common definitions

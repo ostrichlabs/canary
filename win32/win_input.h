@@ -1,7 +1,5 @@
 /*
 ==========================================
-win_input.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Interface for retrieving input information from Windows

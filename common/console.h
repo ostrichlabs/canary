@@ -2,7 +2,7 @@
 ==========================================
 Copyright (c) 2020 Ostrich Labs
 
-A logging tool.
+A logging console
 
 Future versions for different projects may also allow runtime commands and cvars
 

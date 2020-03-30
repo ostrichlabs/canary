@@ -1,7 +1,5 @@
 /*
 ==========================================
-datetime.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Functions and classes for retrieving the date and time

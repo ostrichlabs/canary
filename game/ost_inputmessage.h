@@ -1,7 +1,5 @@
 /*
 ==========================================
-ost_message.h
-
 Copyright (c) 2019 Ostrich Labs
 
 A Message-derived class specifically for input messages

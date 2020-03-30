@@ -1,7 +1,5 @@
 /*
 ==========================================
-error.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Error and exception definitions
