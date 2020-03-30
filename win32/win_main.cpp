@@ -1,7 +1,5 @@
 /*
 ==========================================
-win_entry.cpp
-
 Copyright (c) 2020 Ostrich Labs
 
 Entry point for Windows
@@ -54,6 +52,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
     try {
         returncode = Game.Start(DisplayPtr, RendererPtr, InputPtr);
+        Game.Destroy();
     }
     catch (const ostrich::Exception &e) {
         std::cerr << u8"ostrich::Exception during runtime: " << e.what() <<
@@ -69,8 +68,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
         std::cerr << u8"Unknown exception during runtime" << ost_char::g_NewLine;
         returncode = -3;
     }
-
-    Game.Destroy();
 
     //magpie::PrintMemoryTracker();
     //magpie::DestroyMemoryTracker();

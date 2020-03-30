@@ -20,7 +20,7 @@ ostrich::GL4Renderer::GL4Renderer() noexcept : m_isActive(false) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::GL4Renderer::~GL4Renderer() {
-    this->Destroy();
+    // not allocating memory yet, no need to implement destructor
 }
 
 /////////////////////////////////////////////////

@@ -63,7 +63,6 @@ m_HInstance(nullptr), m_HWnd(nullptr), m_HDC(nullptr), m_HGLRC(nullptr) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::DisplayWindows::~DisplayWindows() {
-    this->Destroy();
 }
 
 /////////////////////////////////////////////////
@@ -118,7 +117,7 @@ int ostrich::DisplayWindows::InitWindow() {
         return -1;
 
     m_HInstance = ::GetModuleHandleW(NULL);
-    WNDCLASSW wndclass = { 0 };
+    WNDCLASSW wndclass = { };
     wndclass.lpfnWndProc = ostrich::WndProc;
     wndclass.hInstance = m_HInstance;
     wndclass.hbrBackground = HBRUSH(COLOR_BACKGROUND);
@@ -176,7 +175,7 @@ int ostrich::DisplayWindows::InitRenderer() {
     if (queryresult != WGL_FULL_ACCELERATION_ARB)
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
 
-    PIXELFORMATDESCRIPTOR pfd = { 0 };
+    PIXELFORMATDESCRIPTOR pfd = { };
     ::DescribePixelFormat(m_HDC, pixelfmt, sizeof(pfd), &pfd);
     if (::SetPixelFormat(m_HDC, pixelfmt, &pfd) == false)
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
@@ -209,7 +208,7 @@ int ostrich::DisplayWindows::InitRenderer() {
 /////////////////////////////////////////////////
 ostrich::WGLExtensions ostrich::DisplayWindows::GetWGLExtensions() {
 // generic pixel format descriptor just to get a hardware context
-    PIXELFORMATDESCRIPTOR pfd = { 0 };
+    PIXELFORMATDESCRIPTOR pfd = { };
     pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
     pfd.nVersion = 1;
     pfd.dwFlags = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;

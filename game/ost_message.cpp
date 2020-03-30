@@ -1,18 +1,17 @@
 /*
 ==========================================
-ost_message.cpp
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 ==========================================
 */
 
 #include "ost_message.h"
+#include <string>
 
 namespace {
 
-const char g_MsgTypeUnknown[] = u8"MSG_UNKNOWN";
+const std::string g_MsgTypeUnknown = u8"MSG_UNKNOWN";
 
-const char *g_MsgTypeStrings[] = {
+const std::string g_MsgTypeStrings[] = {
     u8"MSG_NULL",
     u8"MSG_SYSTEM",
 	u8"MSG_INPUT",
@@ -21,7 +20,7 @@ const char *g_MsgTypeStrings[] = {
     u8"MSG_MAX"
 };
 
-const char* g_MsgSubtypeStrings[] = {
+const std::string g_MsgSubtypeStrings[] = {
     u8"MSG_NULL",
     u8"MSG_SYS_QUIT",
 	u8"MSG_INPUT_KEYBOARD",
@@ -43,7 +42,7 @@ const char* g_MsgSubtypeStrings[] = {
 /////////////////////////////////////////////////
 // uses a switch to compel the compiler to warn if there are missing switches
 /////////////////////////////////////////////////
-std::string_view ostrich::Message::getTypeAsString() const noexcept {
+const std::string &ostrich::Message::getTypeAsString() const noexcept {
     switch (m_Type) {
         case ostrich::MessageType::MSG_NULL:
         case ostrich::MessageType::MSG_SYSTEM:
@@ -51,16 +50,16 @@ std::string_view ostrich::Message::getTypeAsString() const noexcept {
         case ostrich::MessageType::MSG_INFO:
         case ostrich::MessageType::MSG_DEBUG:
         case ostrich::MessageType::MSG_MAX:
-            return std::string_view(g_MsgTypeStrings[static_cast<int32_t>(m_Type)]);
+            return g_MsgTypeStrings[static_cast<int32_t>(m_Type)];
         default:
-            return std::string_view(g_MsgTypeUnknown);
+            return g_MsgTypeUnknown;
     }
 }
 
 /////////////////////////////////////////////////
 // uses a switch to compel the compiler to warn if there are missing switches
 /////////////////////////////////////////////////
-std::string_view ostrich::Message::getSubtypeAsString() const noexcept {
+const std::string &ostrich::Message::getSubtypeAsString() const noexcept {
     switch (m_SubType) {
         case ostrich::SubMessageType::MSG_NULL:
         case ostrich::SubMessageType::MSG_SYS_QUIT:
@@ -70,9 +69,9 @@ std::string_view ostrich::Message::getSubtypeAsString() const noexcept {
         case ostrich::SubMessageType::MSG_DEBUG_FROMPROCESSKBM:
         case ostrich::SubMessageType::MSG_DEBUG_FROMPROCESSOSMSG:
         case ostrich::SubMessageType::MSG_SUBTYPE_MAX:
-            return std::string_view(g_MsgSubtypeStrings[static_cast<int32_t>(m_SubType)]);
+            return g_MsgSubtypeStrings[static_cast<int32_t>(m_SubType)];
         default:
-            return std::string_view(g_MsgTypeUnknown);
+            return g_MsgTypeUnknown;
     }
 }
 

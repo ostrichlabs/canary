@@ -38,7 +38,7 @@ void ostrich::InputWindows::Destroy() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::InputWindows::ProcessKBM() {
-    MSG msg = { 0 };
+    MSG msg = { };
 
     while (::PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE | PM_QS_INPUT) > 0) {
         m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_DEBUG,
@@ -63,7 +63,7 @@ void ostrich::InputWindows::ProcessKBM() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::InputWindows::ProcessOSMessages() {
-    MSG msg = { 0 };
+    MSG msg = { };
 
 // TODO: add custom message processing for certain messages
 // leave the traditional loop for things I don't care about
@@ -73,7 +73,7 @@ void ostrich::InputWindows::ProcessOSMessages() {
                 ostrich::SubMessageType::MSG_DEBUG_FROMPROCESSOSMSG, msg.message, m_Classname));
         }
         if (msg.message == WM_KEYDOWN) {
-            //m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_SYSTEM, ostrich::SubMessageType::MSG_SYS_QUIT, 0, m_Classname));
+            m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_SYSTEM, ostrich::SubMessageType::MSG_SYS_QUIT, 0, m_Classname));
         }
         ::TranslateMessage(&msg);
         ::DispatchMessageW(&msg);

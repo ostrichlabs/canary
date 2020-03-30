@@ -1,7 +1,5 @@
 /*
 ==========================================
-ost_main.h
-
 Copyright (c) 2020 Ostrich Labs
 
 Main game object
@@ -52,6 +50,7 @@ private:
     IRenderer *m_Renderer;
 
     Console m_Console;
+    ConsolePrinter m_ConsolePrinter;
 
     EventQueue m_EventQueue;
 

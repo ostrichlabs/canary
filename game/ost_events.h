@@ -37,7 +37,7 @@ public:
     bool isPending() const noexcept { return !m_MessageQueue.empty(); }
 
     void Push(const Message &msg);
-    std::pair<Message,bool> Pop();
+    std::pair<Message, bool> Pop();
 
 private:
 

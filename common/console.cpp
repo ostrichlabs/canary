@@ -1,7 +1,5 @@
 /*
 ==========================================
-console.cpp
-
 Copyright (c) 2020 Ostrich Labs
 ==========================================
 */
@@ -12,7 +10,6 @@ Copyright (c) 2020 Ostrich Labs
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::Console::Initialize() {
-
     // TODO: LogSizeMax and WriteLogOnExit should be hardcoded constants
 }
 
@@ -78,4 +75,36 @@ void ostrich::Console::TrimLog() {
     const uint32_t maxlogsize = INT32_MAX; // TODO: when the console becomes A Console, change this
     if (m_MessageLog.size() >= maxlogsize)
         m_MessageLog.pop_front();
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::ConsolePrinter::WriteMessage(std::string_view msg, std::initializer_list<std::string> args) {
+    if (m_Parent) {
+        std::string buffer;
+        auto listitr = args.begin();
+        auto msgitr = msg.begin();
+        while (msgitr != msg.end()) {
+            if ((*msgitr) == '%') {
+                if (std::next(msgitr) != msg.end() && ((*std::next(msgitr)) == '%')) {
+                    buffer.push_back('%');
+                    std::advance(msgitr, 1);
+                }
+                else if (listitr == args.end()) { // if more % than args, append %
+                    buffer.push_back('%');
+                }
+                else {
+                    buffer += *listitr;
+                    std::advance(listitr, 1);
+                }
+            }
+            else {
+                buffer.push_back((*msgitr));
+            }
+            if (msgitr != msg.end())
+                std::advance(msgitr, 1);
+        }
+
+        this->WriteMessage(buffer);
+    }
 }

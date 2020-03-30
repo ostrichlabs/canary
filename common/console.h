@@ -1,18 +1,19 @@
 /*
 ==========================================
-console.h
-
 Copyright (c) 2020 Ostrich Labs
 
 A logging tool.
 
 Future versions for different projects may also allow runtime commands and cvars
+
+The main console can create ConsolePrinter objects - these can take multiple string arguments and insert them into another
 ==========================================
 */
 
 #ifndef CONSOLE_H_
 #define CONSOLE_H_
 
+#include <array>
 #include <list>
 #include <string>
 #include <string_view>
@@ -38,9 +39,6 @@ public:
 
     void Initialize();
     void Destroy();
-
-    // not really intended for general use
-    const std::list<std::string> *GetMessageLogPointer() const { return &m_MessageLog; }
 
     void WriteMessage(const std::string &msg);
     void WriteMessage(std::string_view msg);
@@ -80,10 +78,13 @@ public:
     void WriteMessage(std::string_view msg) { if (m_Parent) m_Parent->WriteMessage(msg); }
     void WriteMessage(const char *msg) { if (m_Parent) m_Parent->WriteMessage(msg); }
 
+    void WriteMessage(std::string_view msg, std::initializer_list<std::string> args);
+    void WriteMessage(const std::string &msg, std::initializer_list<std::string> args) { this->WriteMessage(std::string_view(msg), args); }
+    void WriteMessage(const char *msg, std::initializer_list<std::string> args) { this->WriteMessage(std::string_view(msg), args); }
+
 private:
 
     Console *m_Parent;
-
 };
 
 } // namespace ostrich

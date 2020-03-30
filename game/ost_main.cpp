@@ -1,7 +1,5 @@
 /*
 ==========================================
-ost_main.cpp
-
 Copyright (c) 2020 Ostrich Labs
 
 Main game object
@@ -52,48 +50,57 @@ int ostrich::Main::Start(ostrich::IDisplay *display, ostrich::IRenderer *rendere
 /////////////////////////////////////////////////
 int ostrich::Main::Initialize() {
     m_Console.Initialize();
+    m_ConsolePrinter = m_Console.CreatePrinter();
 
-    m_Console.WriteMessage(u8"Project Canary");
-    m_Console.WriteMessage(ostrich::BuildString(u8"Started at: %", ostrich::datetime::timestamp()));
-    m_Console.WriteMessage(ostrich::BuildString(u8"% v.%.% build %",
-        ostrich::g_GameName, ost_version::g_Major, ost_version::g_Minor, ost_version::g_Build));
-    m_Console.WriteMessage(ostrich::BuildString(u8"Platform: %", ostrich::g_PlatformString));
+    m_ConsolePrinter.WriteMessage(ostrich::g_GameName);
+    m_ConsolePrinter.WriteMessage(u8"Started at: %", { ostrich::datetime::timestamp() });
+    m_ConsolePrinter.WriteMessage(ost_version::g_String);
+    m_ConsolePrinter.WriteMessage(u8"Platform: %", { ostrich::g_PlatformString });
 
     int initresult = 0;
 
     try {
 
+        m_ConsolePrinter.WriteMessage(u8"Initializing Display");
         initresult = m_Display->Initialize(m_Console.CreatePrinter());
 
-        if (initresult == 0)
+        if (initresult == 0) {
+            m_ConsolePrinter.WriteMessage(u8"Initializing Renderer");
             initresult = m_Renderer->Initialize(m_Console.CreatePrinter());
+        }
 
-        if (initresult == 0)
+        if (initresult == 0) {
+            m_ConsolePrinter.WriteMessage(u8"Initializing Event Queue");
             initresult = m_EventQueue.Initialize();
+        }
 
-        if (initresult == 0)
+        if (initresult == 0) {
+            m_ConsolePrinter.WriteMessage(u8"Initializing signal handler");
             initresult = ostrich::signal::Initialize(m_EventQueue.CreateSender());
+        }
 
-        if (initresult == 0)
+        if (initresult == 0) {
+            m_ConsolePrinter.WriteMessage(u8"Initializing input handler");
             initresult = m_Input->Initialize(m_Console.CreatePrinter(), m_EventQueue.CreateSender());
+        }
     }
     catch (const ostrich::ProxyException &e) {
-        m_Console.WriteMessage(ostrich::BuildString(u8"% at %", e.what(), e.where()));
+        m_ConsolePrinter.WriteMessage(u8"% at %", { e.what(), e.where() });
         throw e;
     }
     catch (const ostrich::InitException &e) {
-        m_Console.WriteMessage(ostrich::BuildString(u8"% at %, reported error code %", e.what(), e.where(), e.code()));
+        m_ConsolePrinter.WriteMessage(u8"% at %, reported error code %", { e.what(), e.where(), std::to_string(e.code()) });
         throw e;
     }
     catch (const ostrich::Exception &e) {
-        m_Console.WriteMessage(ostrich::BuildString(u8"% from unknown location", e.what()));
+        m_ConsolePrinter.WriteMessage(u8"% from unknown location", { e.what() });
         throw e;
     }
 
     if (initresult == 0)
-        m_Console.WriteMessage(u8"Initialization complete");
+        m_ConsolePrinter.WriteMessage(u8"Initialization complete");
     else
-        m_Console.WriteMessage(ostrich::BuildString(u8"Bizzare initialization failure, code: %", initresult));
+        m_ConsolePrinter.WriteMessage(u8"Bizzare initialization failure, code: %", { std::to_string(initresult) });
 
     return initresult;
 }
@@ -124,7 +131,7 @@ void ostrich::Main::Run() {
 
     auto prevtick = ostrich::timer::now();
     bool done = false;
-    while(!done) {
+    while (!done) {
         auto currtick = ostrich::timer::now();
         int32_t elapsedtime = ostrich::timer::interval(prevtick, currtick);
         prevtick = currtick;
@@ -158,22 +165,22 @@ bool ostrich::Main::UpdateState() {
         if (queuemsg.second) {
             ostrich::Message msg = queuemsg.first;
             if (msg.getType() == ostrich::MessageType::MSG_DEBUG) {
-                m_Console.WriteMessage(ostrich::BuildString(u8"Debug message: % - %",
-                    msg.getSubtypeAsString(), msg.getAddlData()));
+                m_ConsolePrinter.WriteMessage(u8"Debug message: % - %",
+                    { msg.getSubtypeAsString(), std::to_string(msg.getAddlData()) });
             }
             else if (msg.getType() == ostrich::MessageType::MSG_INFO) {
-                m_Console.WriteMessage(ostrich::BuildString(u8"Informational message: % - %",
-                    msg.getSubtypeAsString(), msg.getAddlData()));
+                m_ConsolePrinter.WriteMessage(u8"Informational message: % - %",
+                    { msg.getSubtypeAsString(), std::to_string(msg.getAddlData()) });
             }
             else if (msg.getType() == ostrich::MessageType::MSG_SYSTEM) {
                 if (msg.getSubtype() == ostrich::SubMessageType::MSG_SYS_QUIT) {
-                    m_Console.WriteMessage(u8"MSG_SYS_QUIT received");
+                    m_ConsolePrinter.WriteMessage(u8"MSG_SYS_QUIT received");
                     return true;
                 }
             }
             else {
-                m_Console.WriteMessage(ostrich::BuildString(u8"Unknown message type %: % - %",
-                    msg.getTypeAsInt(), msg.getSubtypeAsInt(), msg.getAddlData()));
+                m_ConsolePrinter.WriteMessage(u8"Unknown message type %: % - %",
+                    { std::to_string(msg.getTypeAsInt()), std::to_string(msg.getSubtypeAsInt()), std::to_string(msg.getAddlData()) });
             }
         }
     }

@@ -54,6 +54,9 @@
     <ClCompile Include="common\utility.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="game\ost_events.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">

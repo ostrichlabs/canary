@@ -1,8 +1,6 @@
 /*
 ==========================================
-ost_message.h
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
 An Ostrich Message, modeled after Windows messages - with some small modifications
 
@@ -69,8 +67,8 @@ public:
     int32_t getTypeAsInt() const noexcept { return static_cast<int32_t>(m_Type); }
     int32_t getSubtypeAsInt() const noexcept { return static_cast<int32_t>(m_SubType); }
 
-    std::string_view getTypeAsString() const noexcept;
-    std::string_view getSubtypeAsString() const noexcept;
+    const std::string &getTypeAsString() const noexcept;
+    const std::string &getSubtypeAsString() const noexcept;
 
 protected:
 
