@@ -54,7 +54,7 @@
     <ClCompile Include="common\utility.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="game\ost_events.cpp">
+    <ClCompile Include="game\eventqueue.cpp">
       <Filter>game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -75,12 +75,6 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="game\i_renderer.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\ost_events.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\ost_inputmessage.h">
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="game\ost_main.h">
@@ -132,6 +126,15 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="game\keydef.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\i_message.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\msg_input.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\eventqueue.h">
       <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>

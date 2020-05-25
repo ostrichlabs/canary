@@ -46,12 +46,12 @@ void ostrich::InputWindows::ProcessKBM() {
         }
         switch (msg.message) {
             case WM_QUIT:
-                m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_SYSTEM, ostrich::SubMessageType::MSG_SYS_QUIT, 0, m_Classname));
-                break;
             case WM_KEYDOWN:
             case WM_KEYUP:
             case WM_XBUTTONDOWN:
             case WM_XBUTTONUP:
+                m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_SYSTEM, ostrich::SubMessageType::MSG_SYS_QUIT, 0, m_Classname));
+                break;
             default:
                 break;
         }
@@ -69,9 +69,6 @@ void ostrich::InputWindows::ProcessOSMessages() {
         if (msg.message != WM_TIMER) {
             m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_DEBUG,
                 ostrich::SubMessageType::MSG_DEBUG_FROMPROCESSOSMSG, msg.message, m_Classname));
-        }
-        if (msg.message == WM_KEYDOWN) {
-            m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_SYSTEM, ostrich::SubMessageType::MSG_SYS_QUIT, 0, m_Classname));
         }
         ::TranslateMessage(&msg);
         ::DispatchMessageW(&msg);

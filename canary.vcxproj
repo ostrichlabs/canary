@@ -186,7 +186,7 @@
     <ClCompile Include="common\filesystem.cpp" />
     <ClCompile Include="common\signal.cpp" />
     <ClCompile Include="common\utility.cpp" />
-    <ClCompile Include="game\ost_events.cpp" />
+    <ClCompile Include="game\eventqueue.cpp" />
     <ClCompile Include="game\ost_main.cpp" />
     <ClCompile Include="game\ost_message.cpp" />
     <ClCompile Include="gl4\gl4_renderer.cpp" />
@@ -210,10 +210,11 @@
     <ClInclude Include="external\gl\wglext.h" />
     <ClInclude Include="game\i_display.h" />
     <ClInclude Include="game\i_input.h" />
+    <ClInclude Include="game\i_message.h" />
     <ClInclude Include="game\i_renderer.h" />
     <ClInclude Include="game\keydef.h" />
-    <ClInclude Include="game\ost_events.h" />
-    <ClInclude Include="game\ost_inputmessage.h" />
+    <ClInclude Include="game\msg_input.h" />
+    <ClInclude Include="game\eventqueue.h" />
     <ClInclude Include="game\ost_main.h" />
     <ClInclude Include="game\ost_message.h" />
     <ClInclude Include="game\ost_version.h" />

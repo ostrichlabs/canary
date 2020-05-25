@@ -3,6 +3,8 @@
 Copyright (c) 2020 Ostrich Labs
 
 Standard file system functions.
+
+TODO: Consider a wrapper around fstream.
 ==========================================
 */
 

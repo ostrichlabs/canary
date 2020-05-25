@@ -1,37 +1,42 @@
 /*
 ==========================================
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
-A Message-derived class specifically for input messages
+Input message
 ==========================================
 */
 
-#ifndef OST_INPUTMESSAGE_H_
-#define OST_INPUTMESSAGE_H_
+#ifndef MSG_INPUT_H_
+#define MSG_INPUT_H_
 
+#include "i_message.h"
 #include "keydef.h"
-#include "ost_message.h"
 
 namespace ostrich {
 
 /////////////////////////////////////////////////
 //
-class InputMessage : public Message {
+class InputMessage : public IMessage {
 public:
-	InputMessage() = delete;
+
+    InputMessage() = delete;
     virtual ~InputMessage() {}
     InputMessage(InputMessage &&) = default;
     InputMessage(const InputMessage &) = default;
     InputMessage &operator=(InputMessage &&) = default;
     InputMessage &operator=(const InputMessage &) = default;
 
+    virtual std::string toString() const override { return std::string(""); }
+
     InputMessage(Button button, ButtonState buttonstate, const char *sender) :
-    	Message(MessageType::MSG_INPUT, SubMessageType::MSG_INPUT_KEYBOARD, 0, sender),
-		m_Button(button), m_ButtonState(buttonstate), m_KeyValue(0), m_XPos(-1), m_YPos(-1) {}
+        IMessage(MessageType::MSG_INPUT, sender),
+        m_Button(button), m_ButtonState(buttonstate), m_KeyValue(0), m_XPos(-1), m_YPos(-1)
+    {}
 
     InputMessage(Button button, ButtonState buttonstate, int32_t xpos, int32_t ypos, const char *sender) :
-    	Message(MessageType::MSG_INPUT, SubMessageType::MSG_INPUT_MOUSE, 0, sender),
-		m_Button(button), m_ButtonState(buttonstate), m_KeyValue(0), m_XPos(xpos), m_YPos(ypos) {}
+        IMessage(MessageType::MSG_INPUT, sender),
+        m_Button(button), m_ButtonState(buttonstate), m_KeyValue(0), m_XPos(xpos), m_YPos(ypos)
+    {}
 
     Button getButton() const noexcept { return m_Button; }
     ButtonState getButtonState() const noexcept { return m_ButtonState; }
@@ -50,4 +55,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* OST_INPUTMESSAGE_H_ */
+#endif /* MSG_INPUT_H_ */
