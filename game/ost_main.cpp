@@ -11,6 +11,8 @@ Main game object
 #include "../common/datetime.h"
 #include "../common/error.h"
 #include "../common/signal.h"
+#include "../game/msg_info.h"
+#include "../game/msg_system.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -161,26 +163,24 @@ void ostrich::Main::ProcessInput() {
 /////////////////////////////////////////////////
 bool ostrich::Main::UpdateState() {
     if (m_EventQueue.isPending()) {
-        std::pair<ostrich::Message,bool> queuemsg = m_EventQueue.Pop();
-        if (queuemsg.second) {
-            ostrich::Message msg = queuemsg.first;
-            if (msg.getType() == ostrich::MessageType::MSG_DEBUG) {
-                m_ConsolePrinter.WriteMessage(u8"Debug message: % - %",
-                    { msg.getSubtypeAsString(), std::to_string(msg.getAddlData()) });
+        std::pair<std::shared_ptr<IMessage>, bool> queuemsg = m_EventQueue.Pop();
+        if (queuemsg.second == true) {
+            auto msgptr = queuemsg.first;
+            if (msgptr->getMessageType() == ostrich::MessageType::MSG_INFO) {
+                auto infomsg = static_cast<ostrich::InfoMessage *>(msgptr.get());
+                m_ConsolePrinter.WriteMessage(infomsg->toString());
             }
-            else if (msg.getType() == ostrich::MessageType::MSG_INFO) {
-                m_ConsolePrinter.WriteMessage(u8"Informational message: % - %",
-                    { msg.getSubtypeAsString(), std::to_string(msg.getAddlData()) });
-            }
-            else if (msg.getType() == ostrich::MessageType::MSG_SYSTEM) {
-                if (msg.getSubtype() == ostrich::SubMessageType::MSG_SYS_QUIT) {
-                    m_ConsolePrinter.WriteMessage(u8"MSG_SYS_QUIT received");
+            else if (msgptr->getMessageType() == ostrich::MessageType::MSG_SYSTEM) {
+                auto sysmsg = static_cast<ostrich::SystemMessage *>(msgptr.get());
+                if (sysmsg->getType() == ostrich::SystemMsgType::SYS_QUIT) {
+                    m_ConsolePrinter.WriteMessage(u8"SYS_QUIT received");
                     return true;
                 }
             }
             else {
-                m_ConsolePrinter.WriteMessage(u8"Unknown message type %: % - %",
-                    { std::to_string(msg.getTypeAsInt()), std::to_string(msg.getSubtypeAsInt()), std::to_string(msg.getAddlData()) });
+                m_ConsolePrinter.WriteMessage(u8"Unhandled message type % sent by %",
+                    { std::to_string(static_cast<int32_t>(msgptr->getMessageType())),
+                      std::string(msgptr->getSenderMethod()) });
             }
         }
     }

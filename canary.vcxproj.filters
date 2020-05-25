@@ -16,6 +16,12 @@
     <Filter Include="common">
       <UniqueIdentifier>{b709448d-b00c-4e14-9f24-48ed20074f5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="raspi">
+      <UniqueIdentifier>{4f0f96c2-c202-4846-b475-ec6fa3ad2692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gles2">
+      <UniqueIdentifier>{28c1234e-d320-4900-8c13-0dd9a33cadfb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32\win_display.cpp">
@@ -31,9 +37,6 @@
       <Filter>win32</Filter>
     </ClCompile>
     <ClCompile Include="game\ost_main.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\ost_message.cpp">
       <Filter>game</Filter>
     </ClCompile>
     <ClCompile Include="gl4\gl4_renderer.cpp">
@@ -57,6 +60,24 @@
     <ClCompile Include="game\eventqueue.cpp">
       <Filter>game</Filter>
     </ClCompile>
+    <ClCompile Include="game\msg_system.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="game\msg_info.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="raspi\raspi_display.cpp">
+      <Filter>raspi</Filter>
+    </ClCompile>
+    <ClCompile Include="raspi\raspi_input.cpp">
+      <Filter>raspi</Filter>
+    </ClCompile>
+    <ClCompile Include="raspi\raspi_main.cpp">
+      <Filter>raspi</Filter>
+    </ClCompile>
+    <ClCompile Include="gles2\gles2_renderer.cpp">
+      <Filter>gles2</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">
@@ -78,9 +99,6 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="game\ost_main.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\ost_message.h">
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="game\ost_version.h">
@@ -136,6 +154,21 @@
     </ClInclude>
     <ClInclude Include="game\eventqueue.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\msg_info.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\msg_system.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="raspi\raspi_display.h">
+      <Filter>raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="raspi\raspi_input.h">
+      <Filter>raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="gles2\gles2_renderer.h">
+      <Filter>gles2</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,20 +1,19 @@
 /*
 ==========================================
-ost_events.h
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
 The EventQueue and its wrappers
 ==========================================
 */
 
-#ifndef OST_EVENTS_H_
-#define OST_EVENTS_H_
+#ifndef EVENTQUEUE_H_
+#define EVENTQUEUE_H_
 
 #include <deque>
+#include <memory>
 #include <utility>
 
-#include "ost_message.h"
+#include "i_message.h"
 
 namespace ostrich {
 
@@ -36,12 +35,12 @@ public:
 
     bool isPending() const noexcept { return !m_MessageQueue.empty(); }
 
-    void Push(const Message &msg);
-    std::pair<Message, bool> Pop();
+    void Push(std::shared_ptr<IMessage> msg);
+    std::pair<std::shared_ptr<IMessage>, bool> Pop();
 
 private:
 
-    std::deque<Message> m_MessageQueue;
+    std::deque<std::shared_ptr<IMessage>> m_MessageQueue;
 };
 
 /////////////////////////////////////////////////
@@ -62,7 +61,7 @@ public:
 
     bool isValid() const noexcept { if (m_Parent) return true; return false; }
 
-    void Push(const Message &msg) { if (m_Parent) m_Parent->Push(msg); }
+    void Send(std::shared_ptr<IMessage> msg) { if (m_Parent) m_Parent->Push(msg); }
 
 private:
 
@@ -72,4 +71,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* OST_EVENTS_H_ */
+#endif /* EVENTQUEUE_H_ */

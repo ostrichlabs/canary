@@ -12,7 +12,7 @@ Input can be Keyboard/Mouse (KBM) or OS messages
 #ifndef I_INPUT_H_
 #define I_INPUT_H_
 
-#include "ost_events.h"
+#include "eventqueue.h"
 #include "../common/console.h"
 
 namespace ostrich {

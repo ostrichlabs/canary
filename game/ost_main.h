@@ -10,10 +10,10 @@ Main game object
 #define OST_MAIN_H_
 
 #include "../common/ost_common.h"
+#include "eventqueue.h"
 #include "i_display.h"
 #include "i_input.h"
 #include "i_renderer.h"
-#include "ost_events.h"
 #include "../common/console.h"
 
 namespace ostrich {

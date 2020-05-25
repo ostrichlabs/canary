@@ -15,31 +15,18 @@ Derived classes should define toString() as well as any data/accessors, but mess
 
 #include <string_view>
 #include <ctime>
+#include "../common/datetime.h"
 
 namespace ostrich {
 
 /////////////////////////////////////////////////
-// Remember to update Message::getTypeAsString() when adding new messages!!!
+//
 enum class MessageType : int32_t {
     MSG_NULL = 0,
     MSG_SYSTEM, // a system command - quit, restart, etc.
     MSG_INPUT,	// input from keyboard, mouse, etc.
     MSG_INFO,   // informational only - print a message to the console
-    MSG_DEBUG,  // same as MSG_INFO, but should only print if debugging is on
     MSG_MAX
-};
-
-/////////////////////////////////////////////////
-//
-enum class SubMessageType : int32_t {
-    MSG_NULL = 0,
-    MSG_SYS_QUIT,   // time to close the game!
-    MSG_INPUT_KEYBOARD,	// a key's state changed
-    MSG_INPUT_MOUSE, // the mouse moved
-    MSG_DEBUG_SIGNAL, // raised signal
-    MSG_DEBUG_FROMPROCESSKBM,   // from ProcessKBM()
-    MSG_DEBUG_FROMPROCESSOSMSG, // from ProcessOSMessages()
-    MSG_SUBTYPE_MAX,
 };
 
 /////////////////////////////////////////////////
@@ -57,18 +44,21 @@ public:
 
     virtual std::string toString() const = 0;
 
+    // TODO: add toVerboseString()
+
     MessageType getMessageType() const noexcept { return m_MessageType; }
     std::string_view getSenderMethod() const noexcept { return m_SenderMethod; }
-    std::time_t getRawTimestamp() const noexcept { return m_Timestamp; }
+    std::string_view getTimestamp() const noexcept { return std::string_view(m_Timestamp); }
 
 protected:
 
-    IMessage(MessageType messagetype, const char *sender) : m_MessageType(messagetype), m_SenderMethod(sender)
-    { m_Timestamp = ::time(nullptr); }
+    IMessage(MessageType messagetype, const char *sender) : m_MessageType(messagetype), m_SenderMethod(sender),
+        m_Timestamp(ostrich::datetime::timestamp())
+    {}
 
     MessageType         m_MessageType;
     std::string_view    m_SenderMethod;
-    std::time_t			m_Timestamp;
+    std::string         m_Timestamp;
 };
 
 } // namespace ostrich

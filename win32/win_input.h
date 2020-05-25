@@ -15,9 +15,9 @@ Interface for retrieving input information from Windows
 #   error "This module should only be included in Windows builds"
 #endif
 
+#include "../game/eventqueue.h"
 #include "../game/i_input.h"
 #include "../game/keydef.h"
-#include "../game/ost_events.h"
 
 namespace ostrich {
 

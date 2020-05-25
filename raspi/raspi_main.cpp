@@ -1,14 +1,12 @@
 /*
 ==========================================
-raspi_entry.cpp
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
 Entry point for the Raspberry Pi
 ==========================================
 */
 
-#include "ost_common.h"
+#include "../common/ost_common.h"
 
 #if (OST_RASPI != 1)
 #   error "This module should only be included in Raspberry Pi builds"
@@ -16,11 +14,11 @@ Entry point for the Raspberry Pi
 
 #include <iostream>
 
-#include "display_raspi.h"
-#include "ost_main.h"
-#include "sys_error.h"
-#include "../view/input_raspi.h"
-#include "../view/renderer_egl.h"
+#include "raspi_display.h"
+#include "raspi_input.h"
+#include "../common/error.h"
+#include "../game/ost_main.h"
+#include "../gles2/gles2_renderer.h"
 
 namespace {
 

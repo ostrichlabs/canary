@@ -1,15 +1,13 @@
 /*
 ==========================================
-display_raspi.cpp
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
 IDisplay implementation for the Raspberry Pi
 ==========================================
 */
 
-#include "display_raspi.h"
-#include "sys_error.h"
+#include "raspi_display.h"
+#include "../common/error.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

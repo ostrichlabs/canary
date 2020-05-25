@@ -1,8 +1,6 @@
 /*
 ==========================================
-input_raspi.h
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
 Interface for retrieving input information from the Raspberry Pi
 ==========================================
@@ -11,15 +9,15 @@ Interface for retrieving input information from the Raspberry Pi
 #ifndef INPUT_RASPI_H_
 #define INPUT_RASPI_H_
 
-#include "../system/ost_common.h"
+#include "../common/ost_common.h"
 
 #if (OST_RASPI != 1)
 #    error "This module should only be included in Raspberry Pi builds"
 #endif
 
-#include "i_input.h"
-#include "ost_events.h"
-#include "ost_keydef.h"
+#include "../game/eventqueue.h"
+#include "../game/i_input.h"
+#include "../game/keydef.h"
 
 namespace ostrich {
 

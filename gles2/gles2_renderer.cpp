@@ -1,15 +1,13 @@
 /*
 ==========================================
-renderer_egl.cpp
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
 OpenGL ES 2.0 interface - primarily for the Raspberry Pi
 ==========================================
 */
 
-#include "renderer_egl.h"
-#include "../system/sys_error.h"
+#include "gles2_renderer.h"
+#include "../common/error.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

@@ -9,6 +9,9 @@ Interface for retrieving input information from Windows
 #include "win_input.h"
 #include <Windows.h>
 #include "../common/error.h"
+#include "../game/msg_info.h"
+#include "../game/msg_input.h"
+#include "../game/msg_system.h"
 
 /////////////////////////////////////////////////
 // Windows initialization is simple; it's all in the Windows API
@@ -36,21 +39,22 @@ void ostrich::InputWindows::Destroy() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::InputWindows::ProcessKBM() {
-    MSG msg = { };
+    MSG winmsg = { };
 
-    while (::PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE | PM_QS_INPUT) > 0) {
-        m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_DEBUG,
-            ostrich::SubMessageType::MSG_DEBUG_FROMPROCESSKBM, msg.message, m_Classname));
-        if (msg.message == WM_CHAR) {
+    while (::PeekMessageW(&winmsg, NULL, 0, 0, PM_REMOVE | PM_QS_INPUT) > 0) {
+        m_EventSender.Send(ostrich::InfoMessage::ConstructDebugMessage(winmsg.message,
+            u8"From InputWindows::ProcessKBM", m_Classname));
+        if (winmsg.message == WM_CHAR) {
             
         }
-        switch (msg.message) {
+        switch (winmsg.message) {
             case WM_QUIT:
             case WM_KEYDOWN:
             case WM_KEYUP:
             case WM_XBUTTONDOWN:
             case WM_XBUTTONUP:
-                m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_SYSTEM, ostrich::SubMessageType::MSG_SYS_QUIT, 0, m_Classname));
+                m_EventSender.Send(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT,
+                    m_Classname));
                 break;
             default:
                 break;
@@ -61,17 +65,17 @@ void ostrich::InputWindows::ProcessKBM() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::InputWindows::ProcessOSMessages() {
-    MSG msg = { };
+    MSG winmsg = { };
 
 // TODO: add custom message processing for certain messages
 // leave the traditional loop for things I don't care about
-    while (::PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE | PM_QS_POSTMESSAGE) > 0) {
-        if (msg.message != WM_TIMER) {
-            m_EventSender.Push(ostrich::Message(ostrich::MessageType::MSG_DEBUG,
-                ostrich::SubMessageType::MSG_DEBUG_FROMPROCESSOSMSG, msg.message, m_Classname));
+    while (::PeekMessageW(&winmsg, NULL, 0, 0, PM_REMOVE | PM_QS_POSTMESSAGE) > 0) {
+        if (winmsg.message != WM_TIMER) {
+            m_EventSender.Send(ostrich::InfoMessage::ConstructDebugMessage(winmsg.message,
+                u8"From InputWindows::ProcessOSMessages", m_Classname));
         }
-        ::TranslateMessage(&msg);
-        ::DispatchMessageW(&msg);
+        ::TranslateMessage(&winmsg);
+        ::DispatchMessageW(&winmsg);
     }
 }
 

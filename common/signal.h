@@ -9,7 +9,7 @@ Signal handling
 #ifndef SIGNAL_H_
 #define SIGNAL_H_
 
-#include "../game/ost_events.h"
+#include "../game/eventqueue.h"
 
 namespace ostrich {
 

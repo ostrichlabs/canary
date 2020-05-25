@@ -1,8 +1,6 @@
 /*
 ==========================================
-display_raspi.h
-
-Copyright (c) 2019 Ostrich Labs
+Copyright (c) 2020 Ostrich Labs
 
 IDisplay implementation for the Raspberry Pi
 ==========================================
@@ -11,7 +9,7 @@ IDisplay implementation for the Raspberry Pi
 #ifndef DISPLAY_RASPI_H_
 #define DISPLAY_RASPI_H_
 
-#include "ost_common.h"
+#include "../common/ost_common.h"
 
 #if (OST_RASPI != 1)
 #    error "This module should only be included in Raspberry Pi builds"
@@ -21,7 +19,7 @@ IDisplay implementation for the Raspberry Pi
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
 #include "bcm_host.h"
-#include "i_display.h"
+#include "../game/i_display.h"
 
 namespace ostrich {
 
