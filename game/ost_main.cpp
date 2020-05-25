@@ -167,11 +167,11 @@ bool ostrich::Main::UpdateState() {
         if (queuemsg.second == true) {
             auto msgptr = queuemsg.first;
             if (msgptr->getMessageType() == ostrich::MessageType::MSG_INFO) {
-                auto infomsg = static_cast<ostrich::InfoMessage *>(msgptr.get());
+                auto infomsg = std::static_pointer_cast<ostrich::InfoMessage>(msgptr);
                 m_ConsolePrinter.WriteMessage(infomsg->toString());
             }
             else if (msgptr->getMessageType() == ostrich::MessageType::MSG_SYSTEM) {
-                auto sysmsg = static_cast<ostrich::SystemMessage *>(msgptr.get());
+                auto sysmsg = std::static_pointer_cast<ostrich::SystemMessage>(msgptr);
                 if (sysmsg->getType() == ostrich::SystemMsgType::SYS_QUIT) {
                     m_ConsolePrinter.WriteMessage(u8"SYS_QUIT received");
                     return true;
