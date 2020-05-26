@@ -19,7 +19,7 @@ Windows message pump
 LRESULT CALLBACK ostrich::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
         case WM_CLOSE:
-            //::PostQuitMessage(0);
+            ::PostQuitMessage(0);
             break;
     }
 

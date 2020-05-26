@@ -45,6 +45,8 @@ private:
 
     bool m_isActive;
 
+    const char *const m_Classname = u8"ostrich::Main";
+
     IInput *m_Input;
     IDisplay *m_Display;
     IRenderer *m_Renderer;

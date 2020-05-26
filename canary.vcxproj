@@ -192,6 +192,7 @@
     <ClCompile Include="common\utility.cpp" />
     <ClCompile Include="game\eventqueue.cpp" />
     <ClCompile Include="game\msg_info.cpp" />
+    <ClCompile Include="game\msg_input.cpp" />
     <ClCompile Include="game\msg_system.cpp" />
     <ClCompile Include="game\ost_main.cpp" />
     <ClCompile Include="gl4\gl4_renderer.cpp" />

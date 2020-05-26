@@ -78,6 +78,9 @@
     <ClCompile Include="gles2\gles2_renderer.cpp">
       <Filter>gles2</Filter>
     </ClCompile>
+    <ClCompile Include="game\msg_input.cpp">
+      <Filter>game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">

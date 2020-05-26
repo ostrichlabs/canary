@@ -12,6 +12,7 @@ Main game object
 #include "../common/error.h"
 #include "../common/signal.h"
 #include "../game/msg_info.h"
+#include "../game/msg_input.h"
 #include "../game/msg_system.h"
 
 /////////////////////////////////////////////////
@@ -61,6 +62,8 @@ int ostrich::Main::Initialize() {
 
     int initresult = 0;
 
+    auto start = ostrich::timer::now();
+
     try {
 
         m_ConsolePrinter.WriteMessage(u8"Initializing Display");
@@ -99,10 +102,14 @@ int ostrich::Main::Initialize() {
         throw e;
     }
 
-    if (initresult == 0)
-        m_ConsolePrinter.WriteMessage(u8"Initialization complete");
-    else
+    if (initresult == 0) {
+        auto finish = ostrich::timer::now();
+        float duration = float(ostrich::timer::interval(start, finish)) / 1000;
+        m_ConsolePrinter.WriteMessage(u8"Initialization complete in % seconds", { std::to_string(duration) });
+    }
+    else {
         m_ConsolePrinter.WriteMessage(u8"Bizzare initialization failure, code: %", { std::to_string(initresult) });
+    }
 
     return initresult;
 }
@@ -167,13 +174,26 @@ bool ostrich::Main::UpdateState() {
         if (queuemsg.second == true) {
             auto msgptr = queuemsg.first;
             if (msgptr->getMessageType() == ostrich::MessageType::MSG_INFO) {
+                // print informative messages to the console
+                // DEBUG may or may not be printed - probably dependent on config/build
                 auto infomsg = std::static_pointer_cast<ostrich::InfoMessage>(msgptr);
                 m_ConsolePrinter.WriteMessage(infomsg->toString());
             }
+            else if (msgptr->getMessageType() == ostrich::MessageType::MSG_INPUT) {
+                // update state based on input
+                // in the future the decision to quit based on input is done in the state manager, but this will do for now
+                auto inputmsg = std::static_pointer_cast<ostrich::InputMessage>(msgptr);
+                if (inputmsg->getType() == ostrich::KeyType::KEYTYPE_KB) {
+                    if (inputmsg->getKey() == 0x20) {
+                        m_EventQueue.Push(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT, inputmsg->getSenderMethod().data()));
+                    }
+                }
+            }
             else if (msgptr->getMessageType() == ostrich::MessageType::MSG_SYSTEM) {
+                // system messages that require addressing
                 auto sysmsg = std::static_pointer_cast<ostrich::SystemMessage>(msgptr);
                 if (sysmsg->getType() == ostrich::SystemMsgType::SYS_QUIT) {
-                    m_ConsolePrinter.WriteMessage(u8"SYS_QUIT received");
+                    m_ConsolePrinter.WriteMessage(u8"SYS_QUIT received from %", { std::string(sysmsg->getSenderMethod()) });
                     return true;
                 }
             }
