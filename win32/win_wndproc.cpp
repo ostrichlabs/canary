@@ -18,10 +18,11 @@ Windows message pump
 /////////////////////////////////////////////////
 LRESULT CALLBACK ostrich::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
     switch (message) {
+        case WM_DESTROY:
         case WM_CLOSE:
             ::PostQuitMessage(0);
             break;
     }
 
-    return DefWindowProcW(hWnd, message, wParam, lParam);;
+    return DefWindowProcW(hWnd, message, wParam, lParam);
 }

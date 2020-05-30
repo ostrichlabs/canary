@@ -110,12 +110,26 @@ void ostrich::InputWindows::ProcessOSMessages() {
 // TODO: add custom message processing for certain messages
 // leave the traditional loop for things I don't care about
     while (::PeekMessageW(&winmsg, NULL, 0, 0, PM_REMOVE | PM_QS_POSTMESSAGE) > 0) {
+
+    // ignore WM_TIMER; I'm not setting timers, I do not know what keeps sending them
+    // and they need to fuck off
         if (winmsg.message != WM_TIMER) {
             m_EventSender.Send(ostrich::InfoMessage::ConstructDebugMessage(winmsg.message,
                 u8"From InputWindows::ProcessOSMessages", m_Classname));
         }
-        ::TranslateMessage(&winmsg);
-        ::DispatchMessageW(&winmsg);
+
+        switch (winmsg.message) {
+
+            case WM_TIMER: // go awaaaaaaaaaaaaaaaaay
+            {
+                break;
+            }
+            default:
+            {
+                ::TranslateMessage(&winmsg);
+                ::DispatchMessageW(&winmsg);
+            }
+        }
     }
 }
 
@@ -128,4 +142,4 @@ std::pair<ostrich::Button, int32_t> ostrich::InputWindows::TranslateKey(int32_t 
             return std::pair(ostrich::Button::NONE, 0);
     }
     //return std::pair(ostrich::Button::NONE, 0);
-}
+} 

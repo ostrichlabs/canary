@@ -118,7 +118,6 @@ int ostrich::DisplayWindows::InitWindow() {
     WNDCLASSW wndclass = { };
     wndclass.lpfnWndProc = ostrich::WndProc;
     wndclass.hInstance = m_HInstance;
-    wndclass.hbrBackground = HBRUSH(COLOR_BACKGROUND);
     wndclass.lpszClassName = m_WindowClassName;
     wndclass.style = CS_OWNDC;
     if (!::RegisterClassW(&wndclass)) {
@@ -205,7 +204,15 @@ int ostrich::DisplayWindows::InitRenderer() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::WGLExtensions ostrich::DisplayWindows::GetWGLExtensions() {
-// generic pixel format descriptor just to get a hardware context
+// generic descriptions just to get a dummy window
+    LPCWSTR tmpclassname = L"WGLDummyClassName";
+    WNDCLASSW wndclass = { };
+    wndclass.lpfnWndProc = ostrich::WndProc;
+    wndclass.hInstance = m_HInstance;
+    wndclass.lpszClassName = tmpclassname;
+    wndclass.style = CS_OWNDC;
+    ::RegisterClassW(&wndclass);
+
     PIXELFORMATDESCRIPTOR pfd = { };
     pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
     pfd.nVersion = 1;
@@ -216,9 +223,9 @@ ostrich::WGLExtensions ostrich::DisplayWindows::GetWGLExtensions() {
     pfd.cStencilBits = 8;
     pfd.cAuxBuffers = 0;
     
-    HWND wglhwnd = ::CreateWindowExW(0, m_WindowClassName,
+    HWND wglhwnd = ::CreateWindowExW(0, tmpclassname,
         L"Canary WGL Dummy Window", WS_OVERLAPPEDWINDOW,
-        0, 0, ostrich::g_ScreenWidth, ostrich::g_ScreenHeight, 0, 0, m_HInstance, 0);
+        0, 0, 1, 1, NULL, NULL, m_HInstance, NULL);
 
     HDC wglhdc = ::GetDC(wglhwnd);
     int pixelfmt = ::ChoosePixelFormat(wglhdc, &pfd);

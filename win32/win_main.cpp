@@ -72,7 +72,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     //magpie::PrintMemoryTracker();
     //magpie::DestroyMemoryTracker();
 
-    if ((::GetLastError() != 0x183) && (returncode == 0))
+    if (returncode == 0)
         returncode = ::GetLastError();
 
     return returncode;
