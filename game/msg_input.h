@@ -46,7 +46,11 @@ public:
     InputMessage &operator=(InputMessage &&) = default;
     InputMessage &operator=(const InputMessage &) = default;
 
+    // Prints information pertinent to the input type
     virtual std::string toString() const override;
+
+    // Prints information for the whole message regardless of type
+    virtual std::string toVerboseString() const override;
 
     KeyType getType() const noexcept { return m_Type; }
     int32_t getKey() const noexcept { return m_Key; }
@@ -75,10 +79,9 @@ private:
 
     InputMessage(int32_t button, int32_t xpos, int32_t ypos, const char *sender) :
         IMessage(MessageType::MSG_INPUT, sender),
-        m_Type(KeyType::KEYTYPE_MOUSE), m_Key(button), m_XPos(xpos), m_YPos(ypos)
-    {
-        m_Keydown = (button == OST_MOUSE_NONE) ? false : true;
-    }
+        m_Type(KeyType::KEYTYPE_MOUSE), m_Key(button), m_XPos(xpos), m_YPos(ypos),
+        m_Keydown((button == OST_MOUSE_NONE) ? false : true)
+    {}
 
     KeyType m_Type;     // KB/Mouse/Controller
     int32_t m_Key;      // if KB, this is the raw key. if mouse, this is L/R/M mouse (use defines).

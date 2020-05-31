@@ -170,15 +170,20 @@ void ostrich::Main::ProcessInput() {
 /////////////////////////////////////////////////
 bool ostrich::Main::UpdateState() {
     if (m_EventQueue.isPending()) {
+        bool printed = false;
         std::pair<std::shared_ptr<IMessage>, bool> queuemsg = m_EventQueue.Pop();
         if (queuemsg.second == true) {
             auto msgptr = queuemsg.first;
+            if constexpr (OST_DEBUG_BUILD) {
+                printed = true;
+                m_ConsolePrinter.DebugMessage(msgptr->toVerboseString());
+            }
             if (msgptr->getMessageType() == ostrich::MessageType::MSG_INFO) {
                 // print informative messages to the console
                 // DEBUG may or may not be printed - probably dependent on config/build
                 auto infomsg = std::static_pointer_cast<ostrich::InfoMessage>(msgptr);
-                if (infomsg->getInfoLevel() == ostrich::InfoType::INFO_DEBUG)
-                    m_ConsolePrinter.DebugMessage(infomsg->toString());
+                if ((infomsg->getInfoLevel() == ostrich::InfoType::INFO_DEBUG) || (!printed))
+                    m_ConsolePrinter.DebugMessage(infomsg->toVerboseString());
                 else
                     m_ConsolePrinter.WriteMessage(infomsg->toString());
             }

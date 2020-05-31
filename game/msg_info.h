@@ -35,7 +35,11 @@ public:
     InfoMessage &operator=(InfoMessage &&) = default;
     InfoMessage &operator=(const InfoMessage &) = default;
 
+    // Print the informational message
     virtual std::string toString() const override;
+
+    // As toString() prints all data anyway, this calls that
+    virtual std::string toVerboseString() const override;
 
     InfoType getInfoLevel() const noexcept { return m_InfoLevel; }
     int32_t getInfoCode() const noexcept { return m_InfoCode; }

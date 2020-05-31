@@ -34,7 +34,11 @@ public:
     SystemMessage &operator=(SystemMessage &&) = default;
     SystemMessage &operator=(const SystemMessage &) = default;
 
+    // Prints the system message type
     virtual std::string toString() const override;
+
+    // As system messages currently only have a type, this is the same as toString()
+    virtual std::string toVerboseString() const override;
 
     SystemMsgType getType() const noexcept { return m_Type; }
 

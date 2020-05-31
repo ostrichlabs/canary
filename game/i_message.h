@@ -43,6 +43,7 @@ public:
     IMessage &operator=(const IMessage &) = default;
 
     virtual std::string toString() const = 0;
+    virtual std::string toVerboseString() const = 0;
 
     // TODO: add toVerboseString()
 
