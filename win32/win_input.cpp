@@ -1,7 +1,7 @@
 /*
 ==========================================
 Copyright (c) 2020 Ostrich Labs
-
+ 
 Interface for retrieving input information from Windows
 ==========================================
 */
@@ -15,7 +15,6 @@ Interface for retrieving input information from Windows
 #include "../game/msg_system.h"
 
 /////////////////////////////////////////////////
-// Windows initialization is simple; it's all in the Windows API
 /////////////////////////////////////////////////
 int ostrich::InputWindows::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich::EventSender eventsender) {
     if (m_isActive)
@@ -27,14 +26,23 @@ int ostrich::InputWindows::Initialize(ostrich::ConsolePrinter consoleprinter, os
     if ((!m_ConsolePrinter.isValid()) || (!m_EventSender.isValid()))
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
+    // TODO: Put mouse initialization stuff in its own method?
+    // We may have to redo it every time the window changes
+    HWND hwnd = ::GetActiveWindow();
+    ::SetCapture(hwnd);
+    while (::ShowCursor(FALSE) >= 0)
+        ;
+
     m_isActive = true;
     return 0;
 }
 
 /////////////////////////////////////////////////
 void ostrich::InputWindows::Destroy() {
-    if (m_isActive)
+    if (m_isActive) {
+        ::ReleaseCapture();
         m_isActive = false;
+    }
 }
 
 /////////////////////////////////////////////////

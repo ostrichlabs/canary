@@ -177,7 +177,10 @@ bool ostrich::Main::UpdateState() {
                 // print informative messages to the console
                 // DEBUG may or may not be printed - probably dependent on config/build
                 auto infomsg = std::static_pointer_cast<ostrich::InfoMessage>(msgptr);
-                m_ConsolePrinter.WriteMessage(infomsg->toString());
+                if (infomsg->getInfoLevel() == ostrich::InfoType::INFO_DEBUG)
+                    m_ConsolePrinter.DebugMessage(infomsg->toString());
+                else
+                    m_ConsolePrinter.WriteMessage(infomsg->toString());
             }
             else if (msgptr->getMessageType() == ostrich::MessageType::MSG_INPUT) {
                 // update state based on input

@@ -51,6 +51,30 @@ void ostrich::Console::WriteMessage(const char *msg) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
+void ostrich::Console::DebugMessage(const std::string &msg) {
+    if (!msg.empty()) {
+        m_DebugMessageLog.push_back(msg);
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::Console::DebugMessage(std::string_view msg) {
+    if (!msg.empty()) {
+        m_DebugMessageLog.emplace_back(msg);
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::Console::DebugMessage(const char *msg) {
+    if (msg != nullptr) {
+        m_DebugMessageLog.emplace_back(msg);
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
 void ostrich::Console::WriteLogToFile() {
     std::fstream logfile;
     ostrich::OpenFile(u8"console.log", ost_filemode::g_WRITETRUNCATE, logfile);
@@ -58,6 +82,16 @@ void ostrich::Console::WriteLogToFile() {
         return;
 
     for (auto itr = m_MessageLog.begin(); itr != m_MessageLog.end(); std::advance(itr, 1)) {
+        logfile.write((*itr).c_str(), (*itr).length());
+        logfile.put(ost_char::g_NewLine);
+    }
+
+    logfile.close();
+    ostrich::OpenFile(u8"debug.log", ost_filemode::g_WRITETRUNCATE, logfile);
+    if (!logfile.is_open())
+        return;
+
+    for (auto itr = m_DebugMessageLog.begin(); itr != m_DebugMessageLog.end(); std::advance(itr, 1)) {
         logfile.write((*itr).c_str(), (*itr).length());
         logfile.put(ost_char::g_NewLine);
     }
@@ -84,29 +118,47 @@ void ostrich::Console::TrimLog() {
 void ostrich::ConsolePrinter::WriteMessage(std::string_view msg, std::initializer_list<std::string> args) {
     if (m_Parent) {
         std::string buffer;
-        auto listitr = args.begin();
-        auto msgitr = msg.begin();
-        while (msgitr != msg.end()) {
-            if ((*msgitr) == '%') {
-                if (std::next(msgitr) != msg.end() && ((*std::next(msgitr)) == '%')) {
-                    buffer.push_back('%');
-                    std::advance(msgitr, 1);
-                }
-                else if (listitr == args.end()) { // if more % than args, append %
-                    buffer.push_back('%');
-                }
-                else {
-                    buffer += *listitr;
-                    std::advance(listitr, 1);
-                }
-            }
-            else {
-                buffer.push_back((*msgitr));
-            }
-            if (msgitr != msg.end())
-                std::advance(msgitr, 1);
-        }
-
+        this->CompileBuffer(buffer, msg, args);
         this->WriteMessage(buffer);
     }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::ConsolePrinter::DebugMessage(std::string_view msg, std::initializer_list<std::string> args) {
+    if (m_Parent) {
+        std::string buffer;
+        this->CompileBuffer(buffer, msg, args);
+        this->DebugMessage(buffer);
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::ConsolePrinter::CompileBuffer(std::string &target, std::string_view msg, std::initializer_list<std::string> args) {
+    std::string buffer;
+    auto listitr = args.begin();
+    auto msgitr = msg.begin();
+    while (msgitr != msg.end()) {
+        if ((*msgitr) == '%') {
+            if (std::next(msgitr) != msg.end() && ((*std::next(msgitr)) == '%')) {
+                buffer.push_back('%');
+                std::advance(msgitr, 1);
+            }
+            else if (listitr == args.end()) { // if more % than args, append %
+                buffer.push_back('%');
+            }
+            else {
+                buffer += *listitr;
+                std::advance(listitr, 1);
+            }
+        }
+        else {
+            buffer.push_back((*msgitr));
+        }
+        if (msgitr != msg.end())
+            std::advance(msgitr, 1);
+    }
+
+    target.assign(buffer);
 }

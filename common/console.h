@@ -7,6 +7,8 @@ A logging console
 Future versions for different projects may also allow runtime commands and cvars
 
 The main console can create ConsolePrinter objects - these can take multiple string arguments and insert them into another
+
+TODO: Maybe make the debug log print straight to a file?
 ==========================================
 */
 
@@ -44,6 +46,10 @@ public:
     void WriteMessage(std::string_view msg);
     void WriteMessage(const char *msg);
 
+    void DebugMessage(const std::string &msg);
+    void DebugMessage(std::string_view msg);
+    void DebugMessage(const char *msg);
+
     void WriteLogToFile();
 
     ConsolePrinter CreatePrinter() noexcept;
@@ -51,9 +57,11 @@ public:
 private:
 
     // called at the end of WriteMessage() to enforce log size limits
+    // the debug log will have no such limits
     void TrimLog();
 
-    std::list<std::string>  m_MessageLog;
+    std::list<std::string> m_MessageLog;
+    std::list<std::string> m_DebugMessageLog;
 };
 
 /////////////////////////////////////////////////
@@ -78,9 +86,19 @@ public:
     void WriteMessage(std::string_view msg) { if (m_Parent) m_Parent->WriteMessage(msg); }
     void WriteMessage(const char *msg) { if (m_Parent) m_Parent->WriteMessage(msg); }
 
+    void DebugMessage(const std::string &msg) { if (m_Parent) m_Parent->DebugMessage(msg); }
+    void DebugMessage(std::string_view msg) { if (m_Parent) m_Parent->DebugMessage(msg); }
+    void DebugMessage(const char *msg) { if (m_Parent) m_Parent->DebugMessage(msg); }
+
     void WriteMessage(std::string_view msg, std::initializer_list<std::string> args);
     void WriteMessage(const std::string &msg, std::initializer_list<std::string> args) { this->WriteMessage(std::string_view(msg), args); }
     void WriteMessage(const char *msg, std::initializer_list<std::string> args) { this->WriteMessage(std::string_view(msg), args); }
+
+    void DebugMessage(std::string_view msg, std::initializer_list<std::string> args);
+    void DebugMessage(const std::string &msg, std::initializer_list<std::string> args) { this->DebugMessage(std::string_view(msg), args); }
+    void DebugMessage(const char *msg, std::initializer_list<std::string> args) { this->DebugMessage(std::string_view(msg), args); }
+
+    void CompileBuffer(std::string &target, std::string_view msg, std::initializer_list<std::string> args);
 
 private:
 
