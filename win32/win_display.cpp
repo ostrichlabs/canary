@@ -116,10 +116,16 @@ int ostrich::DisplayWindows::InitWindow() {
 
     m_HInstance = ::GetModuleHandleW(NULL);
     WNDCLASSW wndclass = { };
-    wndclass.lpfnWndProc = ostrich::WndProc;
+    wndclass.style = 0;
+    wndclass.lpfnWndProc = WNDPROC(ostrich::WndProc);
+    wndclass.cbClsExtra = 0;
+    wndclass.cbWndExtra = 0;
     wndclass.hInstance = m_HInstance;
+    wndclass.hIcon = 0;
+    wndclass.hCursor = 0;
+    wndclass.hbrBackground = (HBRUSH)COLOR_GRAYTEXT;
+    wndclass.lpszMenuName = 0;
     wndclass.lpszClassName = m_WindowClassName;
-    wndclass.style = CS_OWNDC;
     if (!::RegisterClassW(&wndclass)) {
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
     }
@@ -130,8 +136,8 @@ int ostrich::DisplayWindows::InitWindow() {
     m_WGLExt = this->GetWGLExtensions();
 
     m_HWnd = ::CreateWindowExW(0, m_WindowClassName,
-        L"Canary Test", WS_OVERLAPPEDWINDOW | WS_VISIBLE,
-        0, 0, ostrich::g_ScreenWidth, ostrich::g_ScreenHeight, 0, 0, m_HInstance, 0);
+        L"Canary Test", WS_OVERLAPPED | WS_VISIBLE | WS_CAPTION | WS_SYSMENU,         // WS_SYSMENU is for windowed
+        0, 0, ostrich::g_ScreenWidth, ostrich::g_ScreenHeight, 0, 0, m_HInstance, 0); // WS_POPUP is for fullscreen
 
     if (m_HWnd == nullptr)
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
