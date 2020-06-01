@@ -10,6 +10,7 @@ Interface for retrieving input information from Windows
 #include <Windows.h>
 #include <windowsx.h>
 #include "../common/error.h"
+#include "../game/keydef.h"
 #include "../game/msg_info.h"
 #include "../game/msg_input.h"
 #include "../game/msg_system.h"
@@ -143,11 +144,33 @@ void ostrich::InputWindows::ProcessOSMessages() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-std::pair<ostrich::Button, int32_t> ostrich::InputWindows::TranslateKey(int32_t vkey) {
-    switch (vkey) {
-        case VK_SPACE:
-        default:
-            return std::pair(ostrich::Button::NONE, 0);
+int32_t ostrich::InputWindows::TranslateKey(int32_t vkey) {
+
+    // ASCII/UTF-8 0-9 and A-Z
+    if ((vkey >= 0x30) || (vkey <= 0x39) ||
+        (vkey >= 0x41) || (vkey <= 0x5A)) {
+        return vkey;
     }
-    //return std::pair(ostrich::Button::NONE, 0);
+
+    switch (vkey) {
+    // these are preset to ASCII/UTF-8 equivalents
+        case VK_TAB:
+        case VK_ESCAPE:
+        case VK_SPACE:
+        {
+            return vkey;
+        }
+        case VK_RETURN:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_ENTER);
+        }
+        case VK_BACK:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_BACKSPACE);
+        }
+        default:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_NULL);
+        }
+    }
 } 

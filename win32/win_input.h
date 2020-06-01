@@ -17,7 +17,6 @@ Interface for retrieving input information from Windows
 
 #include "../game/eventqueue.h"
 #include "../game/i_input.h"
-#include "../game/keydef.h"
 
 namespace ostrich {
 
@@ -43,7 +42,7 @@ public:
 
 private:
 
-    std::pair<Button, int32_t> TranslateKey(int32_t vkey);
+    int32_t TranslateKey(int32_t vkey);
 
     const char * const m_Classname = u8"ostrich::InputWindows";
 
