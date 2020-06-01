@@ -38,7 +38,7 @@ std::string ostrich::datetime::timetostring(time_t &t) {
 #if (OST_WINDOWS == 1) // god damn you windows
     ::localtime_s(&now_tm, &t);
 #else
-    now_tm = *::localtime(&now_t);
+    now_tm = *::localtime(&t);
 #endif
     std::ostringstream oss;
     oss << std::put_time(&now_tm, "%F %T");
