@@ -42,6 +42,9 @@ public:
 
 private:
 
+    // Translates VK_ values into internal/UTF-8 equivalents
+    // There are some questions about international keyboards for some keys
+    // But I will cross that bridge when I get to it
     int32_t TranslateKey(int32_t vkey);
 
     const char * const m_Classname = u8"ostrich::InputWindows";

@@ -170,19 +170,14 @@ void ostrich::Main::ProcessInput() {
 /////////////////////////////////////////////////
 bool ostrich::Main::UpdateState() {
     if (m_EventQueue.isPending()) {
-        bool printed = false;
         std::pair<std::shared_ptr<IMessage>, bool> queuemsg = m_EventQueue.Pop();
         if (queuemsg.second == true) {
             auto msgptr = queuemsg.first;
-            if constexpr (OST_DEBUG_BUILD) {
-                printed = true;
-                m_ConsolePrinter.DebugMessage(msgptr->toVerboseString());
-            }
             if (msgptr->getMessageType() == ostrich::MessageType::MSG_INFO) {
                 // print informative messages to the console
                 // DEBUG may or may not be printed - probably dependent on config/build
                 auto infomsg = std::static_pointer_cast<ostrich::InfoMessage>(msgptr);
-                if ((infomsg->getInfoLevel() == ostrich::InfoType::INFO_DEBUG) || (!printed))
+                if (infomsg->getInfoLevel() == ostrich::InfoType::INFO_DEBUG)
                     m_ConsolePrinter.DebugMessage(infomsg->toVerboseString());
                 else
                     m_ConsolePrinter.WriteMessage(infomsg->toString());
@@ -191,6 +186,7 @@ bool ostrich::Main::UpdateState() {
                 // update state based on input
                 // in the future the decision to quit based on input is done in the state manager, but this will do for now
                 auto inputmsg = std::static_pointer_cast<ostrich::InputMessage>(msgptr);
+                m_ConsolePrinter.DebugMessage(inputmsg->toVerboseString());
                 if (inputmsg->getType() == ostrich::KeyType::KEYTYPE_KB) {
                     if (inputmsg->getKey() == 0x20) {
                         m_EventQueue.Push(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT, inputmsg->getSenderMethod().data()));

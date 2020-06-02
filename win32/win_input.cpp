@@ -90,14 +90,14 @@ void ostrich::InputWindows::ProcessKBM() {
             case WM_SYSKEYDOWN:
             case WM_KEYDOWN:
             {
-                m_EventSender.Send(ostrich::InputMessage::ConstructKB(static_cast<int32_t>(winmsg.wParam),
+                m_EventSender.Send(ostrich::InputMessage::ConstructKB(this->TranslateKey(static_cast<int32_t>(winmsg.wParam)),
                     true, m_Classname));
                 break;
             }
             case WM_SYSKEYUP:
             case WM_KEYUP:
             {
-                m_EventSender.Send(ostrich::InputMessage::ConstructKB(static_cast<int32_t>(winmsg.wParam),
+                m_EventSender.Send(ostrich::InputMessage::ConstructKB(this->TranslateKey(static_cast<int32_t>(winmsg.wParam)),
                     false, m_Classname));
                 break;
             }
@@ -147,9 +147,19 @@ void ostrich::InputWindows::ProcessOSMessages() {
 int32_t ostrich::InputWindows::TranslateKey(int32_t vkey) {
 
     // ASCII/UTF-8 0-9 and A-Z
-    if ((vkey >= 0x30) || (vkey <= 0x39) ||
-        (vkey >= 0x41) || (vkey <= 0x5A)) {
+    if (((vkey >= 0x30) && (vkey <= 0x39)) ||
+        ((vkey >= 0x41) && (vkey <= 0x5A))) {
         return vkey;
+    }
+
+    // F keys
+    if ((vkey >= VK_F1) && (vkey <= VK_F12)) {
+        return (vkey + (static_cast<int32_t>(ostrich::Keys::KEY_F1) - VK_F1));
+    }
+
+    // Number keys on keypad
+    if ((vkey >= VK_NUMPAD0) && (vkey <= VK_NUMPAD9)) {
+        return (vkey + (static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_0) - VK_NUMPAD0));
     }
 
     switch (vkey) {
@@ -160,6 +170,10 @@ int32_t ostrich::InputWindows::TranslateKey(int32_t vkey) {
         {
             return vkey;
         }
+        case VK_CAPITAL:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_CAPSLOCK);
+        }
         case VK_RETURN:
         {
             return static_cast<int32_t>(ostrich::Keys::KEY_ENTER);
@@ -168,6 +182,149 @@ int32_t ostrich::InputWindows::TranslateKey(int32_t vkey) {
         {
             return static_cast<int32_t>(ostrich::Keys::KEY_BACKSPACE);
         }
+        
+        // Arrow keys
+        case VK_UP:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_UPARROW);
+        }
+        case VK_LEFT:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_LEFTARROW);
+        }
+        case VK_DOWN:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_DOWNARROW);
+        }
+        case VK_RIGHT:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_RIGHTARROW);
+        }
+
+        // Modifier keys
+        case VK_SHIFT:
+        case VK_LSHIFT:
+        case VK_RSHIFT:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_SHIFT);
+        }
+        case VK_CONTROL:
+        case VK_LCONTROL:
+        case VK_RCONTROL:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_CTRL);
+        }
+        case VK_MENU:
+        case VK_LMENU:
+        case VK_RMENU:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_ALT);
+        }
+
+        // Those utility keys above the arrow keys
+        case VK_PAUSE:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_PAUSE);
+        }
+        case VK_INSERT:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_INSERT);
+        }
+        case VK_DELETE:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_DELETE);
+        }
+        case VK_HOME:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_HOME);
+        }
+        case VK_END:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_END);
+        }
+        case VK_PRIOR:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_PAGEUP);
+        }
+        case VK_NEXT:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_PAGEDOWN);
+        }
+
+        // Keypad keys
+        case VK_ADD:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_PLUS);
+        }
+        case VK_SUBTRACT:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_MINUS);
+        }
+        case VK_MULTIPLY:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_STAR);
+        }
+        case VK_DIVIDE:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_SLASH);
+        }
+        case VK_DECIMAL:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_DELETE);
+        }
+        case VK_NUMLOCK:
+        {
+            return static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_NUMLOCK);
+        }
+
+        // Those fancy extra characters on US keyboards
+        case VK_OEM_1:
+        {
+            return u8';';
+        }
+        case VK_OEM_2:
+        {
+            return u8'/';
+        }
+        case VK_OEM_3:
+        {
+            return u8'`';
+        }
+        case VK_OEM_4:
+        {
+            return u8'[';
+        }
+        case VK_OEM_5:
+        {
+            return u8'\\';
+        }
+        case VK_OEM_6:
+        {
+            return u8']';
+        }
+        case VK_OEM_7:
+        {
+            return u8'\'';
+        }
+
+        // Those fancy extra characters on every keyboard
+        case VK_OEM_PLUS:
+        {
+            return u8'+';
+        }
+        case VK_OEM_COMMA:
+        {
+            return u8',';
+        }
+        case VK_OEM_MINUS:
+        {
+            return u8'-';
+        }
+        case VK_OEM_PERIOD:
+        {
+            return u8'.';
+        }
+
         default:
         {
             return static_cast<int32_t>(ostrich::Keys::KEY_NULL);
