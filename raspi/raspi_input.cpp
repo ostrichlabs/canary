@@ -129,6 +129,6 @@ bool ostrich::InputRaspi::InitMouse() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-ostrich::Button ostrich::InputRaspi::TranslateKey(int32_t vkey) {
-	return ostrich::Button::NONE;
+int32_t ostrich::InputRaspi::TranslateKey(int32_t vkey) {
+	return 0;
 }

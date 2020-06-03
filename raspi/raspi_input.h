@@ -49,7 +49,7 @@ private:
     bool InitKeyboard();
     bool InitMouse();
 
-    Button TranslateKey(int32_t vkey);
+    int32_t TranslateKey(int32_t vkey);
 
     ConsolePrinter m_ConsolePrinter;
     EventSender m_EventSender;
