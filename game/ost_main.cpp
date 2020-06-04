@@ -109,8 +109,8 @@ int ostrich::Main::Initialize() {
 
     if (initresult == 0) {
         auto finish = ostrich::timer::now();
-        float duration = float(ostrich::timer::interval(start, finish)) / 1000;
-        m_ConsolePrinter.WriteMessage(u8"Initialization complete in % seconds", { std::to_string(duration) });
+        float duration = float(ostrich::timer::interval(start, finish));
+        m_ConsolePrinter.WriteMessage(u8"Initialization complete in % milliseconds", { std::to_string(duration) });
     }
     else {
         m_ConsolePrinter.WriteMessage(u8"Bizzare initialization failure, code: %", { std::to_string(initresult) });
@@ -174,7 +174,7 @@ void ostrich::Main::ProcessInput() {
 // returns true if the game should stop running
 /////////////////////////////////////////////////
 bool ostrich::Main::UpdateState() {
-     if (m_EventQueue.isPending()) {
+    if (m_EventQueue.isPending()) {
         std::pair<std::shared_ptr<IMessage>, bool> queuemsg = m_EventQueue.Pop();
         if (queuemsg.second == true) {
             auto msgptr = queuemsg.first;
@@ -209,6 +209,7 @@ bool ostrich::Main::UpdateState() {
             }
         }
     }
+
     return false;
 }
 

@@ -74,13 +74,13 @@ void ostrich::InputWindows::ProcessKBM() {
             {
                 int32_t buttons = OST_MOUSE_NONE;
 
-                if (winmsg.lParam & MK_LBUTTON)
+                if (winmsg.wParam & MK_LBUTTON)
                     buttons |= OST_MOUSE_LBUTTON;
 
-                if (winmsg.lParam & MK_RBUTTON)
+                if (winmsg.wParam & MK_RBUTTON)
                     buttons |= OST_MOUSE_RBUTTON;
 
-                if (winmsg.lParam & MK_MBUTTON)
+                if (winmsg.wParam & MK_MBUTTON)
                     buttons |= OST_MOUSE_MBUTTON;
 
                 m_EventSender.Send(ostrich::InputMessage::ConstructMouse(buttons,
