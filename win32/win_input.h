@@ -26,7 +26,7 @@ class InputWindows : public IInput {
 public:
 
     InputWindows() noexcept : m_isActive(false) {}
-    virtual ~InputWindows() { m_isActive = false;  }
+    virtual ~InputWindows() { m_isActive = false; }
     InputWindows(InputWindows &&) = delete;
     InputWindows(const InputWindows &) = delete;
     InputWindows &operator=(InputWindows &&) = delete;

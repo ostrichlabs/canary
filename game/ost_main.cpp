@@ -88,6 +88,11 @@ int ostrich::Main::Initialize() {
             m_ConsolePrinter.WriteMessage(u8"Initializing input handler");
             initresult = m_Input->Initialize(m_Console.CreatePrinter(), m_EventQueue.CreateSender());
         }
+
+        if (initresult == 0) {
+            m_ConsolePrinter.WriteMessage(u8"Initializing state machine");
+            initresult = m_GameState.Initialize(m_Console.CreatePrinter(), m_EventQueue.CreateSender());
+        }
     }
     catch (const ostrich::ProxyException &e) {
         m_ConsolePrinter.WriteMessage(u8"% at %", { e.what(), e.where() });
@@ -169,7 +174,7 @@ void ostrich::Main::ProcessInput() {
 // returns true if the game should stop running
 /////////////////////////////////////////////////
 bool ostrich::Main::UpdateState() {
-    if (m_EventQueue.isPending()) {
+     if (m_EventQueue.isPending()) {
         std::pair<std::shared_ptr<IMessage>, bool> queuemsg = m_EventQueue.Pop();
         if (queuemsg.second == true) {
             auto msgptr = queuemsg.first;
@@ -187,11 +192,7 @@ bool ostrich::Main::UpdateState() {
                 // in the future the decision to quit based on input is done in the state manager, but this will do for now
                 auto inputmsg = std::static_pointer_cast<ostrich::InputMessage>(msgptr);
                 m_ConsolePrinter.DebugMessage(inputmsg->toVerboseString());
-                if (inputmsg->getType() == ostrich::KeyType::KEYTYPE_KB) {
-                    if (inputmsg->getKey() == 0x20) {
-                        m_EventQueue.Push(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT, inputmsg->getSenderMethod().data()));
-                    }
-                }
+                m_GameState.ProcessInput(inputmsg);
             }
             else if (msgptr->getMessageType() == ostrich::MessageType::MSG_SYSTEM) {
                 // system messages that require addressing

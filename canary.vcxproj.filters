@@ -22,6 +22,9 @@
     <Filter Include="gles2">
       <UniqueIdentifier>{28c1234e-d320-4900-8c13-0dd9a33cadfb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="minesweeper">
+      <UniqueIdentifier>{1a8227c8-3d20-49b6-affb-497d0d7e3d1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32\win_display.cpp">
@@ -80,6 +83,9 @@
     </ClCompile>
     <ClCompile Include="game\msg_input.cpp">
       <Filter>game</Filter>
+    </ClCompile>
+    <ClCompile Include="minesweeper\ms_statemachine.cpp">
+      <Filter>minesweeper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="gles2\gles2_renderer.h">
       <Filter>gles2</Filter>
+    </ClInclude>
+    <ClInclude Include="minesweeper\ms_statemachine.h">
+      <Filter>minesweeper</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -15,6 +15,7 @@ Main game object
 #include "i_input.h"
 #include "i_renderer.h"
 #include "../common/console.h"
+#include "../minesweeper/ms_statemachine.h"
 
 namespace ostrich {
 
@@ -56,8 +57,8 @@ private:
 
     EventQueue m_EventQueue;
 
-    // game dependent - lives in /game
-    //IStateMachine *m_GameState;
+    // game dependent - lives in the game's folder
+    ms::StateMachine m_GameState;
 };
 
 } // namespace ostrich
