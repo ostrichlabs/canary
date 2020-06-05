@@ -191,7 +191,7 @@ bool ostrich::Main::UpdateState() {
                 // update state based on input
                 // in the future the decision to quit based on input is done in the state manager, but this will do for now
                 auto inputmsg = std::static_pointer_cast<ostrich::InputMessage>(msgptr);
-                m_ConsolePrinter.DebugMessage(inputmsg->toVerboseString());
+                //m_ConsolePrinter.DebugMessage(inputmsg->toVerboseString());
                 m_GameState.ProcessInput(inputmsg);
             }
             else if (msgptr->getMessageType() == ostrich::MessageType::MSG_SYSTEM) {

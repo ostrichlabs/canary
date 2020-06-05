@@ -12,6 +12,7 @@ Requires an interface to the EventQueue to add events based on messages received
 #define WIN_WNDPROC_H_
 
 #include "../common/ost_common.h"
+#include "../game/eventqueue.h"
 
 #if (OST_WINDOWS != 1)
 #   error "This module should only be included in Windows builds"
@@ -20,6 +21,8 @@ Requires an interface to the EventQueue to add events based on messages received
 #include <Windows.h>
 
 namespace ostrich {
+
+void InitWndProc(EventSender eventsender);
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 

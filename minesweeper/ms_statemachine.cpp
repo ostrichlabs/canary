@@ -21,13 +21,14 @@ int ms::StateMachine::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich
 
     // any initialization of game-specific state should go here
 
+    m_isActive = true;
     return 0;
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ms::StateMachine::Destroy() {
-
+    m_isActive = false;
 }
 
 /////////////////////////////////////////////////
@@ -39,7 +40,7 @@ const std::shared_ptr<char *> ms::StateMachine::Serialize() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ms::StateMachine::ProcessInput(std::shared_ptr<ostrich::InputMessage> msg) {
-    if (!msg) {
+    if (!msg || !m_isActive) {
         return; // probably should do some actual error handling here
     }
 
@@ -47,11 +48,15 @@ void ms::StateMachine::ProcessInput(std::shared_ptr<ostrich::InputMessage> msg) 
         m_InputStates.m_Keys[msg->getKey()] = msg->isKeyDown();
     }
     else if (msg->getType() == ostrich::KeyType::KEYTYPE_MOUSE) {
-        m_InputStates.m_XPos = msg->getXPos();
-        m_InputStates.m_YPos = msg->getYPos();
-        m_InputStates.m_MouseButtons[0] = (msg->getKey() & OST_MOUSE_LBUTTON);
-        m_InputStates.m_MouseButtons[1] = (msg->getKey() & OST_MOUSE_RBUTTON);
-        m_InputStates.m_MouseButtons[2] = (msg->getKey() & OST_MOUSE_MBUTTON);
+        if ((msg->getXPos() == -1) && (msg->getYPos() == -1)) {
+            m_InputStates.m_MouseButtons[0] = (msg->getKey() & OST_MOUSE_LBUTTON);
+            m_InputStates.m_MouseButtons[1] = (msg->getKey() & OST_MOUSE_RBUTTON);
+            m_InputStates.m_MouseButtons[2] = (msg->getKey() & OST_MOUSE_MBUTTON);
+        }
+        else {
+            m_InputStates.m_XPos = msg->getXPos();
+            m_InputStates.m_YPos = msg->getYPos();
+        }
     }
     else {
         m_ConsolePrinter.WriteMessage(u8"Unknown input type passed to StateMachine: %",
@@ -65,6 +70,8 @@ void ms::StateMachine::ProcessInput(std::shared_ptr<ostrich::InputMessage> msg) 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ms::StateMachine::UpdateGameState() {
-    if (m_InputStates.m_Keys[int(u8' ')])
-        m_EventSender.Send(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT, u8"ms::StateMachine::UpdateGameState()"));
+    if (m_isActive) {
+        if (m_InputStates.m_Keys[int(u8' ')])
+            m_EventSender.Send(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT, u8"ms::StateMachine::UpdateGameState()"));
+    }
 }

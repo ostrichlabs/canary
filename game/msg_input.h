@@ -85,8 +85,8 @@ private:
 
     KeyType m_Type;     // KB/Mouse/Controller
     int32_t m_Key;      // if KB, this is the raw key. if mouse, this is L/R/M mouse (use defines).
-    int32_t m_XPos;     // -1 if KB
-    int32_t m_YPos;     // -1 if KB
+    int32_t m_XPos;     // -1 if reporting key/button states
+    int32_t m_YPos;     // -1 if reporting key/button states
     bool m_Keydown;     // true if down
 };
 
