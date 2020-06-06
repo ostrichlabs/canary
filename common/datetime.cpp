@@ -9,6 +9,7 @@ Functions and classes for retrieving the date and time
 #include "datetime.h"
 #include <ctime>
 #include <iomanip>
+#include <ratio>
 #include <sstream>
 #include "ost_common.h"
 
@@ -22,6 +23,13 @@ ostrich::timer::time_point ostrich::timer::now() {
 /////////////////////////////////////////////////
 int32_t ostrich::timer::interval(const ostrich::timer::time_point &start, const ostrich::timer::time_point &end) {
     return static_cast<int32_t>(std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count());
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+double ostrich::timer::interval_d(const ostrich::timer::time_point &start, const ostrich::timer::time_point &end) {
+    return std::chrono::duration<double, std::milli>(end - start).count();
+    //return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 }
 
 /////////////////////////////////////////////////

@@ -31,6 +31,8 @@ time_point now();
 // returns the interval between points in milliseconds
 int32_t interval(const time_point &start, const time_point &end);
 
+double interval_d(const time_point &start, const time_point &end);
+
 } // namespace timer
 
 namespace datetime {

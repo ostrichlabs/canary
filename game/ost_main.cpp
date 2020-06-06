@@ -145,7 +145,7 @@ void ostrich::Main::Run() {
     auto currtick = prevtick;
     bool done = false;
     int32_t elapsedtime = 0;
-    double fps = 0.0f;
+    double fps = 0.0;
     while (!done) {
         currtick = ostrich::timer::now();
         elapsedtime = ostrich::timer::interval(prevtick, currtick);
@@ -154,8 +154,6 @@ void ostrich::Main::Run() {
 
         if (elapsedtime > 0)
             fps = static_cast<double>(1.0 / static_cast<double>(elapsedtime)) * 1000.0;
-        m_ConsolePrinter.DebugMessage(u8"% ms to render last frame, so % fps", 
-            { std::to_string(elapsedtime), std::to_string(fps) } );
 
         this->ProcessInput();
         while ((lag >= msperupdate) && (!done)) { // no need to update state if done
@@ -181,7 +179,7 @@ void ostrich::Main::ProcessInput() {
 // returns true if the game should stop running
 /////////////////////////////////////////////////
 bool ostrich::Main::UpdateState() {
-    if (m_EventQueue.isPending()) {
+    while (m_EventQueue.isPending()) {
         auto queuemsg = m_EventQueue.Pop();
         if (queuemsg.second == true) {
             ostrich::Message msg = queuemsg.first;
@@ -194,7 +192,6 @@ bool ostrich::Main::UpdateState() {
                 // system messages that require addressing
                 // TODO: make a central place to define system message codes
                 if (msg.getSystemData() == 1) {
-                    m_ConsolePrinter.WriteMessage(u8"Shutting down...");
                     return true;
                 }
             }
