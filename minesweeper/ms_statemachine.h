@@ -12,6 +12,8 @@ Check docs for more details
 #ifndef MS_STATEMACHINE_H_
 #define MS_STATEMACHINE_H_
 
+#include <cstring>
+#include <memory>
 #include "../common/console.h"
 #include "../common/ost_common.h"
 #include "../game/eventqueue.h"

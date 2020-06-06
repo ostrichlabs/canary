@@ -16,9 +16,7 @@ Interface for retrieving input information from the Raspberry Pi
 #include <linux/input.h>
 #include <sys/ioctl.h>
 #include "../common/error.h"
-#include "../game/msg_info.h"
-#include "../game/msg_input.h"
-#include "../game/msg_system.h"
+#include "../game/message.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -73,12 +71,12 @@ void ostrich::InputRaspi::ProcessKBM() {
 		kbbytes = ::read(m_KeyboardFD, &kbinput, sizeof(kbinput));
 		if (kbbytes > 0) {
 			if (kbinput.type & EV_KEY) {
-				m_EventSender.Send(ostrich::InfoMessage::ConstructDebugMessage(kbinput.code,
-					u8"From InputRaspi::ProcessKBM()", m_Classname));
+				m_ConsolePrinter.DebugMessage(u8"From InputRaspi::ProcessKBM(): %",
+						{ std::to_string(kbinput.code) } );
 			}
 			// TODO: translate to internal message
 			// tho for now if a key is pressed send a quit
-			m_EventSender.Send(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT, m_Classname));
+			m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
 			done = true;
 		}
 		mousebytes = ::read(m_MouseFD, &mouseinput, sizeof(mouseinput));
