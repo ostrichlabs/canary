@@ -146,9 +146,6 @@
     <ClInclude Include="game\keydef.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="game\i_message.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="game\eventqueue.h">
       <Filter>game</Filter>
     </ClInclude>

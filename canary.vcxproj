@@ -238,7 +238,6 @@
     <ClInclude Include="external\gl\wglext.h" />
     <ClInclude Include="game\i_display.h" />
     <ClInclude Include="game\i_input.h" />
-    <ClInclude Include="game\i_message.h" />
     <ClInclude Include="game\i_renderer.h" />
     <ClInclude Include="game\keydef.h" />
     <ClInclude Include="game\message.h" />
