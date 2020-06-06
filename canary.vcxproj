@@ -191,9 +191,6 @@
     <ClCompile Include="common\signal.cpp" />
     <ClCompile Include="common\utility.cpp" />
     <ClCompile Include="game\eventqueue.cpp" />
-    <ClCompile Include="game\msg_info.cpp" />
-    <ClCompile Include="game\msg_input.cpp" />
-    <ClCompile Include="game\msg_system.cpp" />
     <ClCompile Include="game\ost_main.cpp" />
     <ClCompile Include="gl4\gl4_renderer.cpp" />
     <ClCompile Include="gles2\gles2_renderer.cpp">
@@ -244,10 +241,8 @@
     <ClInclude Include="game\i_message.h" />
     <ClInclude Include="game\i_renderer.h" />
     <ClInclude Include="game\keydef.h" />
-    <ClInclude Include="game\msg_info.h" />
-    <ClInclude Include="game\msg_input.h" />
+    <ClInclude Include="game\message.h" />
     <ClInclude Include="game\eventqueue.h" />
-    <ClInclude Include="game\msg_system.h" />
     <ClInclude Include="game\ost_main.h" />
     <ClInclude Include="game\ost_version.h" />
     <ClInclude Include="gl4\gl4_renderer.h" />

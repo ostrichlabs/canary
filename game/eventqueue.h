@@ -9,11 +9,10 @@ The EventQueue and its wrappers
 #ifndef EVENTQUEUE_H_
 #define EVENTQUEUE_H_
 
-#include <deque>
-#include <memory>
+#include <queue>
 #include <utility>
 
-#include "i_message.h"
+#include "message.h"
 
 namespace ostrich {
 
@@ -35,12 +34,14 @@ public:
 
     bool isPending() const noexcept { return !m_MessageQueue.empty(); }
 
-    void Push(std::shared_ptr<IMessage> msg);
-    std::pair<std::shared_ptr<IMessage>, bool> Pop();
+    auto getQueueLength() const noexcept { return m_MessageQueue.size(); }
+
+    void Push(const Message &msg);
+    std::pair<Message, bool> Pop();
 
 private:
 
-    std::deque<std::shared_ptr<IMessage>> m_MessageQueue;
+    std::queue<Message> m_MessageQueue;
 };
 
 /////////////////////////////////////////////////
@@ -61,7 +62,7 @@ public:
 
     bool isValid() const noexcept { if (m_Parent) return true; return false; }
 
-    void Send(std::shared_ptr<IMessage> msg) { if (m_Parent) m_Parent->Push(msg); }
+    void Send(const Message &msg) { if (m_Parent) m_Parent->Push(msg); }
 
 private:
 

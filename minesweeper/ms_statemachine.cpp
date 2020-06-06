@@ -8,7 +8,6 @@ Minesweeper state machine
 
 #include "ms_statemachine.h"
 #include "../common/error.h"
-#include "../game/msg_system.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -39,28 +38,29 @@ const std::shared_ptr<char *> ms::StateMachine::Serialize() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ms::StateMachine::ProcessInput(std::shared_ptr<ostrich::InputMessage> msg) {
-    if (!msg || !m_isActive) {
+void ms::StateMachine::ProcessInput(const ostrich::Message &msg) {
+    if (!m_isActive) {
         return; // probably should do some actual error handling here
     }
 
-    if (msg->getType() == ostrich::KeyType::KEYTYPE_KB) {
-        m_InputStates.m_Keys[msg->getKey()] = msg->isKeyDown();
+    if (msg.getType() == ostrich::Message::Type::INPUT_KEY) {
+        auto keydata = msg.getKeyStatus();
+        m_InputStates.m_Keys[keydata.first] = keydata.second;
     }
-    else if (msg->getType() == ostrich::KeyType::KEYTYPE_MOUSE) {
-        if ((msg->getXPos() == -1) && (msg->getYPos() == -1)) {
-            m_InputStates.m_MouseButtons[0] = (msg->getKey() & OST_MOUSE_LBUTTON);
-            m_InputStates.m_MouseButtons[1] = (msg->getKey() & OST_MOUSE_RBUTTON);
-            m_InputStates.m_MouseButtons[2] = (msg->getKey() & OST_MOUSE_MBUTTON);
-        }
-        else {
-            m_InputStates.m_XPos = msg->getXPos();
-            m_InputStates.m_YPos = msg->getYPos();
-        }
+    else if (msg.getType() == ostrich::Message::Type::INPUT_BUTTON) {
+        int32_t buttons = msg.getButtonStatus();
+        m_InputStates.m_MouseButtons[0] = (buttons & ostrich::Message::MOUSE_LBUTTON);
+        m_InputStates.m_MouseButtons[1] = (buttons & ostrich::Message::MOUSE_RBUTTON);
+        m_InputStates.m_MouseButtons[2] = (buttons & ostrich::Message::MOUSE_MBUTTON);
+    }
+    else if (msg.getType() == ostrich::Message::Type::INPUT_MOUSEPOS) {
+        auto posdata = msg.getMouseCoords();
+        m_InputStates.m_XPos = posdata.first;
+        m_InputStates.m_YPos = posdata.second;
     }
     else {
         m_ConsolePrinter.WriteMessage(u8"Unknown input type passed to StateMachine: %",
-            { std::to_string(static_cast<int32_t>(msg->getType())) });
+            { std::to_string(msg.getTypeAsInt()) });
         return;
     }
 
@@ -72,6 +72,6 @@ void ms::StateMachine::ProcessInput(std::shared_ptr<ostrich::InputMessage> msg) 
 void ms::StateMachine::UpdateGameState() {
     if (m_isActive) {
         if (m_InputStates.m_Keys[int(u8' ')])
-            m_EventSender.Send(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT, u8"ms::StateMachine::UpdateGameState()"));
+            m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, u8"ms::StateMachine::UpdateGameState()"));
     }
 }

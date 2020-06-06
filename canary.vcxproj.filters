@@ -63,12 +63,6 @@
     <ClCompile Include="game\eventqueue.cpp">
       <Filter>game</Filter>
     </ClCompile>
-    <ClCompile Include="game\msg_system.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
-    <ClCompile Include="game\msg_info.cpp">
-      <Filter>game</Filter>
-    </ClCompile>
     <ClCompile Include="raspi\raspi_display.cpp">
       <Filter>raspi</Filter>
     </ClCompile>
@@ -80,9 +74,6 @@
     </ClCompile>
     <ClCompile Include="gles2\gles2_renderer.cpp">
       <Filter>gles2</Filter>
-    </ClCompile>
-    <ClCompile Include="game\msg_input.cpp">
-      <Filter>game</Filter>
     </ClCompile>
     <ClCompile Include="minesweeper\ms_statemachine.cpp">
       <Filter>minesweeper</Filter>
@@ -158,16 +149,7 @@
     <ClInclude Include="game\i_message.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="game\msg_input.h">
-      <Filter>game</Filter>
-    </ClInclude>
     <ClInclude Include="game\eventqueue.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\msg_info.h">
-      <Filter>game</Filter>
-    </ClInclude>
-    <ClInclude Include="game\msg_system.h">
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="raspi\raspi_display.h">
@@ -181,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="minesweeper\ms_statemachine.h">
       <Filter>minesweeper</Filter>
+    </ClInclude>
+    <ClInclude Include="game\message.h">
+      <Filter>game</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

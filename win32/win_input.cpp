@@ -11,10 +11,7 @@ Interface for retrieving input information from Windows
 #include <windowsx.h>
 #include "win_wndproc.h"
 #include "../common/error.h"
-#include "../game/keydef.h"
-#include "../game/msg_info.h"
-#include "../game/msg_input.h"
-#include "../game/msg_system.h"
+#include "../game/message.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -61,7 +58,7 @@ void ostrich::InputWindows::ProcessKBM() {
 
     // TODO: actually translate to the window
 
-    //m_EventSender.Send(ostrich::InputMessage::ConstructMouse(0, point.x, point.y, m_Classname));
+    m_EventSender.Send(ostrich::Message::CreateMousePosMessage(point.x, point.y, m_Classname));
 }
 
 /////////////////////////////////////////////////

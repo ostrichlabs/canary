@@ -11,9 +11,7 @@ Main game object
 #include "../common/datetime.h"
 #include "../common/error.h"
 #include "../common/signal.h"
-#include "../game/msg_info.h"
-#include "../game/msg_input.h"
-#include "../game/msg_system.h"
+#include "../game/message.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -109,7 +107,7 @@ int ostrich::Main::Initialize() {
 
     if (initresult == 0) {
         auto finish = ostrich::timer::now();
-        float duration = float(ostrich::timer::interval(start, finish));
+        int32_t duration = ostrich::timer::interval(start, finish);
         m_ConsolePrinter.WriteMessage(u8"Initialization complete in % milliseconds", { std::to_string(duration) });
     }
     else {
@@ -144,12 +142,21 @@ void ostrich::Main::Run() {
     const int32_t msperupdate = static_cast<int32_t>((1.0 / updatespersec) * 1000.0);
 
     auto prevtick = ostrich::timer::now();
+    auto currtick = prevtick;
     bool done = false;
+    int32_t elapsedtime = 0;
+    double fps = 0.0f;
     while (!done) {
-        auto currtick = ostrich::timer::now();
-        int32_t elapsedtime = ostrich::timer::interval(prevtick, currtick);
+        currtick = ostrich::timer::now();
+        elapsedtime = ostrich::timer::interval(prevtick, currtick);
         prevtick = currtick;
         lag += elapsedtime;
+
+        if (elapsedtime > 0)
+            fps = static_cast<double>(1.0 / static_cast<double>(elapsedtime)) * 1000.0;
+        m_ConsolePrinter.DebugMessage(u8"% ms to render last frame, so % fps", 
+            { std::to_string(elapsedtime), std::to_string(fps) } );
+
         this->ProcessInput();
         while ((lag >= msperupdate) && (!done)) { // no need to update state if done
             done = this->UpdateState();
@@ -175,37 +182,26 @@ void ostrich::Main::ProcessInput() {
 /////////////////////////////////////////////////
 bool ostrich::Main::UpdateState() {
     if (m_EventQueue.isPending()) {
-        std::pair<std::shared_ptr<IMessage>, bool> queuemsg = m_EventQueue.Pop();
+        auto queuemsg = m_EventQueue.Pop();
         if (queuemsg.second == true) {
-            auto msgptr = queuemsg.first;
-            if (msgptr->getMessageType() == ostrich::MessageType::MSG_INFO) {
-                // print informative messages to the console
-                // DEBUG may or may not be printed - probably dependent on config/build
-                auto infomsg = std::static_pointer_cast<ostrich::InfoMessage>(msgptr);
-                if (infomsg->getInfoLevel() == ostrich::InfoType::INFO_DEBUG)
-                    m_ConsolePrinter.DebugMessage(infomsg->toVerboseString());
-                else
-                    m_ConsolePrinter.WriteMessage(infomsg->toString());
-            }
-            else if (msgptr->getMessageType() == ostrich::MessageType::MSG_INPUT) {
+            ostrich::Message msg = queuemsg.first;
+            if ((msg.getType() >= ostrich::Message::Type::INPUT_START) &&
+                (msg.getType() <= ostrich::Message::Type::INPUT_LAST)) {
                 // update state based on input
-                // in the future the decision to quit based on input is done in the state manager, but this will do for now
-                auto inputmsg = std::static_pointer_cast<ostrich::InputMessage>(msgptr);
-                //m_ConsolePrinter.DebugMessage(inputmsg->toVerboseString());
-                m_GameState.ProcessInput(inputmsg);
+                m_GameState.ProcessInput(msg);
             }
-            else if (msgptr->getMessageType() == ostrich::MessageType::MSG_SYSTEM) {
+            else if (msg.getType() == ostrich::Message::Type::SYSTEM) {
                 // system messages that require addressing
-                auto sysmsg = std::static_pointer_cast<ostrich::SystemMessage>(msgptr);
-                if (sysmsg->getType() == ostrich::SystemMsgType::SYS_QUIT) {
-                    m_ConsolePrinter.WriteMessage(u8"SYS_QUIT received from %", { std::string(sysmsg->getSenderMethod()) });
+                // TODO: make a central place to define system message codes
+                if (msg.getSystemData() == 1) {
+                    m_ConsolePrinter.WriteMessage(u8"Shutting down...");
                     return true;
                 }
             }
             else {
                 m_ConsolePrinter.WriteMessage(u8"Unhandled message type % sent by %",
-                    { std::to_string(static_cast<int32_t>(msgptr->getMessageType())),
-                      std::string(msgptr->getSenderMethod()) });
+                    { std::to_string(msg.getTypeAsInt()),
+                      std::string(msg.getSender()) });
             }
         }
     }

@@ -14,7 +14,6 @@ Check docs for more details
 
 #include "../common/console.h"
 #include "../common/ost_common.h"
-#include "../game/msg_input.h"
 #include "../game/eventqueue.h"
 
 namespace ms {
@@ -39,7 +38,7 @@ public:
 
     const std::shared_ptr<char *> Serialize();
 
-    void ProcessInput(std::shared_ptr<ostrich::InputMessage> msg);
+    void ProcessInput(const ostrich::Message &msg);
 
     // force a game state update based on current InputState
     void UpdateGameState();

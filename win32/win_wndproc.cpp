@@ -10,9 +10,7 @@ Windows message pump
 #include <windowsx.h>
 #include "../common/error.h"
 #include "../common/ost_common.h"
-#include "../game/msg_info.h"
-#include "../game/msg_input.h"
-#include "../game/msg_system.h"
+#include "../game/keydef.h"
 
 namespace {
 
@@ -23,22 +21,22 @@ ostrich::EventSender l_EventSender;
 // There are some questions about international keyboards for some keys
 // But I will cross that bridge when I get to it
 /////////////////////////////////////////////////
-int32_t TranslateKey(int32_t vkey) {
+int32_t TranslateKey(WPARAM vkey) {
 
     // ASCII/UTF-8 0-9 and A-Z
     if (((vkey >= 0x30) && (vkey <= 0x39)) ||
         ((vkey >= 0x41) && (vkey <= 0x5A))) {
-        return vkey;
+        return static_cast<int32_t>(vkey);
     }
 
     // F keys
     if ((vkey >= VK_F1) && (vkey <= VK_F12)) {
-        return (vkey + (static_cast<int32_t>(ostrich::Keys::KEY_F1) - VK_F1));
+        return static_cast<int32_t>((vkey + (static_cast<int32_t>(ostrich::Keys::KEY_F1) - VK_F1)));
     }
 
     // Number keys on keypad
     if ((vkey >= VK_NUMPAD0) && (vkey <= VK_NUMPAD9)) {
-        return (vkey + (static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_0) - VK_NUMPAD0));
+        return static_cast<int32_t>((vkey + (static_cast<int32_t>(ostrich::Keys::KEY_KEYPAD_0) - VK_NUMPAD0)));
     }
 
     switch (vkey) {
@@ -47,7 +45,7 @@ int32_t TranslateKey(int32_t vkey) {
         case VK_ESCAPE:
         case VK_SPACE:
         {
-            return vkey;
+            return static_cast<int32_t>(vkey);
         }
         case VK_CAPITAL:
         {
@@ -234,8 +232,7 @@ LRESULT CALLBACK ostrich::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     switch (message) {
         case WM_QUIT:
         {
-            l_EventSender.Send(ostrich::SystemMessage::Construct(ostrich::SystemMsgType::SYS_QUIT,
-                OST_FUNCTION_SIGNATURE));
+            l_EventSender.Send(ostrich::Message::CreateSystemMessage(1, OST_FUNCTION_SIGNATURE));
             break;
         }
         case WM_LBUTTONDOWN:
@@ -246,35 +243,32 @@ LRESULT CALLBACK ostrich::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         case WM_MBUTTONUP:
         case WM_MOUSEMOVE:
         {
-            int32_t buttons = OST_MOUSE_NONE;
+            int32_t buttons = ostrich::Message::MOUSE_NONE;
 
             if (wParam & MK_LBUTTON)
-                buttons |= OST_MOUSE_LBUTTON;
+                buttons |= ostrich::Message::MOUSE_LBUTTON;
 
             if (wParam & MK_RBUTTON)
-                buttons |= OST_MOUSE_RBUTTON;
+                buttons |= ostrich::Message::MOUSE_RBUTTON;
 
             if (wParam & MK_MBUTTON)
-                buttons |= OST_MOUSE_MBUTTON;
+                buttons |= ostrich::Message::MOUSE_MBUTTON;
 
-            if (buttons != OST_MOUSE_NONE) {
-                l_EventSender.Send(ostrich::InputMessage::ConstructMouse(buttons,
-                    -1, -1, OST_FUNCTION_SIGNATURE));
+            if (buttons != ostrich::Message::MOUSE_NONE) {
+                l_EventSender.Send(ostrich::Message::CreateButtonMessage(buttons, OST_FUNCTION_SIGNATURE));
             }
             break;
         }
         case WM_SYSKEYDOWN:
         case WM_KEYDOWN:
         {
-            l_EventSender.Send(ostrich::InputMessage::ConstructKB(::TranslateKey(static_cast<int32_t>(wParam)),
-                true, OST_FUNCTION_SIGNATURE));
+            l_EventSender.Send(ostrich::Message::CreateKeyMessage(::TranslateKey(wParam), true, OST_FUNCTION_SIGNATURE));
             break;
         }
         case WM_SYSKEYUP:
         case WM_KEYUP:
         {
-            l_EventSender.Send(ostrich::InputMessage::ConstructKB(::TranslateKey(static_cast<int32_t>(wParam)),
-                false, OST_FUNCTION_SIGNATURE));
+            l_EventSender.Send(ostrich::Message::CreateKeyMessage(::TranslateKey(wParam), false, OST_FUNCTION_SIGNATURE));
             break;
         }
         //case WM_DESTROY:

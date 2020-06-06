@@ -15,19 +15,19 @@ int ostrich::EventQueue::Initialize() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::EventQueue::Push(std::shared_ptr<IMessage> msg) {
-    m_MessageQueue.push_back(msg);
+void ostrich::EventQueue::Push(const Message &msg) {
+    m_MessageQueue.push(msg);
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-std::pair<std::shared_ptr<ostrich::IMessage>, bool> ostrich::EventQueue::Pop() {
+std::pair<ostrich::Message, bool> ostrich::EventQueue::Pop() {
     if (!m_MessageQueue.empty()) {
-        std::shared_ptr<IMessage> msg = m_MessageQueue.front();
-        m_MessageQueue.pop_front();
-        return { msg, true };
+        ostrich::Message msg = m_MessageQueue.front();
+        m_MessageQueue.pop();
+        return std::make_pair(msg, true);
     }
-    return { nullptr, false };
+    return std::make_pair(ostrich::Message::CreateNullMessage(), false);
 }
 
 /////////////////////////////////////////////////
