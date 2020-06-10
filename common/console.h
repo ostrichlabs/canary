@@ -16,6 +16,7 @@ TODO: Maybe make the debug log print straight to a file?
 #define CONSOLE_H_
 
 #include <array>
+#include <fstream>
 #include <list>
 #include <string>
 #include <string_view>
@@ -44,11 +45,11 @@ public:
 
     void WriteMessage(const std::string &msg);
     void WriteMessage(std::string_view msg);
-    void WriteMessage(const char *msg);
+    void WriteMessage(const char *msg) { this->WriteMessage(std::string_view(msg)); }
 
     void DebugMessage(const std::string &msg);
     void DebugMessage(std::string_view msg);
-    void DebugMessage(const char *msg);
+    void DebugMessage(const char *msg) { this->DebugMessage(std::string_view(msg)); }
 
     void WriteLogToFile();
 
@@ -61,7 +62,7 @@ private:
     void TrimLog();
 
     std::list<std::string> m_MessageLog;
-    std::list<std::string> m_DebugMessageLog;
+    std::fstream m_DebugMessageLog;
 };
 
 /////////////////////////////////////////////////

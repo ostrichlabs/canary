@@ -72,6 +72,6 @@ void ms::StateMachine::ProcessInput(const ostrich::Message &msg) {
 void ms::StateMachine::UpdateGameState() {
     if (m_isActive) {
         if (m_InputStates.m_Keys[int(u8' ')])
-            m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, u8"ms::StateMachine::UpdateGameState()"));
+            m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
     }
 }

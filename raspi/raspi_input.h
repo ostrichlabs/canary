@@ -26,8 +26,8 @@ namespace ostrich {
 class InputRaspi : public IInput {
 public:
 
-    InputRaspi() noexcept : m_isActive(false), m_KeyboardFD(0), m_MouseFD(0) {}
-    virtual ~InputRaspi() { this->Destroy(); }
+    InputRaspi() noexcept : m_isActive(false), m_KeyboardFD(0), m_MouseFD(0), m_OldKBMode(0) {}
+    virtual ~InputRaspi() { }
     InputRaspi(InputRaspi &&) = delete;
     InputRaspi(const InputRaspi &) = delete;
     InputRaspi &operator=(InputRaspi &&) = delete;
@@ -57,6 +57,8 @@ private:
     bool m_isActive;
     int m_KeyboardFD;
     int m_MouseFD;
+
+    long m_OldKBMode;
 };
 
 } // namespace ostrich

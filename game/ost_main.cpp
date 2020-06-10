@@ -192,13 +192,15 @@ bool ostrich::Main::UpdateState() {
                 // system messages that require addressing
                 // TODO: make a central place to define system message codes
                 if (msg.getSystemData() == 1) {
+                	m_ConsolePrinter.DebugMessage(u8"Shutdown received from %",
+                		{ msg.getSender() });
                     return true;
                 }
             }
             else {
                 m_ConsolePrinter.WriteMessage(u8"Unhandled message type % sent by %",
                     { std::to_string(msg.getTypeAsInt()),
-                      std::string(msg.getSender()) });
+                      msg.getSender() });
             }
         }
     }

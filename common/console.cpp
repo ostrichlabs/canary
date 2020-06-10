@@ -13,6 +13,7 @@ A logging console.
 /////////////////////////////////////////////////
 void ostrich::Console::Initialize() {
     // TODO: LogSizeMax and WriteLogOnExit should be hardcoded constants
+    ostrich::OpenFile(u8"debug.log", ostrich::filemode::g_WRITETRUNCATE, m_DebugMessageLog);
 }
 
 /////////////////////////////////////////////////
@@ -20,6 +21,7 @@ void ostrich::Console::Initialize() {
 void ostrich::Console::Destroy() {
     this->WriteLogToFile();
     m_MessageLog.clear();
+    m_DebugMessageLog.close();
 }
 
 /////////////////////////////////////////////////
@@ -42,34 +44,19 @@ void ostrich::Console::WriteMessage(std::string_view msg) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::Console::WriteMessage(const char *msg) {
-    if (msg != nullptr) {
-        m_MessageLog.emplace_back(msg);
-        this->TrimLog();
-    }
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
 void ostrich::Console::DebugMessage(const std::string &msg) {
-    if (!msg.empty()) {
-        m_DebugMessageLog.push_back(msg);
+    if (!msg.empty() && m_DebugMessageLog.is_open()) {
+        m_DebugMessageLog.write(msg.c_str(), msg.length());
+        m_DebugMessageLog.put(ost_char::g_NewLine);
     }
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::Console::DebugMessage(std::string_view msg) {
-    if (!msg.empty()) {
-        m_DebugMessageLog.emplace_back(msg);
-    }
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::Console::DebugMessage(const char *msg) {
-    if (msg != nullptr) {
-        m_DebugMessageLog.emplace_back(msg);
+    if (!msg.empty() && m_DebugMessageLog.is_open()) {
+        m_DebugMessageLog.write(msg.data(), msg.length());
+        m_DebugMessageLog.put(ost_char::g_NewLine);
     }
 }
 
@@ -82,16 +69,6 @@ void ostrich::Console::WriteLogToFile() {
         return;
 
     for (auto itr = m_MessageLog.begin(); itr != m_MessageLog.end(); std::advance(itr, 1)) {
-        logfile.write((*itr).c_str(), (*itr).length());
-        logfile.put(ost_char::g_NewLine);
-    }
-
-    logfile.close();
-    ostrich::OpenFile(u8"debug.log", ost_filemode::g_WRITETRUNCATE, logfile);
-    if (!logfile.is_open())
-        return;
-
-    for (auto itr = m_DebugMessageLog.begin(); itr != m_DebugMessageLog.end(); std::advance(itr, 1)) {
         logfile.write((*itr).c_str(), (*itr).length());
         logfile.put(ost_char::g_NewLine);
     }

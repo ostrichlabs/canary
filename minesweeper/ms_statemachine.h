@@ -66,6 +66,8 @@ private:
         int32_t m_YPos;
     };
 
+    const char *const m_Classname = u8"ms::StateMachine";
+
     bool m_isActive;
 
     ostrich::ConsolePrinter m_ConsolePrinter;
