@@ -25,6 +25,9 @@
     <Filter Include="minesweeper">
       <UniqueIdentifier>{1a8227c8-3d20-49b6-affb-497d0d7e3d1c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="linux">
+      <UniqueIdentifier>{4ae73dba-ce14-4454-a8a8-8599c07e6311}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32\win_display.cpp">
@@ -77,6 +80,9 @@
     </ClCompile>
     <ClCompile Include="raspi\linux_input.cpp">
       <Filter>raspi</Filter>
+    </ClCompile>
+    <ClCompile Include="linux\linux_input.cpp">
+      <Filter>linux</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,6 +169,9 @@
     </ClInclude>
     <ClInclude Include="raspi\linux_input.h">
       <Filter>raspi</Filter>
+    </ClInclude>
+    <ClInclude Include="linux\linux_input.h">
+      <Filter>linux</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
