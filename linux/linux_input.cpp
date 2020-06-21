@@ -6,7 +6,7 @@ Interface for retrieving input information via udev
 ==========================================
 */
 
-#include "raspi_input.h"
+#include "linux_input.h"
 #include <cerrno>
 #include <cstring>
 #include <string>
@@ -21,7 +21,7 @@ Interface for retrieving input information via udev
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::InputRaspi::Initialize(ConsolePrinter consoleprinter, EventSender eventsender) {
+int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender eventsender) {
     if (this->isActive()) {
         return -1;
     }
@@ -40,7 +40,7 @@ int ostrich::InputRaspi::Initialize(ConsolePrinter consoleprinter, EventSender e
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputRaspi::Destroy() {
+void ostrich::InputLinux::Destroy() {
     if (m_isActive) {
         this->ReleaseDevices();
         if (m_Monitor) {
@@ -59,7 +59,7 @@ void ostrich::InputRaspi::Destroy() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputRaspi::ProcessKBM() {
+void ostrich::InputLinux::ProcessKBM() {
     m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
     /*
     input_event kbinput = { }, mouseinput = { };
@@ -99,13 +99,13 @@ void ostrich::InputRaspi::ProcessKBM() {
 /////////////////////////////////////////////////
 // for Raspi this will be signal handling, so, nothing to do here for now
 /////////////////////////////////////////////////
-void ostrich::InputRaspi::ProcessOSMessages() {
+void ostrich::InputLinux::ProcessOSMessages() {
 
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-bool ostrich::InputRaspi::InitUDev() {
+bool ostrich::InputLinux::InitUDev() {
     m_udev = ::udev_new();
     if (!m_udev) {
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 1);
@@ -129,7 +129,7 @@ bool ostrich::InputRaspi::InitUDev() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputRaspi::ScanDevices() {
+void ostrich::InputLinux::ScanDevices() {
     if (m_udev) {
         udev_enumerate *enumerate = nullptr;
 
@@ -160,7 +160,7 @@ void ostrich::InputRaspi::ScanDevices() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputRaspi::AddDevice(udev_device *device) {
+void ostrich::InputLinux::AddDevice(udev_device *device) {
     const char *path = ::udev_device_get_devnode(device);
     if (path == nullptr) {
         return;
@@ -214,7 +214,7 @@ void ostrich::InputRaspi::AddDevice(udev_device *device) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputRaspi::ReleaseDevices() {
+void ostrich::InputLinux::ReleaseDevices() {
     for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
         ::udev_device_unref((*itr));
     }
@@ -224,6 +224,6 @@ void ostrich::InputRaspi::ReleaseDevices() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int32_t ostrich::InputRaspi::TranslateKey(int32_t vkey) {
+int32_t ostrich::InputLinux::TranslateKey(int32_t vkey) {
     return 0;
 }

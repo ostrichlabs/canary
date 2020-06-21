@@ -39,6 +39,7 @@ const int32_t g_ScreenHeight = 1080;
 
 const int32_t g_PlatformWindows = 1;
 const int32_t g_PlatformRaspi = 2;
+const int32_t g_PlatformLinux = 3;
 
 } // namespace ostrich
 
@@ -52,6 +53,7 @@ namespace ost_char = ostrich::character;
 // RASPI has to be defined at the command line for this to function properly
 // Each platform needs to define g_Platform and g_PlatformString
 // TODO: Add generic Linux?
+#undef OST_LINUX
 #undef OST_RASPI
 #undef OST_DEBUG_BUILD
 #undef OST_WINDOWS
@@ -73,6 +75,21 @@ namespace ost_char = ostrich::character;
 namespace ostrich {
 const int32_t g_Platform = g_PlatformRaspi;
 const char *const g_PlatformString = u8"Raspberry Pi";
+}
+
+#elif defined(LINUX) // non-Raspberry Pi Linux flavors
+
+#   define OST_LINUX 1
+
+#   if defined(GCC_DEBUG)
+#       define OST_DEBUG_BUILD 1
+#   endif
+
+#   define OST_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
+
+namespace ostrich {
+const int32_t g_Platform = g_PlatformLinux;
+const char *const g_PlatformString = u8"Linux";
 }
 
 #elif ((_WIN32 == 1) && defined(_MSC_VER)) // Windows (any modern flavor)

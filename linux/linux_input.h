@@ -3,17 +3,17 @@
 Copyright (c) 2020 Ostrich Labs
 
 Interface for retrieving input information via udev
-Meant for use on Linux platforms not using X11 for some reason (like the raspi)
+Meant for use on Linux platforms not using X11 or Wayland for some reason (like the raspi)
 ==========================================
 */
 
-#ifndef INPUT_RASPI_H_
-#define INPUT_RASPI_H_
+#ifndef LINUX_INPUT_H_
+#define LINUX_INPUT_H_
 
 #include "../common/ost_common.h"
 
 #if (OST_RASPI != 1)
-#    error "This module should only be included in Raspberry Pi builds"
+#    error "This module should only be included in Linux or Raspberry Pi builds"
 #endif
 
 #include <libudev.h>
@@ -26,15 +26,15 @@ namespace ostrich {
 
 /////////////////////////////////////////////////
 //
-class InputRaspi : public IInput {
+class InputLinux : public IInput {
 public:
 
-    InputRaspi() noexcept : m_isActive(false), m_udev(nullptr), m_Monitor(nullptr) {}
-    virtual ~InputRaspi() { }
-    InputRaspi(InputRaspi &&) = delete;
-    InputRaspi(const InputRaspi &) = delete;
-    InputRaspi &operator=(InputRaspi &&) = delete;
-    InputRaspi &operator=(const InputRaspi &) = delete;
+    InputLinux() noexcept : m_isActive(false), m_udev(nullptr), m_Monitor(nullptr) {}
+    virtual ~InputLinux() { }
+    InputLinux(InputLinux &&) = delete;
+    InputLinux(const InputLinux &) = delete;
+    InputLinux &operator=(InputLinux &&) = delete;
+    InputLinux &operator=(const InputLinux &) = delete;
 
     bool isActive() const noexcept override { return m_isActive; }
 

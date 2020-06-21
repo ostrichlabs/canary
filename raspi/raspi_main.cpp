@@ -15,10 +15,10 @@ Entry point for the Raspberry Pi
 #include <iostream>
 
 #include "raspi_display.h"
-#include "raspi_input.h"
 #include "../common/error.h"
 #include "../game/ost_main.h"
 #include "../gles2/gles2_renderer.h"
+#include "../linux/linux_input.h"
 
 namespace {
 
@@ -30,7 +30,7 @@ ostrich::IDisplay*		DisplayPtr = &Display;
 ostrich::EGLRenderer 	Renderer;
 ostrich::IRenderer*  	RendererPtr = &Renderer;
 
-ostrich::InputRaspi     Input;
+ostrich::InputLinux     Input;
 ostrich::IInput*        InputPtr = &Input;
 
 }
