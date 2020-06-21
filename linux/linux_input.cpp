@@ -2,22 +2,106 @@
 ==========================================
 Copyright (c) 2020 Ostrich Labs
 
-Interface for retrieving input information via udev
+Interface for retrieving input information via udev and evdev
 ==========================================
 */
 
 #include "linux_input.h"
 #include <cerrno>
-#include <cstring>
 #include <string>
-//#include <fcntl.h>
-//#include <unistd.h>
+#include <fcntl.h>
+#include <unistd.h>
 //#include <linux/kd.h>
 //#include <linux/keyboard.h>
 //#include <linux/input.h>
 #include <libudev.h>
 #include "../common/error.h"
 #include "../game/message.h"
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+bool ostrich::UDevDevice::Initialize(udev_device *device, const char *path) {
+    if ((m_Path != nullptr) || (m_FileHandle != -1) || (device == nullptr) || (path == nullptr)) {
+        return false;
+    }
+
+    if (!this->Identify(device)) {
+        return false;
+    }
+
+    if (!this->OpenFile()) {
+        return false;
+    }
+
+    // after all that, we're certain the path is good so keep it
+    m_Path = path;
+
+    return true;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::UDevDevice::Destroy() {
+    if (m_FileHandle != -1) {
+        ::close(m_FileHandle);
+    }
+    m_Path = nullptr;
+    m_Type = ostrich::UDevDevice::Type::NONE;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+bool ostrich::UDevDevice::Identify(udev_device *device) {
+    const char *subsystem = ::udev_device_get_subsystem(device);
+    if (::strcmp(subsystem, u8"input") != 0) {
+        return false;
+    }
+
+    bool identified = false;
+    const char *property = nullptr;
+    property = ::udev_device_get_property_value(device, u8"ID_INPUT_MOUSE");
+    if ((property != nullptr) && (property[0] == '1')) {
+        identified = true;
+        m_Type = ostrich::UDevDevice::Type::MOUSE;
+    }
+
+    if (!identified) {
+        property = ::udev_device_get_property_value(device, u8"ID_INPUT_KEY");
+        if ((property != nullptr) && (property[0] == '1')) {
+            identified = true;
+            m_Type = ostrich::UDevDevice::Type::KEYBOARD;
+        }
+    }
+
+    // fallback in case none of that worked
+    if (!identified) {
+        property = ::udev_device_get_property_value(device, u8"ID_CLASS");
+        if (property != nullptr) {
+            if (::strcmp(property, u8"mouse") == 0) {
+                identified = true;
+                m_Type = ostrich::UDevDevice::Type::MOUSE;
+            }
+            else if (::strcmp(property, u8"kbd") == 0) {
+                identified = true;
+                m_Type = ostrich::UDevDevice::Type::KEYBOARD;
+            }
+        }
+    }
+
+    return identified;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+bool ostrich::UDevDevice::OpenFile() {
+    int handle = ::open(m_Path, O_RDONLY | O_NONBLOCK);
+    if (handle != -1) {
+        m_FileHandle = handle;
+        return false;
+    }
+
+    return true;
+}
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -34,6 +118,8 @@ int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender e
     if (!this->InitUDev())
         return -2;
 
+    m_ConsolePrinter.DebugMessage(u8"Added % devices", { std::to_string(m_Devices.size()) });
+
     m_isActive = true;
     return 0;
 }
@@ -42,7 +128,7 @@ int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender e
 /////////////////////////////////////////////////
 void ostrich::InputLinux::Destroy() {
     if (m_isActive) {
-        this->ReleaseDevices();
+        m_Devices.clear();
         if (m_Monitor) {
             ::udev_monitor_unref(m_Monitor);
             m_Monitor = nullptr;
@@ -147,10 +233,12 @@ void ostrich::InputLinux::ScanDevices() {
         for (entry = entrylist;
              entry != nullptr;
              entry = ::udev_list_entry_get_next(entry)) {
-            const char *path = ::udev_list_entry_get_name(entry);
-            udev_device *device = ::udev_device_new_from_syspath(m_udev, path);
+            const char *syspath = ::udev_list_entry_get_name(entry);
+            udev_device *device = ::udev_device_new_from_syspath(m_udev, syspath);
             if (device != nullptr) {
+                m_ConsolePrinter.DebugMessage(u8"Adding device");
                 this->AddDevice(device);
+                ::udev_device_unref(device);
             }
         }
 
@@ -166,61 +254,19 @@ void ostrich::InputLinux::AddDevice(udev_device *device) {
         return;
     }
 
-    const char *subsystem = ::udev_device_get_subsystem(device);
-    if (::strcmp(subsystem, u8"input") != 0) {
-        return;
-    }
-
-    bool identified = false;
-    const char *property = nullptr;
-    property = ::udev_device_get_property_value(device, u8"ID_INPUT_MOUSE");
-    if ((property != nullptr) && (property[0] == '1')) {
-        identified = true;
-        m_Devices.push_back(device);
-        m_ConsolePrinter.DebugMessage(u8"Detected mouse!");
-    }
-
-    if (!identified) {
-        property = ::udev_device_get_property_value(device, u8"ID_INPUT_KEY");
-        if ((property != nullptr) && (property[0] == '1')) {
-            identified = true;
-            m_Devices.push_back(device);
-            m_ConsolePrinter.DebugMessage(u8"Detected keyboard!");
-        }
-    }
-
-    // fallback in case none of that worked
-    if (!identified) {
-        m_ConsolePrinter.DebugMessage(u8"Device unidentified, trying fallback");
-        property = ::udev_device_get_property_value(device, u8"ID_CLASS");
-        if (property != nullptr) {
-            if (::strcmp(property, u8"mouse") == 0) {
-                m_Devices.push_back(device);
-                m_ConsolePrinter.DebugMessage(u8"Detected mouse!");
-            }
-            else if (::strcmp(property, u8"kbd") == 0) {
-                m_Devices.push_back(device);
-                m_ConsolePrinter.DebugMessage(u8"Detected keyboard!");
-            }
-            else {
-                m_ConsolePrinter.DebugMessage(u8"Device is (likely) neither keyboard or mouse - ignoring");
-            }
-        }
-        else {
-            m_ConsolePrinter.DebugMessage(u8"Device has no class?");
-        }
-    }
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::InputLinux::ReleaseDevices() {
+    // detect if we've added this one already (somehow?)
     for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
-        ::udev_device_unref((*itr));
+        if (::strcmp((*itr).getPath(), path) == 0) {
+            return;
+        }
     }
-    m_Devices.clear();
-}
 
+    ostrich::UDevDevice newdevice;
+    if (newdevice.Initialize(device, path)) {
+        m_ConsolePrinter.DebugMessage(u8"Adding device of type %", { std::to_string(newdevice.getTypeAsInt()) } );
+        m_Devices.push_back(newdevice);
+    }
+}
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

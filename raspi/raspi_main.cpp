@@ -48,11 +48,11 @@ int main(int argc, char *argv[]) {
     catch (const std::exception &e) {
         std::cerr << u8"Standard exception during runtime: " << e.what() <<
             ost_char::g_NewLine;
-        returncode = -2;
+        returncode = -400000;
     }
     catch (...) {
         std::cerr << u8"Unknown exception during runtime" << ost_char::g_NewLine;
-        returncode = -3;
+        returncode = -500000;
     }
 
     Game.Destroy();
