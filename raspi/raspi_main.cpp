@@ -45,11 +45,6 @@ int main(int argc, char *argv[]) {
     try {
         returncode = Game.Start(DisplayPtr, RendererPtr, InputPtr);
     }
-    catch (const ostrich::Exception &e) {
-        std::cerr << u8"ostrich::Exception during runtime: " << e.what() <<
-        	ost_char::g_NewLine;
-        returncode = -1;
-    }
     catch (const std::exception &e) {
         std::cerr << u8"Standard exception during runtime: " << e.what() <<
             ost_char::g_NewLine;

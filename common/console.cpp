@@ -48,6 +48,7 @@ void ostrich::Console::DebugMessage(const std::string &msg) {
     if (!msg.empty() && m_DebugMessageLog.is_open()) {
         m_DebugMessageLog.write(msg.c_str(), msg.length());
         m_DebugMessageLog.put(ost_char::g_NewLine);
+        m_DebugMessageLog.flush();
     }
 }
 
@@ -57,6 +58,7 @@ void ostrich::Console::DebugMessage(std::string_view msg) {
     if (!msg.empty() && m_DebugMessageLog.is_open()) {
         m_DebugMessageLog.write(msg.data(), msg.length());
         m_DebugMessageLog.put(ost_char::g_NewLine);
+        m_DebugMessageLog.flush();
     }
 }
 

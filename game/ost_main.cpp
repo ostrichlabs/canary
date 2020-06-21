@@ -64,14 +64,6 @@ int ostrich::Main::Initialize() {
 
     try {
 
-        m_ConsolePrinter.WriteMessage(u8"Initializing Display");
-        initresult = m_Display->Initialize(m_Console.CreatePrinter());
-
-        if (initresult == 0) {
-            m_ConsolePrinter.WriteMessage(u8"Initializing Renderer");
-            initresult = m_Renderer->Initialize(m_Console.CreatePrinter());
-        }
-
         if (initresult == 0) {
             m_ConsolePrinter.WriteMessage(u8"Initializing Event Queue");
             initresult = m_EventQueue.Initialize();
@@ -88,21 +80,31 @@ int ostrich::Main::Initialize() {
         }
 
         if (initresult == 0) {
+            m_ConsolePrinter.WriteMessage(u8"Initializing Display");
+            initresult = m_Display->Initialize(m_Console.CreatePrinter());
+        }
+
+        if (initresult == 0) {
+            m_ConsolePrinter.WriteMessage(u8"Initializing Renderer");
+            initresult = m_Renderer->Initialize(m_Console.CreatePrinter());
+        }
+
+        if (initresult == 0) {
             m_ConsolePrinter.WriteMessage(u8"Initializing state machine");
             initresult = m_GameState.Initialize(m_Console.CreatePrinter(), m_EventQueue.CreateSender());
         }
     }
     catch (const ostrich::ProxyException &e) {
         m_ConsolePrinter.WriteMessage(u8"% at %", { e.what(), e.where() });
-        throw e;
+        initresult = -10000;
     }
     catch (const ostrich::InitException &e) {
         m_ConsolePrinter.WriteMessage(u8"% at %, reported error code %", { e.what(), e.where(), std::to_string(e.code()) });
-        throw e;
+        initresult = -20000;
     }
     catch (const ostrich::Exception &e) {
         m_ConsolePrinter.WriteMessage(u8"% from unknown location", { e.what() });
-        throw e;
+        initresult = -30000;
     }
 
     if (initresult == 0) {

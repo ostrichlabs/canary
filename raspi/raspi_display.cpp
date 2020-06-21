@@ -39,15 +39,15 @@ int ostrich::DisplayRaspi::Initialize(ostrich::ConsolePrinter conprinter) {
 
     int result = this->InitWindow();
     if (result != 0) {
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
     }
 
     result = this->InitRenderer();
     if (result != 0) {
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
     }
 
-	m_isActive = true;
+    m_isActive = true;
     return result;
 }
 
@@ -83,7 +83,7 @@ int ostrich::DisplayRaspi::InitWindow() {
 
     int32_t result = ::graphics_get_display_size(0, &displaywidth, &displayheight);
     if (result < 0)
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 1);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 1);
 
     VC_RECT_T destrect;
     destrect.x = 0;
@@ -98,15 +98,15 @@ int ostrich::DisplayRaspi::InitWindow() {
 
     m_DispmanDisplay = ::vc_dispmanx_display_open(0);
     if (m_DispmanDisplay == DISPMANX_NO_HANDLE)
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
     m_DispmanUpdate = ::vc_dispmanx_update_start(0);
     if (m_DispmanUpdate == DISPMANX_NO_HANDLE)
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 3);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 3);
     m_DispmanElement = ::vc_dispmanx_element_add(m_DispmanUpdate, m_DispmanDisplay,
             0, &destrect, 0, &sourcerect, DISPMANX_PROTECTION_NONE,
             0, 0, DISPMANX_NO_ROTATE);
     if (m_DispmanElement == DISPMANX_NO_HANDLE)
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 4);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 4);
 
     m_NativeWindow.element = m_DispmanElement;
     m_NativeWindow.height = ostrich::g_ScreenHeight;
@@ -142,22 +142,22 @@ int ostrich::DisplayRaspi::InitRenderer() {
     EGLBoolean initresult = ::eglInitialize(m_GLDisplay, &m_GLMajorVersion,
             &m_GLMinorVersion);
     if (initresult == EGL_FALSE)
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
 
     EGLint numconfigs = 0;
     if (!::eglChooseConfig(m_GLDisplay, configattribs, &m_GLConfig, 1, &numconfigs))
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 3);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 3);
 
     m_GLSurface = ::eglCreateWindowSurface(m_GLDisplay, m_GLConfig, &m_NativeWindow, NULL);
     if (m_GLSurface == EGL_NO_SURFACE)
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 4);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 4);
 
     m_GLContext = ::eglCreateContext(m_GLDisplay, m_GLConfig, EGL_NO_CONTEXT, contextattribs);
     if (m_GLContext == EGL_NO_CONTEXT)
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 5);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 5);
 
     if (!::eglMakeCurrent(m_GLDisplay, m_GLSurface, m_GLSurface, m_GLContext))
-    	throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 6);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 6);
 
     return 0;
 }

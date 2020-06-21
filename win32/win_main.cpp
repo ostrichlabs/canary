@@ -54,11 +54,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
         returncode = Game.Start(DisplayPtr, RendererPtr, InputPtr);
         Game.Destroy();
     }
-    catch (const ostrich::Exception &e) {
-        std::cerr << u8"ostrich::Exception during runtime: " << e.what() <<
-            ost_char::g_NewLine;
-        returncode = -1;
-    }
     catch (const std::exception &e) {
         std::cerr << u8"Standard exception during runtime: " << e.what() <<
             ost_char::g_NewLine;

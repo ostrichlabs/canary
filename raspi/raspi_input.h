@@ -2,7 +2,8 @@
 ==========================================
 Copyright (c) 2020 Ostrich Labs
 
-Interface for retrieving input information from the Raspberry Pi
+Interface for retrieving input information via udev
+Meant for use on Linux platforms not using X11 for some reason (like the raspi)
 ==========================================
 */
 
@@ -15,6 +16,8 @@ Interface for retrieving input information from the Raspberry Pi
 #    error "This module should only be included in Raspberry Pi builds"
 #endif
 
+#include <libudev.h>
+#include <list>
 #include "../game/eventqueue.h"
 #include "../game/i_input.h"
 #include "../game/keydef.h"
@@ -26,7 +29,7 @@ namespace ostrich {
 class InputRaspi : public IInput {
 public:
 
-    InputRaspi() noexcept : m_isActive(false), m_KeyboardFD(0), m_MouseFD(0), m_OldKBMode(0) {}
+    InputRaspi() noexcept : m_isActive(false), m_udev(nullptr), m_Monitor(nullptr) {}
     virtual ~InputRaspi() { }
     InputRaspi(InputRaspi &&) = delete;
     InputRaspi(const InputRaspi &) = delete;
@@ -46,8 +49,10 @@ private:
     const char * const m_Classname = u8"ostrich::InputRaspi";
 
     // helper methods for initialization
-    bool InitKeyboard();
-    bool InitMouse();
+    bool InitUDev();
+    void ScanDevices();
+    void AddDevice(udev_device *device);
+    void ReleaseDevices();
 
     int32_t TranslateKey(int32_t vkey);
 
@@ -55,10 +60,10 @@ private:
     EventSender m_EventSender;
 
     bool m_isActive;
-    int m_KeyboardFD;
-    int m_MouseFD;
 
-    long m_OldKBMode;
+    udev *m_udev;
+    udev_monitor *m_Monitor;
+    std::list<udev_device *> m_Devices;
 };
 
 } // namespace ostrich

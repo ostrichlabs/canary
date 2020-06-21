@@ -58,6 +58,7 @@ struct WGLExtensions {
 
 /////////////////////////////////////////////////
 // TODO: These probably belong in the renderer class
+//       Better yet, loading methods should be platform specific but still expose the same functions
 struct GLExtensions {
     GLExtensions() noexcept {}
     ~GLExtensions() {}
