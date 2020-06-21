@@ -66,9 +66,6 @@
     <ClCompile Include="raspi\raspi_display.cpp">
       <Filter>raspi</Filter>
     </ClCompile>
-    <ClCompile Include="raspi\raspi_input.cpp">
-      <Filter>raspi</Filter>
-    </ClCompile>
     <ClCompile Include="raspi\raspi_main.cpp">
       <Filter>raspi</Filter>
     </ClCompile>
@@ -77,6 +74,9 @@
     </ClCompile>
     <ClCompile Include="minesweeper\ms_statemachine.cpp">
       <Filter>minesweeper</Filter>
+    </ClCompile>
+    <ClCompile Include="raspi\linux_input.cpp">
+      <Filter>raspi</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -152,9 +152,6 @@
     <ClInclude Include="raspi\raspi_display.h">
       <Filter>raspi</Filter>
     </ClInclude>
-    <ClInclude Include="raspi\raspi_input.h">
-      <Filter>raspi</Filter>
-    </ClInclude>
     <ClInclude Include="gles2\gles2_renderer.h">
       <Filter>gles2</Filter>
     </ClInclude>
@@ -163,6 +160,9 @@
     </ClInclude>
     <ClInclude Include="game\message.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="raspi\linux_input.h">
+      <Filter>raspi</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
