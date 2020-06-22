@@ -84,7 +84,7 @@ public:
 
 private:
 
-    const char * const m_Classname = u8"ostrich::InputRaspi";
+    const char * const m_Classname = u8"ostrich::InputLinux";
 
     // helper methods for initialization
     bool InitUDev();

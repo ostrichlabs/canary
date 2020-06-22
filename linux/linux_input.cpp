@@ -13,7 +13,7 @@ Interface for retrieving input information via udev and evdev
 #include <unistd.h>
 //#include <linux/kd.h>
 //#include <linux/keyboard.h>
-//#include <linux/input.h>
+#include <linux/input.h>
 #include <libudev.h>
 #include "../common/error.h"
 #include "../game/message.h"
@@ -146,44 +146,35 @@ void ostrich::InputLinux::Destroy() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::InputLinux::ProcessKBM() {
-    m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
-    /*
-    input_event kbinput = { }, mouseinput = { };
-    ssize_t kbbytes = 0;
-    ssize_t mousebytes = 0;
+    input_event input[32];
+    ssize_t bytesread = 0;
     bool done = false;
-    m_ConsolePrinter.DebugMessage(u8"In InputRaspi::ProcessKBM()");
-    while (!done) {
-        kbbytes = ::read(m_KeyboardFD, &kbinput, sizeof(kbinput));
-        m_ConsolePrinter.DebugMessage(u8"Read % bytes from /dev/tty",
-            { std::to_string(kbbytes) });
-        if (kbbytes == sizeof(kbinput)) {
-            m_ConsolePrinter.DebugMessage(u8"kbinput: % type, % code, % value",
-                { std::to_string(kbinput.type), std::to_string(kbinput.code), std::to_string(kbinput.value) });
-            m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
-            if (kbinput.type & EV_KEY) {
-                m_ConsolePrinter.DebugMessage(u8"From InputRaspi::ProcessKBM(): %",
-                        { std::to_string(kbinput.code) } );
-
-                // TODO: translate to internal message
-                // tho for now if a key is pressed send a quit
-                m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
+    m_ConsolePrinter.DebugMessage(u8"In InputLinux::ProcessKBM()");
+    for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
+        done = false;
+        while (!done) {
+            bytesread = ::read((*itr).getFileHandle(), input, sizeof(input));
+            if (bytesread <= 0) {
                 done = true;
+                continue;
+            }
+            int count = bytesread / sizeof(input[0]);
+            m_ConsolePrinter.DebugMessage(u8"Read % bytes, making % events",
+                    { std::to_string(bytesread), std::to_string(count)});
+            for (int i = 0; i < count; i++) {
+                if (input[i].type == EV_KEY) { // keyboard or mouse buttons
+                    m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
+                }
+                else if (input[i].type == EV_REL) { // mouse moved
+
+                }
             }
         }
-        if (m_MouseFD > 0) {
-            mousebytes = ::read(m_MouseFD, &mouseinput, sizeof(mouseinput));
-            if (mousebytes == sizeof(mouseinput)) {
-            // TODO: translate to internal message
-            }
-        }
-        if ((kbbytes <= 0) && (mousebytes <= 0))
-            done = true;
-    }*/
+    }
 }
 
 /////////////////////////////////////////////////
-// for Raspi this will be signal handling, so, nothing to do here for now
+// for base Linux this will be signal handling, so, nothing to do here for now
 /////////////////////////////////////////////////
 void ostrich::InputLinux::ProcessOSMessages() {
 
@@ -229,14 +220,12 @@ void ostrich::InputLinux::ScanDevices() {
 
         udev_list_entry *entrylist = ::udev_enumerate_get_list_entry(enumerate);
         udev_list_entry *entry = nullptr;
-        m_ConsolePrinter.DebugMessage(u8"Enumerating devices");
         for (entry = entrylist;
              entry != nullptr;
              entry = ::udev_list_entry_get_next(entry)) {
             const char *syspath = ::udev_list_entry_get_name(entry);
             udev_device *device = ::udev_device_new_from_syspath(m_udev, syspath);
             if (device != nullptr) {
-                m_ConsolePrinter.DebugMessage(u8"Adding device");
                 this->AddDevice(device);
                 ::udev_device_unref(device);
             }
@@ -263,7 +252,6 @@ void ostrich::InputLinux::AddDevice(udev_device *device) {
 
     ostrich::UDevDevice newdevice;
     if (newdevice.Initialize(device, path)) {
-        m_ConsolePrinter.DebugMessage(u8"Adding device of type %", { std::to_string(newdevice.getTypeAsInt()) } );
         m_Devices.push_back(newdevice);
     }
 }
