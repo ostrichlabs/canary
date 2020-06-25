@@ -59,5 +59,6 @@ int main(int argc, char *argv[]) {
 
     //magpie::PrintMemoryTracker();
     //magpie::DestroyMemoryTracker();
+
     return returncode;
 }

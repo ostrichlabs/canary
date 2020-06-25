@@ -26,15 +26,14 @@ bool ostrich::UDevDevice::Initialize(udev_device *device, const char *path) {
     }
 
     if (!this->Identify(device)) {
+        this->Destroy();
         return false;
     }
 
-    if (!this->OpenFile()) {
+    if (!this->OpenFile(path)) {
+        this->Destroy();
         return false;
     }
-
-    // after all that, we're certain the path is good so keep it
-    m_Path = path;
 
     return true;
 }
@@ -93,14 +92,15 @@ bool ostrich::UDevDevice::Identify(udev_device *device) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-bool ostrich::UDevDevice::OpenFile() {
-    int handle = ::open(m_Path, O_RDONLY | O_NONBLOCK);
+bool ostrich::UDevDevice::OpenFile(const char *path) {
+    int handle = ::open(path, O_RDONLY | O_NONBLOCK);
     if (handle != -1) {
+        m_Path = path;
         m_FileHandle = handle;
-        return false;
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 /////////////////////////////////////////////////
@@ -116,7 +116,7 @@ int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender e
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
     if (!this->InitUDev())
-        return -2;
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 1);
 
     m_ConsolePrinter.DebugMessage(u8"Added % devices", { std::to_string(m_Devices.size()) });
 
@@ -218,6 +218,7 @@ void ostrich::InputLinux::ScanDevices() {
         ::udev_enumerate_add_match_subsystem(enumerate, "input");
         ::udev_enumerate_scan_devices(enumerate);
 
+        m_ConsolePrinter.DebugMessage(u8"Enumerating devices");
         udev_list_entry *entrylist = ::udev_enumerate_get_list_entry(enumerate);
         udev_list_entry *entry = nullptr;
         for (entry = entrylist;

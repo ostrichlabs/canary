@@ -55,7 +55,7 @@ public:
 private:
 
     bool Identify(udev_device *device);
-    bool OpenFile();
+    bool OpenFile(const char *path);
 
     const char *m_Path;
     int m_FileHandle;

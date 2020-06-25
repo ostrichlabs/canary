@@ -122,17 +122,15 @@ int ostrich::Main::Initialize() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::Main::Destroy() {
-    if (m_isActive) {
-        m_Console.WriteMessage(u8"Shutting down...");
-        if (m_Input)
-            m_Input->Destroy();
-        if (m_Renderer)
-            m_Renderer->Destroy();
-        if (m_Display)
-            m_Display->Destroy();
-        m_Console.Destroy();
-        m_isActive = false;
-    }
+    m_Console.WriteMessage(u8"Shutting down...");
+    if (m_Renderer)
+        m_Renderer->Destroy();
+    if (m_Display)
+        m_Display->Destroy();
+    if (m_Input)
+        m_Input->Destroy();
+    m_Console.Destroy();
+    m_isActive = false;
 }
 
 /////////////////////////////////////////////////
