@@ -38,7 +38,7 @@ public:
     };
 
     UDevDevice() noexcept : m_Path(nullptr), m_FileHandle(-1), m_Type(Type::NONE) {}
-    ~UDevDevice() { this->Destroy(); }
+    ~UDevDevice() { }
     UDevDevice(UDevDevice &&) = default;
     UDevDevice(const UDevDevice &) = default;
     UDevDevice &operator=(UDevDevice &&) = default;
@@ -90,6 +90,7 @@ private:
     bool InitUDev();
     void ScanDevices();
     void AddDevice(udev_device *device);
+    void ClearDevices();
 
     int32_t TranslateKey(int32_t vkey);
 

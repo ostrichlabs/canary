@@ -128,7 +128,7 @@ int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender e
 /////////////////////////////////////////////////
 void ostrich::InputLinux::Destroy() {
     if (m_isActive) {
-        m_Devices.clear();
+        this->ClearDevices();
         if (m_Monitor) {
             ::udev_monitor_unref(m_Monitor);
             m_Monitor = nullptr;
@@ -254,6 +254,14 @@ void ostrich::InputLinux::AddDevice(udev_device *device) {
     ostrich::UDevDevice newdevice;
     if (newdevice.Initialize(device, path)) {
         m_Devices.push_back(newdevice);
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::InputLinux::ClearDevices() {
+    for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
+        (*itr).Destroy();
     }
 }
 
