@@ -8,100 +8,16 @@ Interface for retrieving input information via udev and evdev
 
 #include "linux_input.h"
 #include <cerrno>
+#include <cstring>
 #include <string>
-#include <fcntl.h>
+//#include <fcntl.h>
 #include <unistd.h>
 //#include <linux/kd.h>
 //#include <linux/keyboard.h>
 #include <linux/input.h>
-#include <libudev.h>
 #include "../common/error.h"
 #include "../game/message.h"
 
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-bool ostrich::UDevDevice::Initialize(udev_device *device, const char *path) {
-    if ((m_Path != nullptr) || (m_FileHandle != -1) || (device == nullptr) || (path == nullptr)) {
-        return false;
-    }
-
-    if (!this->Identify(device)) {
-        this->Destroy();
-        return false;
-    }
-
-    if (!this->OpenFile(path)) {
-        this->Destroy();
-        return false;
-    }
-
-    return true;
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::UDevDevice::Destroy() {
-    if (m_FileHandle != -1) {
-        ::close(m_FileHandle);
-    }
-    m_Path = nullptr;
-    m_Type = ostrich::UDevDevice::Type::NONE;
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-bool ostrich::UDevDevice::Identify(udev_device *device) {
-    const char *subsystem = ::udev_device_get_subsystem(device);
-    if (::strcmp(subsystem, u8"input") != 0) {
-        return false;
-    }
-
-    bool identified = false;
-    const char *property = nullptr;
-    property = ::udev_device_get_property_value(device, u8"ID_INPUT_MOUSE");
-    if ((property != nullptr) && (property[0] == '1')) {
-        identified = true;
-        m_Type = ostrich::UDevDevice::Type::MOUSE;
-    }
-
-    if (!identified) {
-        property = ::udev_device_get_property_value(device, u8"ID_INPUT_KEY");
-        if ((property != nullptr) && (property[0] == '1')) {
-            identified = true;
-            m_Type = ostrich::UDevDevice::Type::KEYBOARD;
-        }
-    }
-
-    // fallback in case none of that worked
-    if (!identified) {
-        property = ::udev_device_get_property_value(device, u8"ID_CLASS");
-        if (property != nullptr) {
-            if (::strcmp(property, u8"mouse") == 0) {
-                identified = true;
-                m_Type = ostrich::UDevDevice::Type::MOUSE;
-            }
-            else if (::strcmp(property, u8"kbd") == 0) {
-                identified = true;
-                m_Type = ostrich::UDevDevice::Type::KEYBOARD;
-            }
-        }
-    }
-
-    return identified;
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-bool ostrich::UDevDevice::OpenFile(const char *path) {
-    int handle = ::open(path, O_RDONLY | O_NONBLOCK);
-    if (handle != -1) {
-        m_Path = path;
-        m_FileHandle = handle;
-        return true;
-    }
-
-    return false;
-}
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -152,21 +68,26 @@ void ostrich::InputLinux::ProcessKBM() {
     m_ConsolePrinter.DebugMessage(u8"In InputLinux::ProcessKBM()");
     for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
         done = false;
+        int filehandle = (*itr).getFileHandle();
         while (!done) {
-            bytesread = ::read((*itr).getFileHandle(), input, sizeof(input));
+            bytesread = ::read(filehandle, input, sizeof(input));
             if (bytesread <= 0) {
                 done = true;
-                continue;
             }
-            int count = bytesread / sizeof(input[0]);
-            m_ConsolePrinter.DebugMessage(u8"Read % bytes, making % events",
+            else {
+                int count = bytesread / sizeof(input[0]);
+                m_ConsolePrinter.DebugMessage(u8"Read % bytes, making % events",
                     { std::to_string(bytesread), std::to_string(count)});
-            for (int i = 0; i < count; i++) {
-                if (input[i].type == EV_KEY) { // keyboard or mouse buttons
-                    m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
-                }
-                else if (input[i].type == EV_REL) { // mouse moved
-
+                for (int i = 0; i < count; i++) {
+                    if (input[i].type == EV_KEY) { // keyboard or mouse buttons
+                        m_ConsolePrinter.DebugMessage(u8"EV_KEY: code \"%\" value \"%\"",
+                            { std::to_string(input[i].code), std::to_string(input[i].value) });
+                        //m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
+                    }
+                    else if (input[i].type == EV_REL) { // mouse moved
+                        m_ConsolePrinter.DebugMessage(u8"EV_REL: code \"%\" value \"%\"",
+                            { std::to_string(input[i].code), std::to_string(input[i].value) });
+                    }
                 }
             }
         }

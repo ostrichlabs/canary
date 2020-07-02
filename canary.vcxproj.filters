@@ -81,6 +81,9 @@
     <ClCompile Include="linux\linux_input.cpp">
       <Filter>linux</Filter>
     </ClCompile>
+    <ClCompile Include="linux\linux_udevdevice.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">
@@ -165,6 +168,9 @@
       <Filter>game</Filter>
     </ClInclude>
     <ClInclude Include="linux\linux_input.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="linux\linux_udevdevice.h">
       <Filter>linux</Filter>
     </ClInclude>
   </ItemGroup>
