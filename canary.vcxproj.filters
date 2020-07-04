@@ -173,5 +173,8 @@
     <ClInclude Include="linux\linux_udevdevice.h">
       <Filter>linux</Filter>
     </ClInclude>
+    <ClInclude Include="game\errorcodes.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

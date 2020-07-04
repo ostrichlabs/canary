@@ -242,6 +242,7 @@
     <ClInclude Include="external\gl\glxext.h" />
     <ClInclude Include="external\gl\wgl.h" />
     <ClInclude Include="external\gl\wglext.h" />
+    <ClInclude Include="game\errorcodes.h" />
     <ClInclude Include="game\i_display.h" />
     <ClInclude Include="game\i_input.h" />
     <ClInclude Include="game\i_renderer.h" />
