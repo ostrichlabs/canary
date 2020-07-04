@@ -15,77 +15,85 @@ namespace ostrich {
 
 /////////////////////////////////////////////////
 // mouse and keyboard keys, some of which don't have a UTF-8 equivalent
+//
+// Canary doesn't differentiate between left and right shift/alt/ctrl
 enum class Keys : int32_t {
-    KEY_NULL = 0,
+    OSTKEY_NULL = 0,
 
-    KEY_TAB = 9,
-    KEY_ENTER = 19,
-    KEY_ESCAPE = 27,
-    KEY_SPACE = 32,
+    OSTKEY_TAB = 9,
+    OSTKEY_ENTER = 19,
+    OSTKEY_ESCAPE = 27,
+    OSTKEY_SPACE = 32,
 
-    KEY_BACKSPACE = 127,
+    OSTKEY_BACKSPACE = 127,
 
-    KEY_COMMAND = 128,
+    OSTKEY_COMMAND = 128,
 
-    KEY_CAPSLOCK,
-    KEY_PAUSE,
+    OSTKEY_CAPSLOCK,
+    OSTKEY_PAUSE,
 
-    KEY_UPARROW,
-    KEY_DOWNARROW,
-    KEY_LEFTARROW,
-    KEY_RIGHTARROW,
+    OSTKEY_UPARROW,
+    OSTKEY_DOWNARROW,
+    OSTKEY_LEFTARROW,
+    OSTKEY_RIGHTARROW,
 
-    KEY_ALT,
-    KEY_CTRL,
-    KEY_SHIFT,
-    KEY_INSERT,
-    KEY_DELETE,
-    KEY_PAGEDOWN,
-    KEY_PAGEUP,
-    KEY_HOME,
-    KEY_END,
+    OSTKEY_ALT,
+    OSTKEY_CTRL,
+    OSTKEY_SHIFT,
+    OSTKEY_INSERT,
+    OSTKEY_DELETE,
+    OSTKEY_PAGEDOWN,
+    OSTKEY_PAGEUP,
+    OSTKEY_HOME,
+    OSTKEY_END,
 
-    KEY_F1,
-    KEY_F2,
-    KEY_F3,
-    KEY_F4,
-    KEY_F5,
-    KEY_F6,
-    KEY_F7,
-    KEY_F8,
-    KEY_F9,
-    KEY_F10,
-    KEY_F11,
-    KEY_F12,
+    OSTKEY_F1,
+    OSTKEY_F2,
+    OSTKEY_F3,
+    OSTKEY_F4,
+    OSTKEY_F5,
+    OSTKEY_F6,
+    OSTKEY_F7,
+    OSTKEY_F8,
+    OSTKEY_F9,
+    OSTKEY_F10,
+    OSTKEY_F11,
+    OSTKEY_F12,
 
-    KEY_KEYPAD_0,
-    KEY_KEYPAD_1,
-    KEY_KEYPAD_2,
-    KEY_KEYPAD_3,
-    KEY_KEYPAD_4,
-    KEY_KEYPAD_5,
-    KEY_KEYPAD_6,
-    KEY_KEYPAD_7,
-    KEY_KEYPAD_8,
-    KEY_KEYPAD_9,
-    KEY_KEYPAD_DELETE,
-    KEY_KEYPAD_PLUS,
-    KEY_KEYPAD_MINUS,
-    KEY_KEYPAD_STAR,
-    KEY_KEYPAD_SLASH,
-    KEY_KEYPAD_NUMLOCK,
+    OSTKEY_KEYPAD_0,
+    OSTKEY_KEYPAD_1,
+    OSTKEY_KEYPAD_2,
+    OSTKEY_KEYPAD_3,
+    OSTKEY_KEYPAD_4,
+    OSTKEY_KEYPAD_5,
+    OSTKEY_KEYPAD_6,
+    OSTKEY_KEYPAD_7,
+    OSTKEY_KEYPAD_8,
+    OSTKEY_KEYPAD_9,
+    OSTKEY_KEYPAD_DELETE,
+    OSTKEY_KEYPAD_PLUS,
+    OSTKEY_KEYPAD_MINUS,
+    OSTKEY_KEYPAD_STAR,
+    OSTKEY_KEYPAD_SLASH,
+    OSTKEY_KEYPAD_NUMLOCK,
 
-    KEY_MOUSE1,
-    KEY_MOUSE2,
-    KEY_MOUSE3,
-    KEY_MOUSE4,
-    KEY_MOUSE5,
+    OSTKEY_SCROLLOCK,
 
-    KEY_MOUSEWHEELUP,
-    KEY_MOUSEWHEELDOWN,
+    OSTKEY_MOUSE1,
+    OSTKEY_MOUSE2,
+    OSTKEY_MOUSE3,
+    OSTKEY_MOUSE4,
+    OSTKEY_MOUSE5,
 
-    KEY_LAST
+    OSTKEY_MOUSEWHEELUP,
+    OSTKEY_MOUSEWHEELDOWN,
+
+    OSTKEY_LAST = 255
 };
+
+constexpr int32_t KeyToInt32(Keys key) {
+    return static_cast<int32_t>(key);
+}
 
 } // namespace ostrich
 

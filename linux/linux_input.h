@@ -18,6 +18,7 @@ Meant for use on Linux platforms not using X11 or Wayland for some reason (like 
 
 #include <libudev.h>
 #include <list>
+#include <linux/input.h>
 #include "linux_udevdevice.h"
 #include "../game/eventqueue.h"
 #include "../game/i_input.h"
@@ -54,7 +55,7 @@ private:
     void AddDevice(udev_device *device);
     void ClearDevices();
 
-    int32_t TranslateKey(int32_t vkey);
+    int32_t TranslateKey(__u16 vkey);
 
     ConsolePrinter m_ConsolePrinter;
     EventSender m_EventSender;

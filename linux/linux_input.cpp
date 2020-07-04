@@ -14,8 +14,8 @@ Interface for retrieving input information via udev and evdev
 #include <unistd.h>
 //#include <linux/kd.h>
 //#include <linux/keyboard.h>
-#include <linux/input.h>
 #include "../common/error.h"
+#include "../game/keydef.h"
 #include "../game/message.h"
 
 
@@ -65,7 +65,7 @@ void ostrich::InputLinux::ProcessKBM() {
     input_event input[32];
     ssize_t bytesread = 0;
     bool done = false;
-    m_ConsolePrinter.DebugMessage(u8"In InputLinux::ProcessKBM()");
+    //m_ConsolePrinter.DebugMessage(u8"In InputLinux::ProcessKBM()");
     for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
         done = false;
         int filehandle = (*itr).getFileHandle();
@@ -82,7 +82,9 @@ void ostrich::InputLinux::ProcessKBM() {
                     if (input[i].type == EV_KEY) { // keyboard or mouse buttons
                         m_ConsolePrinter.DebugMessage(u8"EV_KEY: code \"%\" value \"%\"",
                             { std::to_string(input[i].code), std::to_string(input[i].value) });
-                        //m_EventSender.Send(ostrich::Message::CreateSystemMessage(1, m_Classname));
+                        int32_t key = this->TranslateKey(input[i].code);
+                        bool keystate = (input[i].value == 1) ? true : false;
+                        m_EventSender.Send(ostrich::Message::CreateKeyMessage(key, keystate, OST_FUNCTION_SIGNATURE));
                     }
                     else if (input[i].type == EV_REL) { // mouse moved
                         m_ConsolePrinter.DebugMessage(u8"EV_REL: code \"%\" value \"%\"",
@@ -106,7 +108,7 @@ void ostrich::InputLinux::ProcessOSMessages() {
 bool ostrich::InputLinux::InitUDev() {
     m_udev = ::udev_new();
     if (!m_udev) {
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 1);
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
     }
 
     m_Monitor = ::udev_monitor_new_from_netlink(m_udev, "udev");
@@ -119,7 +121,7 @@ bool ostrich::InputLinux::InitUDev() {
 
     this->ScanDevices();
     if (m_Devices.size() == 0) {
-        return false;
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 4);
     }
 
     return true;
@@ -133,7 +135,7 @@ void ostrich::InputLinux::ScanDevices() {
 
         enumerate = ::udev_enumerate_new(m_udev);
         if (!enumerate) {
-            throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
+            throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 5);
         }
 
         ::udev_enumerate_add_match_subsystem(enumerate, "input");
@@ -188,6 +190,122 @@ void ostrich::InputLinux::ClearDevices() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int32_t ostrich::InputLinux::TranslateKey(int32_t vkey) {
+int32_t ostrich::InputLinux::TranslateKey(__u16 vkey) {
+
+    // Using a table for most of these because the Linux event codes are all over the goddamn place
+    static int32_t keytable[] =
+    { 0, ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ESCAPE),
+      '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_BACKSPACE), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_TAB),
+      'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']',
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ENTER), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_CTRL),
+      'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', '`',
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SHIFT), '\\',
+      'Z', 'X' ,'C' ,'V' ,'B', 'N', 'M', ',', '.', '/',
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SHIFT), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_STAR),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ALT), ' ', ostrich::KeyToInt32(ostrich::Keys::OSTKEY_CAPSLOCK),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F1), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F2),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F3), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F4),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F5), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F6),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F7), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F8),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F9), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F10),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_NUMLOCK), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SCROLLOCK),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_7), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_8),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_9), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_MINUS),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_4), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_5),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_6), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_PLUS),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_1), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_2),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_3), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_0),
+      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_DELETE)
+    };
+
+    // table keys, which is most of them
+    if (vkey <= KEY_KPDOT) {
+        return keytable[vkey];
+    }
+
+    // mouse buttons 1-3
+    if ((vkey >= BTN_LEFT) && (vkey <= BTN_MIDDLE)) {
+        return static_cast<int32_t>((vkey) + (ostrich::KeyToInt32(ostrich::Keys::OSTKEY_MOUSE1) - BTN_LEFT));
+    }
+
+    // the wacky remainder
+    switch (vkey) {
+        case KEY_F11:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F11);
+        }
+        case KEY_F12:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F12);
+        }
+
+        case KEY_KPENTER: // treat keypad enter as regular enter
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ENTER);
+        }
+        case KEY_RIGHTCTRL:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_CTRL);
+        }
+        case KEY_KPSLASH:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_SLASH);
+        }
+        case KEY_RIGHTALT:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ALT);
+        }
+
+        // Arrow keys
+        case KEY_UP:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_UPARROW);
+        }
+        case KEY_LEFT:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_LEFTARROW);
+        }
+        case KEY_DOWN:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_DOWNARROW);
+        }
+        case KEY_RIGHT:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_RIGHTARROW);
+        }
+
+        // Those utility keys above the arrow keys
+        case KEY_PAUSE:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAUSE);
+        }
+        case KEY_INSERT:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_INSERT);
+        }
+        case KEY_DELETE:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_DELETE);
+        }
+        case KEY_HOME:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_HOME);
+        }
+        case KEY_END:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_END);
+        }
+        case KEY_PAGEUP:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAGEUP);
+        }
+        case KEY_PAGEDOWN:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAGEDOWN);
+        }
+
+    }
+
     return 0;
 }
