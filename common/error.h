@@ -11,6 +11,8 @@ TODO: when a game is localized/has a string database, the error strings should b
 #ifndef ERROR_H_
 #define ERROR_H_
 
+#include <utility>
+
 namespace ostrich {
 
 /////////////////////////////////////////////////
@@ -57,7 +59,8 @@ private:
 };
 
 /////////////////////////////////////////////////
-// terminable errors during initialization - code is dependent on the subsystem and its API of choice
+// terminable errors during initialization - code is dependent on the subsystem
+// also allows for a separate error code from, say, a function call
 class InitException : public Exception {
 public:
 
@@ -68,16 +71,21 @@ public:
     InitException &operator=(InitException &&) = default;
     InitException &operator=(const InitException &) = default;
 
-    InitException(const char *where, int code) noexcept :
-        Exception(u8"InitException"), m_Where(where), m_Code(code) { }
+    InitException(const char *where, int ourcode) noexcept :
+        Exception(u8"InitException"), m_Where(where), m_OurCode(ourcode), m_ReturnedCode(std::make_pair(false, 0)) {}
+    InitException(const char *where, int ourcode, std::pair<bool, int> returnedcode) noexcept :
+        Exception(u8"InitException"), m_Where(where), m_OurCode(ourcode), m_ReturnedCode(returnedcode) { }
 
     const char *where() const noexcept { return m_Where; }
-    int code() const noexcept { return m_Code; }
+    int getOurCode() const noexcept { return m_OurCode; }
+    bool hasReturnedCode() const noexcept { return m_ReturnedCode.first;  }
+    int getReturnedCode() const noexcept { return m_ReturnedCode.second; }
 
 private:
 
     const char *m_Where;
-    int m_Code;
+    int m_OurCode;
+    std::pair<bool, int> m_ReturnedCode;
 };
 
 }

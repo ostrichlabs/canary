@@ -1,13 +1,12 @@
 /*
 ==========================================
 Copyright (c) 2020 Ostrich Labs
-
-OpenGL ES 2.0 interface - primarily for the Raspberry Pi
 ==========================================
 */
 
 #include "gles2_renderer.h"
 #include "../common/error.h"
+#include "../game/errorcodes.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -25,7 +24,7 @@ ostrich::EGLRenderer::~EGLRenderer() {
 /////////////////////////////////////////////////
 int ostrich::EGLRenderer::Initialize(ostrich::ConsolePrinter conprinter) {
     if (this->isActive())
-        return -1;
+        return OST_ERROR_ISACTIVE;
 
     m_ConPrinter = conprinter;
     if (!m_ConPrinter.isValid())
@@ -39,7 +38,7 @@ int ostrich::EGLRenderer::Initialize(ostrich::ConsolePrinter conprinter) {
 
     m_isActive = true;
 
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -48,7 +47,7 @@ int ostrich::EGLRenderer::Destroy() {
     if (this->isActive()) {
     	m_isActive = false;
     }
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////

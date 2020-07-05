@@ -1,8 +1,6 @@
 /*
 ==========================================
 Copyright (c) 2020 Ostrich Labs
- 
-Interface for retrieving input information from Windows
 ==========================================
 */
 
@@ -11,13 +9,14 @@ Interface for retrieving input information from Windows
 #include <windowsx.h>
 #include "win_wndproc.h"
 #include "../common/error.h"
+#include "../game/errorcodes.h"
 #include "../game/message.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 int ostrich::InputWindows::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich::EventSender eventsender) {
     if (m_isActive)
-        return -1;
+        return OST_ERROR_ISACTIVE;
 
     m_ConsolePrinter = consoleprinter;
     m_EventSender = eventsender;
@@ -36,7 +35,7 @@ int ostrich::InputWindows::Initialize(ostrich::ConsolePrinter consoleprinter, os
         ;
 
     m_isActive = true;
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////

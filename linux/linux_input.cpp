@@ -1,8 +1,6 @@
 /*
 ==========================================
 Copyright (c) 2020 Ostrich Labs
-
-Interface for retrieving input information via udev and evdev
 ==========================================
 */
 
@@ -15,6 +13,7 @@ Interface for retrieving input information via udev and evdev
 //#include <linux/kd.h>
 //#include <linux/keyboard.h>
 #include "../common/error.h"
+#include "../game/errorcodes.h"
 #include "../game/keydef.h"
 #include "../game/message.h"
 
@@ -23,7 +22,7 @@ Interface for retrieving input information via udev and evdev
 /////////////////////////////////////////////////
 int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender eventsender) {
     if (this->isActive()) {
-        return -1;
+        return OST_ERROR_ISACTIVE;
     }
 
     m_ConsolePrinter = consoleprinter;
@@ -31,13 +30,14 @@ int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender e
     if ((!m_ConsolePrinter.isValid()) || (!m_EventSender.isValid()))
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
-    if (!this->InitUDev())
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 1);
+    int result = this->InitUDev();
+    if (result != OST_ERROR_OK)
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
 
     m_ConsolePrinter.DebugMessage(u8"Added % devices", { std::to_string(m_Devices.size()) });
 
     m_isActive = true;
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -105,15 +105,15 @@ void ostrich::InputLinux::ProcessOSMessages() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-bool ostrich::InputLinux::InitUDev() {
+int ostrich::InputLinux::InitUDev() {
     m_udev = ::udev_new();
     if (!m_udev) {
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
+        return OST_ERROR_UDEVINIT;
     }
 
     m_Monitor = ::udev_monitor_new_from_netlink(m_udev, "udev");
     if (!m_Monitor) {
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 3);
+        return OST_ERROR_UDEVMONITOR;
     }
 
     ::udev_monitor_filter_add_match_subsystem_devtype(m_Monitor, "input", NULL);
@@ -121,21 +121,21 @@ bool ostrich::InputLinux::InitUDev() {
 
     this->ScanDevices();
     if (m_Devices.size() == 0) {
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 4);
+        return OST_ERROR_UDEVNODEVICES;
     }
 
-    return true;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputLinux::ScanDevices() {
+int ostrich::InputLinux::ScanDevices() {
     if (m_udev) {
         udev_enumerate *enumerate = nullptr;
 
         enumerate = ::udev_enumerate_new(m_udev);
         if (!enumerate) {
-            throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 5);
+            return OST_ERROR_UDEVENUM;
         }
 
         ::udev_enumerate_add_match_subsystem(enumerate, "input");
@@ -157,6 +157,8 @@ void ostrich::InputLinux::ScanDevices() {
 
         ::udev_enumerate_unref(enumerate);
     }
+
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////

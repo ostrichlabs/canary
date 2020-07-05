@@ -7,8 +7,6 @@ A logging console
 Future versions for different projects may also allow runtime commands and cvars
 
 The main console can create ConsolePrinter objects - these can take multiple string arguments and insert them into another
-
-TODO: Maybe make the debug log print straight to a file?
 ==========================================
 */
 

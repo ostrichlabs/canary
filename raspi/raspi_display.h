@@ -37,7 +37,6 @@ public:
 
     bool isActive() const override { return m_isActive; }
 
-// TODO: These should return better values and report to the console
     int Initialize(ConsolePrinter conprinter) override;
     int Destroy() override;
 

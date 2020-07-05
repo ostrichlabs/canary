@@ -1,16 +1,15 @@
 /*
 ==========================================
 Copyright (c) 2020 Ostrich Labs
-
-IDisplay implementation for Windows
 ==========================================
 */
 
 #include "win_display.h"
 
 #include <string>
-#include "../common/error.h"
 #include "win_wndproc.h"
+#include "../common/error.h"
+#include "../game/errorcodes.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -20,32 +19,32 @@ int ostrich::WGLExtensions::Retrieve(HDC hdc) {
     wglGetExtensionsStringARB =
         PFNWGLGETEXTENSIONSSTRINGARBPROC(::wglGetProcAddress("wglGetExtensionsStringARB"));
     if (wglGetExtensionsStringARB == nullptr)
-        return 1;
+        return OST_ERROR_WGLGETEXTSTRING;
     m_WGL_ARB_extensions_string = true;
     extensionlist = this->wglGetExtensionsStringARB(hdc);
 
 // WGL_ARB_create_context
     if (extensionlist.find("WGL_ARB_create_context") == std::string::npos)
-        return 2;
+        return OST_ERROR_WGLCREATECONTEXT;
     m_WGL_ARB_create_context = true;
     wglCreateContextAttribsARB =
         PFNWGLCREATECONTEXTATTRIBSARBPROC(::wglGetProcAddress("wglCreateContextAttribsARB"));
 
 // WGL_ARB_create_context_profile
     if (extensionlist.find("WGL_ARB_create_context_profile") == std::string::npos)
-        return 2;
+        return OST_ERROR_WGLCONTEXTPROFILE;
     m_WGL_ARB_create_context_profile = true;
 
 // WGL_ARB_pixel_format
     if (extensionlist.find("WGL_ARB_pixel_format") == std::string::npos)
-        return 2;
+        return OST_ERROR_WGLPIXELFORMAT;
     m_WGL_ARB_pixel_format = true;
     wglGetPixelFormatAttribivARB =
         PFNWGLGETPIXELFORMATATTRIBIVARBPROC(::wglGetProcAddress("wglGetPixelFormatAttribivARB"));
     wglChoosePixelFormatARB =
         PFNWGLCHOOSEPIXELFORMATARBPROC(::wglGetProcAddress("wglChoosePixelFormatARB"));
 
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -67,22 +66,22 @@ ostrich::DisplayWindows::~DisplayWindows() {
 /////////////////////////////////////////////////
 int ostrich::DisplayWindows::Initialize(ostrich::ConsolePrinter conprinter) {
     if (this->isActive())
-        return -1;
+        return OST_ERROR_ISACTIVE;
 
     m_ConPrinter = conprinter;
     if (!m_ConPrinter.isValid())
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
     int result = this->InitWindow();
-    if (result != 0)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
+    if (result != OST_ERROR_OK)
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result, std::make_pair(true, ::GetLastError()));
 
     result = this->InitRenderer();
-    if (result != 0)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
+    if (result != OST_ERROR_OK)
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result, std::make_pair(true, ::GetLastError()));
 
     m_isActive = true;
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -96,7 +95,7 @@ int ostrich::DisplayWindows::Destroy() {
         ::UnregisterClassW(m_WindowClassName, m_HInstance);
         m_isActive = false;
     }
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -112,7 +111,7 @@ bool ostrich::DisplayWindows::SwapBuffers() {
 /////////////////////////////////////////////////
 int ostrich::DisplayWindows::InitWindow() {
     if (this->isActive())
-        return -1;
+        return OST_ERROR_ISACTIVE;
 
     m_HInstance = ::GetModuleHandleW(NULL);
     WNDCLASSW wndclass = { };
@@ -127,7 +126,7 @@ int ostrich::DisplayWindows::InitWindow() {
     wndclass.lpszMenuName = 0;
     wndclass.lpszClassName = m_WindowClassName;
     if (!::RegisterClassW(&wndclass)) {
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_WINREGISTERCLASS;
     }
 
 // need to get WGL Extensions first because they use a dummy pixel format
@@ -140,13 +139,13 @@ int ostrich::DisplayWindows::InitWindow() {
         0, 0, ostrich::g_ScreenWidth, ostrich::g_ScreenHeight, 0, 0, m_HInstance, 0); // WS_POPUP is for fullscreen
 
     if (m_HWnd == nullptr)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_WINCREATEWINDOW;
 
     m_HDC = ::GetDC(m_HWnd);
     if (m_HDC == nullptr)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_WINGETDC;
 
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -168,7 +167,7 @@ int ostrich::DisplayWindows::InitRenderer() {
     if (m_WGLExt.wglChoosePixelFormatARB)
         m_WGLExt.wglChoosePixelFormatARB(m_HDC, pixelformatattribs, nullptr, 1, &pixelfmt, &numformats);
     if (numformats != 1)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_WINGLCHOOSEFORMAT;
 
 // make sure the pixel format we got is hardware accelerated
     int pixelformatquery = WGL_ACCELERATION_ARB;
@@ -176,12 +175,12 @@ int ostrich::DisplayWindows::InitRenderer() {
     if (m_WGLExt.wglGetPixelFormatAttribivARB)
         m_WGLExt.wglGetPixelFormatAttribivARB(m_HDC, pixelfmt, 0, 1, &pixelformatquery, &queryresult);
     if (queryresult != WGL_FULL_ACCELERATION_ARB)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_WINGLGETFORMAT;
 
     PIXELFORMATDESCRIPTOR pfd = { };
     ::DescribePixelFormat(m_HDC, pixelfmt, sizeof(pfd), &pfd);
     if (::SetPixelFormat(m_HDC, pixelfmt, &pfd) == false)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_WINSETFORMAT;
 
     const int contextattribs[] = {
         WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
@@ -192,19 +191,20 @@ int ostrich::DisplayWindows::InitRenderer() {
     if (m_WGLExt.wglCreateContextAttribsARB)
         m_HGLRC = m_WGLExt.wglCreateContextAttribsARB(m_HDC, nullptr, contextattribs);
     if (m_HGLRC == nullptr)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_WINGLCREATECONTEXT;
     if (::wglMakeCurrent(m_HDC, m_HGLRC) == false)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_WINGLMAKECURRENT;
 
+    // TODO: Move this into the renderer? Or at least check that we got the version we want?
     const char *versionstring = (const char *)::glGetString(GL_VERSION);
     if (versionstring == nullptr)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, ::GetLastError());
+        return OST_ERROR_GETSTRINGVERSION;
     if (::strlen(versionstring) >= 3) {
         m_GLMajorVersion = versionstring[0] - '0';
         m_GLMinorVersion = versionstring[2] - '0';
     }
 
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -241,8 +241,9 @@ ostrich::WGLExtensions ostrich::DisplayWindows::GetWGLExtensions() {
     ::wglMakeCurrent(wglhdc, wglrc);
 
     WGLExtensions wglext;
-    if (wglext.Retrieve(wglhdc) != 0) {
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 0); // the location is indicative enough
+    int result = wglext.Retrieve(wglhdc);
+    if (result != OST_ERROR_OK) {
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result); // have to throw from here
     }
 
     ::wglMakeCurrent(wglhdc, NULL);

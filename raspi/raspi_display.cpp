@@ -8,6 +8,7 @@ IDisplay implementation for the Raspberry Pi
 
 #include "raspi_display.h"
 #include "../common/error.h"
+#include "../game/errorcodes.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -29,7 +30,7 @@ ostrich::DisplayRaspi::~DisplayRaspi() {
 /////////////////////////////////////////////////
 int ostrich::DisplayRaspi::Initialize(ostrich::ConsolePrinter conprinter) {
     if (this->isActive())
-        return -1;
+        return OST_ERROR_ISACTIVE;
 
     m_ConPrinter = conprinter;
     if (!m_ConPrinter.isValid())
@@ -38,17 +39,17 @@ int ostrich::DisplayRaspi::Initialize(ostrich::ConsolePrinter conprinter) {
     ::bcm_host_init();
 
     int result = this->InitWindow();
-    if (result != 0) {
+    if (result != OST_ERROR_OK) {
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
     }
 
     result = this->InitRenderer();
-    if (result != 0) {
+    if (result != OST_ERROR_OK) {
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
     }
 
     m_isActive = true;
-    return result;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -63,7 +64,7 @@ int ostrich::DisplayRaspi::Destroy() {
         ::bcm_host_deinit();
         m_isActive = false;
     }
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -83,7 +84,7 @@ int ostrich::DisplayRaspi::InitWindow() {
 
     int32_t result = ::graphics_get_display_size(0, &displaywidth, &displayheight);
     if (result < 0)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 1);
+        return OST_ERROR_RASPIGETDISPSIZE;
 
     VC_RECT_T destrect;
     destrect.x = 0;
@@ -98,22 +99,22 @@ int ostrich::DisplayRaspi::InitWindow() {
 
     m_DispmanDisplay = ::vc_dispmanx_display_open(0);
     if (m_DispmanDisplay == DISPMANX_NO_HANDLE)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
+        return OST_ERROR_RASPIDISPLAYOPEN;
     m_DispmanUpdate = ::vc_dispmanx_update_start(0);
     if (m_DispmanUpdate == DISPMANX_NO_HANDLE)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 3);
+        return OST_ERROR_RASPIUPDATESTART;
     m_DispmanElement = ::vc_dispmanx_element_add(m_DispmanUpdate, m_DispmanDisplay,
             0, &destrect, 0, &sourcerect, DISPMANX_PROTECTION_NONE,
             0, 0, DISPMANX_NO_ROTATE);
     if (m_DispmanElement == DISPMANX_NO_HANDLE)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 4);
+        return OST_ERROR_RASPIELEMENTADD;
 
     m_NativeWindow.element = m_DispmanElement;
     m_NativeWindow.height = ostrich::g_ScreenHeight;
     m_NativeWindow.width = ostrich::g_ScreenWidth;
     ::vc_dispmanx_update_submit_sync(m_DispmanUpdate);
 
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -137,27 +138,27 @@ int ostrich::DisplayRaspi::InitRenderer() {
 
     m_GLDisplay = ::eglGetDisplay(EGL_DEFAULT_DISPLAY);
     if (m_GLDisplay == EGL_NO_DISPLAY)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 1);
+        return OST_ERROR_ES2GETDISPLAY;
 
     EGLBoolean initresult = ::eglInitialize(m_GLDisplay, &m_GLMajorVersion,
             &m_GLMinorVersion);
     if (initresult == EGL_FALSE)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 2);
+        return OST_ERROR_ES2INITIALIZE;
 
     EGLint numconfigs = 0;
     if (!::eglChooseConfig(m_GLDisplay, configattribs, &m_GLConfig, 1, &numconfigs))
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 3);
+        return OST_ERROR_ES2CHOOSECONFIG;
 
     m_GLSurface = ::eglCreateWindowSurface(m_GLDisplay, m_GLConfig, &m_NativeWindow, NULL);
     if (m_GLSurface == EGL_NO_SURFACE)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 4);
+        return OST_ERROR_ES2CREATEWINSURFACE;
 
     m_GLContext = ::eglCreateContext(m_GLDisplay, m_GLConfig, EGL_NO_CONTEXT, contextattribs);
     if (m_GLContext == EGL_NO_CONTEXT)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 5);
+        return OST_ERROR_ES2CREATECONTEXT;
 
     if (!::eglMakeCurrent(m_GLDisplay, m_GLSurface, m_GLSurface, m_GLContext))
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, 6);
+        return OST_ERROR_ES2MAKECURRENT;
 
-    return 0;
+    return OST_ERROR_OK;
 }

@@ -8,6 +8,7 @@ OpenGL 4.0 interface
 
 #include "gl4_renderer.h"
 #include "../common/error.h"
+#include "../game/errorcodes.h"
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -25,7 +26,7 @@ ostrich::GL4Renderer::~GL4Renderer() {
 /////////////////////////////////////////////////
 int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
     if (this->isActive())
-        return -1;
+        return OST_ERROR_ISACTIVE;
 
     m_ConPrinter = conprinter;
     if (!m_ConPrinter.isValid())
@@ -39,7 +40,7 @@ int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
 
     m_isActive = true;
 
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////
@@ -48,7 +49,7 @@ int ostrich::GL4Renderer::Destroy() {
     if (this->isActive()) {
         m_isActive = false;
     }
-    return 0;
+    return OST_ERROR_OK;
 }
 
 /////////////////////////////////////////////////

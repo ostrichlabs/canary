@@ -50,8 +50,8 @@ private:
     const char * const m_Classname = u8"ostrich::InputLinux";
 
     // helper methods for initialization
-    bool InitUDev();
-    void ScanDevices();
+    int InitUDev();
+    int ScanDevices();
     void AddDevice(udev_device *device);
     void ClearDevices();
 

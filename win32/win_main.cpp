@@ -53,11 +53,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     try {
         returncode = Game.Start(DisplayPtr, RendererPtr, InputPtr);
     }
-    catch (const std::exception &e) {
-        std::cerr << u8"Standard exception during runtime: " << e.what() <<
-            ost_char::g_NewLine;
-        returncode = -400000;
-    }
     catch (...) {
         std::cerr << u8"Unknown exception during runtime" << ost_char::g_NewLine;
         returncode = -500000;
