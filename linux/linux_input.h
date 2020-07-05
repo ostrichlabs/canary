@@ -16,6 +16,7 @@ Meant for use on Linux platforms not using X11 or Wayland for some reason (like 
 #    error "This module should only be included in Raspberry Pi (or Linux I guess) builds"
 #endif
 
+#include <csignal>
 #include <libudev.h>
 #include <list>
 #include <linux/input.h>
@@ -30,7 +31,8 @@ namespace ostrich {
 class InputLinux : public IInput {
 public:
 
-    InputLinux() noexcept : m_isActive(false), m_udev(nullptr), m_Monitor(nullptr) {}
+    InputLinux() noexcept : m_isActive(false), m_udev(nullptr), m_Monitor(nullptr)
+    { }
     virtual ~InputLinux() { }
     InputLinux(InputLinux &&) = delete;
     InputLinux(const InputLinux &) = delete;
@@ -48,6 +50,11 @@ public:
 private:
 
     const char * const m_Classname = u8"ostrich::InputLinux";
+
+    static volatile int ms_LastRaisedSignal;
+    static siginfo_t *ms_SignalInfo;
+    static int InitializeSignalHandler();
+    static void SignalHandler(int signum, siginfo_t *info, void *ucontext);
 
     // helper methods for initialization
     int InitUDev();

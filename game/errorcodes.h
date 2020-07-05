@@ -23,9 +23,10 @@ Using good ol' defines because enums might by type safe but also I don't care
 #define OST_ERROR_EVENTQUEUE    0x0000'0100 // start of event queue errors   
 
 // Signal handler
-#define OST_ERROR_SIGNAL        0x0000'0200 // start of signal handler errors
-// the signal handler likely won't have custom error codes as they are project specific and the signal handler is not
-// this might change in the future - and probably should
+#define OST_ERROR_SIGNAL            0x0000'0200 // start of signal handler errors
+#define OST_ERROR_HANDLERSIGINT     (OST_ERROR_SIGNAL+0x01) // unable to register SIGINT handler
+#define OST_ERROR_HANDLERSIGTERM    (OST_ERROR_SIGNAL+0x02) // unable to register SIGTERM handler
+#define OST_ERROR_HANDLERSIGHUP     (OST_ERROR_SIGNAL+0x03) // unable to register SIGHUP handler
 
 // Input handler
 #define OST_ERROR_INPUT         0x0000'0300             // start of input handler errors

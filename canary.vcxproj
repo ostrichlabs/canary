@@ -188,7 +188,6 @@
     <ClCompile Include="common\console.cpp" />
     <ClCompile Include="common\datetime.cpp" />
     <ClCompile Include="common\filesystem.cpp" />
-    <ClCompile Include="common\signal.cpp" />
     <ClCompile Include="common\utility.cpp" />
     <ClCompile Include="game\eventqueue.cpp" />
     <ClCompile Include="game\ost_main.cpp" />
@@ -235,7 +234,6 @@
     <ClInclude Include="common\error.h" />
     <ClInclude Include="common\filesystem.h" />
     <ClInclude Include="common\ost_common.h" />
-    <ClInclude Include="common\signal.h" />
     <ClInclude Include="common\utility.h" />
     <ClInclude Include="external\gl\glcorearb.h" />
     <ClInclude Include="external\gl\glext.h" />

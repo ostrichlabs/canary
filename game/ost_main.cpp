@@ -1,8 +1,6 @@
 /*
 ==========================================
 Copyright (c) 2020 Ostrich Labs
-
-Main game object
 ==========================================
 */
 
@@ -10,7 +8,6 @@ Main game object
 #include "ost_version.h"
 #include "../common/datetime.h"
 #include "../common/error.h"
-#include "../common/signal.h"
 #include "../game/errorcodes.h"
 #include "../game/message.h"
 
@@ -68,11 +65,6 @@ int ostrich::Main::Initialize() {
         if (initresult == OST_ERROR_OK) {
             m_ConsolePrinter.WriteMessage(u8"Initializing Event Queue");
             initresult = m_EventQueue.Initialize();
-        }
-
-        if (initresult == OST_ERROR_OK) {
-            m_ConsolePrinter.WriteMessage(u8"Initializing signal handler");
-            initresult = ostrich::signal::Initialize(m_EventQueue.CreateSender());
         }
 
         if (initresult == OST_ERROR_OK) {
@@ -199,7 +191,12 @@ bool ostrich::Main::UpdateState() {
             else if (msg.getType() == ostrich::Message::Type::SYSTEM) {
                 // system messages that require addressing
                 // TODO: make a central place to define system message codes
-                if (msg.getSystemData() == 1) {
+                if (msg.getSystemCode() == 2) { // raised signal
+                    m_ConsolePrinter.DebugMessage(u8"Signal raised: %",
+                        { std::to_string(msg.getSystemAddlData()) });
+                    return true;
+                }
+                if (msg.getSystemCode() == 1) {
                 	m_ConsolePrinter.DebugMessage(u8"Shutdown received from %",
                 		{ msg.getSender() });
                     return true;

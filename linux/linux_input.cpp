@@ -17,6 +17,8 @@ Copyright (c) 2020 Ostrich Labs
 #include "../game/keydef.h"
 #include "../game/message.h"
 
+volatile int ostrich::InputLinux::ms_LastRaisedSignal = 0;
+siginfo_t *ostrich::InputLinux::ms_SignalInfo = nullptr;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -30,7 +32,11 @@ int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender e
     if ((!m_ConsolePrinter.isValid()) || (!m_EventSender.isValid()))
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
-    int result = this->InitUDev();
+    int result = InputLinux::InitializeSignalHandler();
+    if (result != OST_ERROR_OK)
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
+
+    result = this->InitUDev();
     if (result != OST_ERROR_OK)
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
 
@@ -97,10 +103,17 @@ void ostrich::InputLinux::ProcessKBM() {
 }
 
 /////////////////////////////////////////////////
-// for base Linux this will be signal handling, so, nothing to do here for now
 /////////////////////////////////////////////////
 void ostrich::InputLinux::ProcessOSMessages() {
-
+    if (InputLinux::ms_LastRaisedSignal != 0) {
+        int32_t code = 0; // TODO: reserved for when system messages get their own defines
+        if (InputLinux::ms_SignalInfo) {
+            code = InputLinux::ms_SignalInfo->si_code;
+        }
+        m_EventSender.Send(ostrich::Message::CreateSystemMessage(2, InputLinux::ms_LastRaisedSignal, OST_FUNCTION_SIGNATURE));
+        InputLinux::ms_LastRaisedSignal = 0;
+        InputLinux::ms_SignalInfo = nullptr;
+    }
 }
 
 /////////////////////////////////////////////////
@@ -310,4 +323,43 @@ int32_t ostrich::InputLinux::TranslateKey(__u16 vkey) {
     }
 
     return 0;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+int ostrich::InputLinux::InitializeSignalHandler() {
+    InputLinux::ms_LastRaisedSignal = 0;
+    InputLinux::ms_SignalInfo = nullptr;
+
+    struct sigaction action = { }, oldaction = { };
+    action.sa_sigaction = ostrich::InputLinux::SignalHandler;
+    ::sigemptyset(&action.sa_mask);
+    action.sa_flags = SA_SIGINFO;
+
+    ::sigaction(SIGINT, nullptr, &oldaction);
+    if (oldaction.sa_handler != SIG_IGN)
+        ::sigaction(SIGINT, &action, nullptr);
+    else
+        return OST_ERROR_HANDLERSIGINT;
+
+    ::sigaction(SIGTERM, nullptr, &oldaction);
+    if (oldaction.sa_handler != SIG_IGN)
+        ::sigaction(SIGTERM, &action, nullptr);
+    else
+        return OST_ERROR_HANDLERSIGTERM;
+
+    ::sigaction(SIGHUP, nullptr, &oldaction);
+    if (oldaction.sa_handler != SIG_IGN)
+        ::sigaction(SIGHUP, &action, nullptr);
+    else
+        return OST_ERROR_HANDLERSIGHUP;
+
+    return OST_ERROR_OK;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::InputLinux::SignalHandler(int signum, siginfo_t *info, void *ucontext) {
+    InputLinux::ms_LastRaisedSignal = signum;
+    InputLinux::ms_SignalInfo = info;
 }

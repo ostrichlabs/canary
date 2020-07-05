@@ -57,9 +57,6 @@
     <ClCompile Include="common\filesystem.cpp">
       <Filter>common</Filter>
     </ClCompile>
-    <ClCompile Include="common\signal.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
     <ClCompile Include="common\utility.cpp">
       <Filter>common</Filter>
     </ClCompile>
@@ -141,9 +138,6 @@
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="common\ost_common.h">
-      <Filter>common</Filter>
-    </ClInclude>
-    <ClInclude Include="common\signal.h">
       <Filter>common</Filter>
     </ClInclude>
     <ClInclude Include="common\utility.h">
