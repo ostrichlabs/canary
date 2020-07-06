@@ -237,7 +237,8 @@ LRESULT CALLBACK ostrich::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
     switch (message) {
         case WM_QUIT:
         {
-            l_EventSender.Send(ostrich::Message::CreateSystemMessage(1, 0, OST_FUNCTION_SIGNATURE));
+            l_EventSender.Send(ostrich::Message::CreateSystemMessage(OST_SYSTEMMSG_QUIT,
+                0, OST_FUNCTION_SIGNATURE));
             break;
         }
         case WM_LBUTTONDOWN:

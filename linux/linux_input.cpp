@@ -110,7 +110,8 @@ void ostrich::InputLinux::ProcessOSMessages() {
         if (InputLinux::ms_SignalInfo) {
             code = InputLinux::ms_SignalInfo->si_code;
         }
-        m_EventSender.Send(ostrich::Message::CreateSystemMessage(2, InputLinux::ms_LastRaisedSignal, OST_FUNCTION_SIGNATURE));
+        m_EventSender.Send(ostrich::Message::CreateSystemMessage(OST_SYSTEMMSG_SIGNAL,
+            InputLinux::ms_LastRaisedSignal, OST_FUNCTION_SIGNATURE));
         InputLinux::ms_LastRaisedSignal = 0;
         InputLinux::ms_SignalInfo = nullptr;
     }

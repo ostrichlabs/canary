@@ -16,6 +16,13 @@ Then when you want, say, mouse coords, you get just mouse coords.
 #include <utility>
 #include "../common/ost_common.h"
 
+/////////////////////////////////////////////////
+// system message defines
+// since the Message class is multipurpose, defines are better suited over enums
+#define OST_SYSTEMMSG_NULL      0x0000
+#define OST_SYSTEMMSG_QUIT      0x0001  // a sign to hard quit from the game regardless of game state
+#define OST_SYSTEMMSG_SIGNAL    0x0002  // a signal was raised
+
 namespace ostrich {
 
 /////////////////////////////////////////////////

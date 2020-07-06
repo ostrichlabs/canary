@@ -5,11 +5,17 @@ Copyright (c) 2020 Ostrich Labs
 */
 
 #include "ost_main.h"
+#include <csignal>
 #include "ost_version.h"
 #include "../common/datetime.h"
 #include "../common/error.h"
 #include "../game/errorcodes.h"
 #include "../game/message.h"
+
+#if (OST_WINDOWS == 1)
+#   undef SIGHUP
+#   define SIGHUP 1 // the Visual Studio 2019 version of csignal does not define SIGHUP
+#endif
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -21,8 +27,7 @@ m_isActive(false), m_Input(nullptr), m_Display(nullptr), m_Renderer(nullptr) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::Main::~Main() {
-    if (m_isActive)
-        this->Destroy();
+    this->Destroy();
 }
 
 /////////////////////////////////////////////////
@@ -189,24 +194,44 @@ bool ostrich::Main::UpdateState() {
                 m_GameState.ProcessInput(msg);
             }
             else if (msg.getType() == ostrich::Message::Type::SYSTEM) {
-                // system messages that require addressing
-                // TODO: make a central place to define system message codes
-                if (msg.getSystemCode() == 2) { // raised signal
-                    m_ConsolePrinter.DebugMessage(u8"Signal raised: %",
-                        { std::to_string(msg.getSystemAddlData()) });
-                    return true;
-                }
-                if (msg.getSystemCode() == 1) {
-                	m_ConsolePrinter.DebugMessage(u8"Shutdown received from %",
-                		{ msg.getSender() });
-                    return true;
-                }
+                // process system-type messages
+                return this->ProcessSystemMessage(msg);
             }
             else {
                 m_ConsolePrinter.WriteMessage(u8"Unhandled message type % sent by %",
                     { std::to_string(msg.getTypeAsInt()),
                       msg.getSender() });
             }
+        }
+    }
+
+    return false;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+bool ostrich::Main::ProcessSystemMessage(const ostrich::Message &msg) {
+    switch (msg.getSystemCode()) {
+        case OST_SYSTEMMSG_QUIT:
+        {
+            m_ConsolePrinter.DebugMessage(u8"Shutdown received from %",
+                { msg.getSender() });
+            return true;
+        }
+        case OST_SYSTEMMSG_SIGNAL:
+        {
+            int32_t signal = msg.getSystemAddlData();
+            m_ConsolePrinter.DebugMessage(u8"Signal raised: %",
+                { std::to_string(signal) });
+            if ((signal == SIGINT) || (signal == SIGTERM) || (signal == SIGHUP)) {
+                return true;
+            }
+        }
+        case OST_SYSTEMMSG_NULL:
+        default:
+        {
+            m_ConsolePrinter.DebugMessage(u8"Unknown system message %",
+                { std::to_string(msg.getSystemCode()) });
         }
     }
 

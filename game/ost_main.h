@@ -42,6 +42,7 @@ private:
 
     void ProcessInput();
     bool UpdateState();
+    bool ProcessSystemMessage(const Message &msg);
     void RenderScene(int32_t extrapolation);
 
     bool m_isActive;
