@@ -75,3 +75,9 @@ void ms::StateMachine::UpdateGameState() {
             m_EventSender.Send(ostrich::Message::CreateSystemMessage(OST_SYSTEMMSG_QUIT, 0, m_Classname));
     }
 }
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+const ostrich::SceneData *ms::StateMachine::GetSceneData() const noexcept {
+    return &m_SceneData;
+}

@@ -13,10 +13,12 @@ Check docs for more details
 #define MS_STATEMACHINE_H_
 
 #include <cstring>
+#include <list>
 #include <memory>
 #include "../common/console.h"
 #include "../common/ost_common.h"
 #include "../game/eventqueue.h"
+#include "../game/scenedata.h"
 
 namespace ms {
 
@@ -44,6 +46,10 @@ public:
 
     // force a game state update based on current InputState
     void UpdateGameState();
+
+    // returns a pointer to scene data for the renderer
+    // this should be a curated list taken from the master list of entities
+    const ostrich::SceneData *GetSceneData() const noexcept;
 
 private:
 
@@ -74,6 +80,10 @@ private:
     ostrich::EventSender m_EventSender;
 
     InputStates m_InputStates;
+
+    ostrich::SceneData m_SceneData;
+
+    std::list<ostrich::IEntity> m_MasterEntityList;
 };
 
 } // namespace ms

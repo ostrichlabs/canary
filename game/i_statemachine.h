@@ -2,36 +2,34 @@
 ==========================================
 Copyright (c) 2020 Ostrich Labs
 
-Common interface for a renderer class
+Interface for state machine objects
 ==========================================
 */
 
-#ifndef I_RENDERER_H_
-#define I_RENDERER_H_
+#ifndef I_STATEMACHINE_H_
+#define I_STATEMACHINE_H_
 
+#include "eventqueue.h"
 #include "../common/console.h"
-#include "scenedata.h"
 
 namespace ostrich {
 
 /////////////////////////////////////////////////
 //
-class IRenderer {
+class IStateMachine {
 public:
 
-    IRenderer() noexcept {}
-    virtual ~IRenderer() {}
+    IStateMachine() noexcept {}
+    virtual ~IStateMachine() {}
 
     virtual bool isActive() const = 0;
 
-    virtual int Initialize(ConsolePrinter) = 0;
+    virtual int Initialize(ConsolePrinter, EventSender) = 0;
     virtual int Destroy() = 0;
-
-    virtual void RenderScene(const SceneData *scenedata, int32_t extrapolation) = 0;
 
 private:
 };
 
 } // namespace ostrich
 
-#endif /* I_RENDERER_H_ */
+#endif /* I_STATEMACHINE_H_ */

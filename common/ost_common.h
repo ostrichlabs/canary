@@ -108,6 +108,8 @@ const char *const g_PlatformString = u8"Linux";
 
 #   define OST_FUNCTION_SIGNATURE __FUNCSIG__
 
+#   define SIGHUP 1 // SIGHUP is POSIX, not standard C/C++
+
 namespace ostrich {
 const int32_t g_Platform = g_PlatformWindows;
 const char *const g_PlatformString = u8"Windows";

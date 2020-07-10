@@ -242,8 +242,10 @@
     <ClInclude Include="external\gl\wglext.h" />
     <ClInclude Include="game\errorcodes.h" />
     <ClInclude Include="game\i_display.h" />
+    <ClInclude Include="game\i_entity.h" />
     <ClInclude Include="game\i_input.h" />
     <ClInclude Include="game\i_renderer.h" />
+    <ClInclude Include="game\scenedata.h" />
     <ClInclude Include="game\keydef.h" />
     <ClInclude Include="game\message.h" />
     <ClInclude Include="game\eventqueue.h" />

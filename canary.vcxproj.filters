@@ -170,5 +170,11 @@
     <ClInclude Include="game\errorcodes.h">
       <Filter>game</Filter>
     </ClInclude>
+    <ClInclude Include="game\i_entity.h">
+      <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="game\scenedata.h">
+      <Filter>game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

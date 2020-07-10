@@ -26,8 +26,8 @@ int ostrich::EGLRenderer::Initialize(ostrich::ConsolePrinter conprinter) {
     if (this->isActive())
         return OST_ERROR_ISACTIVE;
 
-    m_ConPrinter = conprinter;
-    if (!m_ConPrinter.isValid())
+    m_ConsolePrinter = conprinter;
+    if (!m_ConsolePrinter.isValid())
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
     /*
@@ -52,9 +52,16 @@ int ostrich::EGLRenderer::Destroy() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::EGLRenderer::RenderScene() {
+void ostrich::EGLRenderer::RenderScene(const SceneData *scenedata, int32_t extrapolation) {
     if (!this->isActive())
         return;
+
+    if (scenedata == nullptr) {
+        m_ConsolePrinter.DebugMessage(u8"Warning: SceneData pointer is null in OpenGL 4 renderer");
+        throw ostrich::Exception(u8"SceneData pointer is null");
+    }
+    ::glClearColor(scenedata->getClearColorRed(), scenedata->getClearColorGreen(),
+        scenedata->getClearColorBlue(), scenedata->getClearColorAlpha());
 
     ::glViewport(0, 0, ostrich::g_ScreenWidth, ostrich::g_ScreenHeight);
     ::glClear(GL_COLOR_BUFFER_BIT);

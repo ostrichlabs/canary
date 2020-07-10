@@ -40,12 +40,12 @@ public:
     int Initialize(ConsolePrinter conprinter) override;
     int Destroy() override;
 
-    void RenderScene() override;
+    void RenderScene(const SceneData *scenedata, int32_t extrapolation) override;
 
 private:
 
     bool m_isActive;
-    ConsolePrinter m_ConPrinter;
+    ConsolePrinter m_ConsolePrinter;
 };
 
 } // namespace ostrich

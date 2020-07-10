@@ -34,13 +34,15 @@ public:
     enum class Type : int32_t {
         NULLTYPE = 0,
 
-        SYSTEM,         // system commands
+        SYSTEM, // system commands
 
-        INPUT_START = 10,   // first input message
-        INPUT_KEY = 10,     // someone pressed a key
+        STATE,  // state machine commands
+
+        INPUT_START = 100,  // first input message
+        INPUT_KEY = 100,    // someone pressed a key
         INPUT_BUTTON,       // someone pressed a button
         INPUT_MOUSEPOS,     // reported mouse cursor
-        INPUT_LAST = 20,
+        INPUT_LAST = 200,
 
         MAXTYPES
     };
@@ -97,15 +99,15 @@ private:
     Message(Type type, int32_t data1, int32_t data2, void *dataptr, const char *sender) :
         m_Type(type), m_Data1(data1), m_Data2(data2), m_DataPtr(dataptr), m_Sender(sender) {}
 
-    // Button message constructor
+    // single integer constructor (Button)
     Message(Type type, int32_t buttoncode, const char *sender) :
         Message(type, buttoncode, 0, nullptr, sender) {}
 
-    // Key message constructor
+    // integer + boolean constructor (keypress)
     Message(Type type, int32_t keycode, bool keydown, const char *sender) :
         Message(type, keycode, (keydown ? 1 : 0), nullptr, sender) {}
 
-    // Mouse coords, system message constructor
+    // dual integer constructor (Mouse coords, system messages)
     Message(Type type, int32_t data1, int32_t data2, const char *sender) :
         Message(type, data1, data2, nullptr, sender) {}
 

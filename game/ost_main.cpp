@@ -12,10 +12,6 @@ Copyright (c) 2020 Ostrich Labs
 #include "../game/errorcodes.h"
 #include "../game/message.h"
 
-#if (OST_WINDOWS == 1)
-#   undef SIGHUP
-#   define SIGHUP 1 // the Visual Studio 2019 version of csignal does not define SIGHUP
-#endif
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -27,7 +23,7 @@ m_isActive(false), m_Input(nullptr), m_Display(nullptr), m_Renderer(nullptr) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::Main::~Main() {
-    this->Destroy();
+    //this->Destroy();
 }
 
 /////////////////////////////////////////////////
@@ -128,12 +124,18 @@ int ostrich::Main::Initialize() {
 /////////////////////////////////////////////////
 void ostrich::Main::Destroy() {
     m_Console.WriteMessage(u8"Shutting down...");
-    if (m_Renderer)
+    if (m_Renderer) {
         m_Renderer->Destroy();
-    if (m_Display)
+        m_Renderer = nullptr;
+    }
+    if (m_Display) {
         m_Display->Destroy();
-    if (m_Input)
+        m_Display = nullptr;
+    }
+    if (m_Input) {
         m_Input->Destroy();
+        m_Input = nullptr;
+    }
     m_Console.Destroy();
     m_isActive = false;
 }
@@ -243,7 +245,13 @@ bool ostrich::Main::ProcessSystemMessage(const ostrich::Message &msg) {
 void ostrich::Main::RenderScene(int32_t extrapolation) {
     UNUSED_PARAMETER(extrapolation);
     if (m_Renderer && m_Display) {
-        m_Renderer->RenderScene();
-        m_Display->SwapBuffers();
+        auto scenedata = m_GameState.GetSceneData();
+        if (scenedata == nullptr) {
+
+        }
+        else {
+            m_Renderer->RenderScene(scenedata, extrapolation);
+            m_Display->SwapBuffers();
+        }
     }
 }
