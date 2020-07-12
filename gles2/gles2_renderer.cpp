@@ -62,7 +62,7 @@ void ostrich::EGLRenderer::RenderScene(const SceneData *scenedata, int32_t extra
         return;
 
     if (scenedata == nullptr) {
-        m_ConsolePrinter.DebugMessage(u8"Warning: SceneData pointer is null in OpenGL 4 renderer");
+        m_ConsolePrinter.DebugMessage(u8"Warning: SceneData pointer is null in OpenGL ES 2 renderer");
         throw ostrich::Exception(u8"SceneData pointer is null");
     }
     ::glClearColor(scenedata->getClearColorRed(), scenedata->getClearColorGreen(),
@@ -112,6 +112,7 @@ int ostrich::EGLRenderer::CheckCaps() {
     }
 
     // check GL versions: ES 2 and shading language 1
+    // Note: this is also done by ::eglInitialize() from DisplayRaspi
     if (es2version.find("OpenGL ES 2") == std::string_view::npos) {
         return OST_ERROR_ES2VERSION;
     }

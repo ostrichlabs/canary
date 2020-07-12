@@ -49,15 +49,13 @@ private:
 
     bool m_isActive;
 
-    ConsolePrinter  m_ConPrinter;
+    ConsolePrinter  m_ConsolePrinter;
 
 // OpenGL ES 2.0 for Raspi, now and FOREVER
     EGLConfig   m_GLConfig;
     EGLContext  m_GLContext;
     EGLDisplay  m_GLDisplay;
     EGLSurface  m_GLSurface;
-    EGLint      m_GLMajorVersion;
-    EGLint      m_GLMinorVersion;
 
     EGL_DISPMANX_WINDOW_T       m_NativeWindow;
     DISPMANX_ELEMENT_HANDLE_T   m_DispmanElement;

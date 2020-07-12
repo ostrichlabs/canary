@@ -15,7 +15,6 @@ IDisplay implementation for the Raspberry Pi
 ostrich::DisplayRaspi::DisplayRaspi() :
 m_isActive(false),
 m_GLConfig(nullptr), m_GLContext(nullptr), m_GLDisplay(nullptr), m_GLSurface(nullptr),
-m_GLMajorVersion(0), m_GLMinorVersion(0),
 m_NativeWindow({ 0 }), m_DispmanElement(0), m_DispmanDisplay(0), m_DispmanUpdate(0) {
 
 }
@@ -32,8 +31,8 @@ int ostrich::DisplayRaspi::Initialize(ostrich::ConsolePrinter conprinter) {
     if (this->isActive())
         return OST_ERROR_ISACTIVE;
 
-    m_ConPrinter = conprinter;
-    if (!m_ConPrinter.isValid())
+    m_ConsolePrinter = conprinter;
+    if (!m_ConsolePrinter.isValid())
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
     ::bcm_host_init();
@@ -140,10 +139,13 @@ int ostrich::DisplayRaspi::InitRenderer() {
     if (m_GLDisplay == EGL_NO_DISPLAY)
         return OST_ERROR_ES2GETDISPLAY;
 
-    EGLBoolean initresult = ::eglInitialize(m_GLDisplay, &m_GLMajorVersion,
-            &m_GLMinorVersion);
+    int major = 0;
+    int minor = 0;
+    EGLBoolean initresult = ::eglInitialize(m_GLDisplay, &major, &minor);
     if (initresult == EGL_FALSE)
         return OST_ERROR_ES2INITIALIZE;
+    if (major != 2)
+        return OST_ERROR_ES2VERSION;
 
     EGLint numconfigs = 0;
     if (!::eglChooseConfig(m_GLDisplay, configattribs, &m_GLConfig, 1, &numconfigs))
