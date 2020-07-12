@@ -119,6 +119,8 @@ const char *const g_PlatformString = u8"Windows";
 
 #if ((OST_RASPI != 1) && (OST_WINDOWS != 1))
 #   error "You must define RASPI or use Microsoft Visual Studio to build this project"
+#elif (OST_LINUX == 1)
+#   error "The Linux platform is not yet supported"
 #endif
 
 /////////////////////////////////////////////////

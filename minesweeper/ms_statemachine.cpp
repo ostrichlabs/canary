@@ -7,6 +7,7 @@ Minesweeper state machine
 */
 
 #include "ms_statemachine.h"
+#include "ms_common.h"
 #include "../common/error.h"
 
 /////////////////////////////////////////////////
@@ -19,6 +20,8 @@ int ms::StateMachine::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
     // any initialization of game-specific state should go here
+
+    m_ConsolePrinter.WriteMessage(u8"% version %", { ms::g_GameName, ms::version::g_Version });
 
     m_isActive = true;
     return 0;
@@ -71,6 +74,20 @@ void ms::StateMachine::ProcessInput(const ostrich::Message &msg) {
 /////////////////////////////////////////////////
 void ms::StateMachine::UpdateGameState() {
     if (m_isActive) {
+        float r = m_SceneData.getClearColorRed();
+        float g = m_SceneData.getClearColorGreen();
+        float b = m_SceneData.getClearColorBlue();
+        float a = m_SceneData.getClearColorAlpha();
+        if (m_InputStates.m_Keys[int(u8'R')]) {
+            r += 0.01f;
+        }
+        if (m_InputStates.m_Keys[int(u8'G')]) {
+            g += 0.01f;
+        }
+        if (m_InputStates.m_Keys[int(u8'B')]) {
+            b += 0.01f;
+        }
+        m_SceneData.setClearColor(r, g, b, a);
         if (m_InputStates.m_Keys[int(u8' ')])
             m_EventSender.Send(ostrich::Message::CreateSystemMessage(OST_SYSTEMMSG_QUIT, 0, m_Classname));
     }

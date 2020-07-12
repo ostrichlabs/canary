@@ -17,6 +17,7 @@ OpenGL 4.0 interface
 
 #include <windows.h>
 #include <gl/GL.h>
+#include "gl4_extensions.h"
 #include "../game/i_renderer.h"
 #include "../external/gl/glcorearb.h"
 #include "../external/gl/glext.h"
@@ -44,8 +45,15 @@ public:
 
 private:
 
+    int CheckCaps();
+
+    const GLint MAJOR_VERSION_MINIMUM = 4;
+    const char GL_SHADING_LANGUAGE_VERSION_MINIMUM = '4';
+
     bool m_isActive;
     ConsolePrinter m_ConsolePrinter;
+
+    GL4Extensions m_Ext;
 };
 
 } // namespace ostrich

@@ -20,7 +20,8 @@ Using good ol' defines because enums might by type safe but also I don't care
 #define OST_ERROR_EXCEPTPROXY   0x0000'0005 // ProxyException caught in Main
 
 // Event Queue
-#define OST_ERROR_EVENTQUEUE    0x0000'0100 // start of event queue errors   
+#define OST_ERROR_EVENTQUEUE    0x0000'0100 // start of event queue errors
+#define OST_ERROR_JOURNAL       (OST_ERROR_EVENTQUEUE+0x01) // unable to open Message Journal
 
 // Signal handler
 #define OST_ERROR_SIGNAL            0x0000'0200 // start of signal handler errors
@@ -40,16 +41,13 @@ Using good ol' defines because enums might by type safe but also I don't care
 #define OST_ERROR_WINREGISTERCLASS      (OST_ERROR_DISPLAY+0x01) // Windows - call to RegisterClass() failed
 #define OST_ERROR_WINCREATEWINDOW       (OST_ERROR_DISPLAY+0x02) // Windows - call to CreateWindowExW() failed
 #define OST_ERROR_WINGETDC              (OST_ERROR_DISPLAY+0x03) // Windows - call to GetDC() failed
-#define OST_ERROR_WGLGETEXTSTRING       (OST_ERROR_DISPLAY+0x04) // WGL - WGL_ARB_extensions_string unsupported
-#define OST_ERROR_WGLCREATECONTEXT      (OST_ERROR_DISPLAY+0x05) // WGL - WGL_ARB_create_context unsupported
-#define OST_ERROR_WGLCONTEXTPROFILE     (OST_ERROR_DISPLAY+0x06) // WGL - WGL_ARB_create_context_profile unsupported
-#define OST_ERROR_WGLPIXELFORMAT        (OST_ERROR_DISPLAY+0x07) // WGL - WGL_ARB_pixel_format unsupported
+#define OST_ERROR_WGLGETPROCADDR        (OST_ERROR_DISPLAY+0x04) // WGL - Critical WGL extension could not be loaded
+// 0x05-0x07 available
 #define OST_ERROR_WINGLCHOOSEFORMAT     (OST_ERROR_DISPLAY+0x08) // Windows - call to wglChoosePixelFormatARB() failed
 #define OST_ERROR_WINGLGETFORMAT        (OST_ERROR_DISPLAY+0x09) // Windows - call to wglGetPixelFormatAttribivARB() failed
 #define OST_ERROR_WINSETFORMAT          (OST_ERROR_DISPLAY+0x0A) // Windows - call to SetPixelFormat() failed
 #define OST_ERROR_WINGLCREATECONTEXT    (OST_ERROR_DISPLAY+0x0B) // Windows - call to wglCreateContextAttribsARB() failed
 #define OST_ERROR_WINGLMAKECURRENT      (OST_ERROR_DISPLAY+0x0C) // Windows - call to wglMakeCurrent() failed
-#define OST_ERROR_GETSTRINGVERSION      (OST_ERROR_DISPLAY+0x0D) // GL - call to glGetString(GL_VERSION) failed
 
 #define OST_ERROR_RASPIGETDISPSIZE      (OST_ERROR_DISPLAY+0x0E) // Raspi - call to graphics_get_display_size() failed
 #define OST_ERROR_RASPIDISPLAYOPEN      (OST_ERROR_DISPLAY+0x0F) // Raspi - call to vc_dispmanx_display_open() failed
@@ -64,6 +62,10 @@ Using good ol' defines because enums might by type safe but also I don't care
 
 // Renderer - OpenGL 4
 #define OST_ERROR_GL4 0x0000'0500 // start of OpenGL 4 renderer errors
+#define OST_ERROR_GL4GETSTRING          (OST_ERROR_GL4+0x01) // GL - call to glGetString() failed
+#define OST_ERROR_GL4VERSION            (OST_ERROR_GL4+0x02) // GL - retrieved OpenGL version unsupported
+#define OST_ERROR_GLSHADERVERSION       (OST_ERROR_GL4+0x03) // GL - OpenGL Shading Language version unsupported
+#define OST_ERROR_GL4COREGETPROCADDR    (OST_ERROR_GL4+0x04) // GL - Failed to load a core OpenGL 4 function pointer
 
 // Renderer - OpenGL ES2
 #define OST_ERROR_ES2 0x0000'0700 // start of OpenGL ES2 renderer errors

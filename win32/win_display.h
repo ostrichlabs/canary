@@ -99,10 +99,7 @@ private:
 
     bool m_isActive;
 
-    ConsolePrinter  m_ConPrinter;
-
-    GLint   m_GLMajorVersion;
-    GLint   m_GLMinorVersion;
+    ConsolePrinter  m_ConsolePrinter;
 
     WGLExtensions m_WGLExt;
 

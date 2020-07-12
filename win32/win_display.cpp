@@ -19,25 +19,25 @@ int ostrich::WGLExtensions::Retrieve(HDC hdc) {
     wglGetExtensionsStringARB =
         PFNWGLGETEXTENSIONSSTRINGARBPROC(::wglGetProcAddress("wglGetExtensionsStringARB"));
     if (wglGetExtensionsStringARB == nullptr)
-        return OST_ERROR_WGLGETEXTSTRING;
+        return OST_ERROR_WGLGETPROCADDR;
     m_WGL_ARB_extensions_string = true;
     extensionlist = this->wglGetExtensionsStringARB(hdc);
 
 // WGL_ARB_create_context
     if (extensionlist.find("WGL_ARB_create_context") == std::string::npos)
-        return OST_ERROR_WGLCREATECONTEXT;
+        return OST_ERROR_WGLGETPROCADDR;
     m_WGL_ARB_create_context = true;
     wglCreateContextAttribsARB =
         PFNWGLCREATECONTEXTATTRIBSARBPROC(::wglGetProcAddress("wglCreateContextAttribsARB"));
 
 // WGL_ARB_create_context_profile
     if (extensionlist.find("WGL_ARB_create_context_profile") == std::string::npos)
-        return OST_ERROR_WGLCONTEXTPROFILE;
+        return OST_ERROR_WGLGETPROCADDR;
     m_WGL_ARB_create_context_profile = true;
 
 // WGL_ARB_pixel_format
     if (extensionlist.find("WGL_ARB_pixel_format") == std::string::npos)
-        return OST_ERROR_WGLPIXELFORMAT;
+        return OST_ERROR_WGLGETPROCADDR;
     m_WGL_ARB_pixel_format = true;
     wglGetPixelFormatAttribivARB =
         PFNWGLGETPIXELFORMATATTRIBIVARBPROC(::wglGetProcAddress("wglGetPixelFormatAttribivARB"));
@@ -51,7 +51,6 @@ int ostrich::WGLExtensions::Retrieve(HDC hdc) {
 /////////////////////////////////////////////////
 ostrich::DisplayWindows::DisplayWindows() noexcept :
 m_isActive(false),
-m_GLMajorVersion(0), m_GLMinorVersion(0),
 m_WindowClassName(L"Canary"),
 m_HInstance(nullptr), m_HWnd(nullptr), m_HDC(nullptr), m_HGLRC(nullptr) {
 
@@ -68,8 +67,8 @@ int ostrich::DisplayWindows::Initialize(ostrich::ConsolePrinter conprinter) {
     if (this->isActive())
         return OST_ERROR_ISACTIVE;
 
-    m_ConPrinter = conprinter;
-    if (!m_ConPrinter.isValid())
+    m_ConsolePrinter = conprinter;
+    if (!m_ConsolePrinter.isValid())
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
     int result = this->InitWindow();
@@ -194,15 +193,6 @@ int ostrich::DisplayWindows::InitRenderer() {
         return OST_ERROR_WINGLCREATECONTEXT;
     if (::wglMakeCurrent(m_HDC, m_HGLRC) == false)
         return OST_ERROR_WINGLMAKECURRENT;
-
-    // TODO: Move this into the renderer? Or at least check that we got the version we want?
-    const char *versionstring = (const char *)::glGetString(GL_VERSION);
-    if (versionstring == nullptr)
-        return OST_ERROR_GETSTRINGVERSION;
-    if (::strlen(versionstring) >= 3) {
-        m_GLMajorVersion = versionstring[0] - '0';
-        m_GLMinorVersion = versionstring[2] - '0';
-    }
 
     return OST_ERROR_OK;
 }

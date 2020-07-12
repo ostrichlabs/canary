@@ -12,6 +12,9 @@ Copyright (c) 2020 Ostrich Labs
 #include "../game/errorcodes.h"
 #include "../game/message.h"
 
+// game-specific includes
+#include "../minesweeper/ms_common.h"
+
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -52,10 +55,9 @@ int ostrich::Main::Initialize() {
     m_Console.Initialize();
     m_ConsolePrinter = m_Console.CreatePrinter();
 
-    m_ConsolePrinter.WriteMessage(ostrich::g_GameName);
-    m_ConsolePrinter.WriteMessage(u8"Started at: %", { ostrich::datetime::timestamp() });
-    m_ConsolePrinter.WriteMessage(ost_version::g_String);
+    m_ConsolePrinter.WriteMessage(u8"Running % version %", { ostrich::g_EngineName, ostrich::version::g_EngineVersion });
     m_ConsolePrinter.WriteMessage(u8"Platform: %", { ostrich::g_PlatformString });
+    m_ConsolePrinter.WriteMessage(u8"Started at: %", { ostrich::datetime::timestamp() });
 
     int initresult = OST_ERROR_OK;
 
@@ -69,7 +71,7 @@ int ostrich::Main::Initialize() {
         }
 
         if (initresult == OST_ERROR_OK) {
-            m_ConsolePrinter.WriteMessage(u8"Initializing input handler");
+            m_ConsolePrinter.WriteMessage(u8"Initializing Input Handler");
             initresult = m_Input->Initialize(m_Console.CreatePrinter(), m_EventQueue.CreateSender());
         }
 
@@ -84,7 +86,7 @@ int ostrich::Main::Initialize() {
         }
 
         if (initresult == OST_ERROR_OK) {
-            m_ConsolePrinter.WriteMessage(u8"Initializing state machine");
+            m_ConsolePrinter.WriteMessage(u8"Initializing State Machine");
             initresult = m_GameState.Initialize(m_Console.CreatePrinter(), m_EventQueue.CreateSender());
         }
     }

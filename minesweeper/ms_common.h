@@ -2,16 +2,16 @@
 ==========================================
 Copyright (c) 2020 Ostrich Labs
 
-Engine version defines
+Common definitions
 ==========================================
 */
 
-#ifndef OST_VERSION_H_
-#define OST_VERSION_H_
+#ifndef MS_COMMON_H_
+#define MS_COMMON_H_
 
-namespace ostrich {
+namespace ms {
 
-constexpr char g_EngineName[] = u8"Canary";
+constexpr char g_GameName[] = u8"Minesweeper";
 
 namespace version {
 
@@ -21,15 +21,13 @@ namespace version {
 // ALPHA = Playable, feature incomplete
 // BETA = Playable, mostly feature complete, working on bugs/balance
 // RELEASE = Playable, feature complete
-constexpr char g_EngineVersion[] = u8"0.01.0001 DEV";
-constexpr int g_EngineMajor = 0;
-constexpr int g_EngineMinor = 1;
-constexpr int g_EngineBuild = 1;
+constexpr char g_Version[] = u8"0.01.0001 DEV";
+constexpr int g_Major = 0;
+constexpr int g_Minor = 1;
+constexpr int g_Build = 1;
 
 } // namespace version
 
-} // namespace ostrich
+} // namespace ms
 
-namespace ost_version = ostrich::version;
-
-#endif /* OST_VERSION_H_ */
+#endif /* MS_COMMON_H_ */

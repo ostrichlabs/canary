@@ -36,6 +36,17 @@ int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
     TODO: Hardcode resolution - use constants
     */
 
+    int result = m_Ext.Load();
+    if (result != OST_ERROR_OK) {
+        return result;
+    }
+
+    result = this->CheckCaps();
+    if (result != OST_ERROR_OK) {
+        m_ConsolePrinter.WriteMessage(u8"Last GL Error: %", { std::to_string(::glGetError()) });
+        return result;
+    }
+
     ::glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
     m_isActive = true;
@@ -67,4 +78,60 @@ void ostrich::GL4Renderer::RenderScene(const SceneData *scenedata, int32_t extra
         ::glViewport(0, 0, ostrich::g_ScreenWidth, ostrich::g_ScreenHeight);
         ::glClear(GL_COLOR_BUFFER_BIT);
     }
+}
+
+/////////////////////////////////////////////////
+// To print:
+// GL_EXTENSIONS
+/////////////////////////////////////////////////
+int ostrich::GL4Renderer::CheckCaps() {
+    const char *glstring = nullptr;
+
+    glstring = (const char *)::glGetString(GL_RENDERER);
+    if (glstring == nullptr) {
+        return OST_ERROR_GL4GETSTRING;
+    }
+    m_ConsolePrinter.WriteMessage(u8"OpenGL Renderer: %", { glstring });
+
+    glstring = (const char *)::glGetString(GL_VENDOR);
+    if (glstring == nullptr) {
+        return OST_ERROR_GL4GETSTRING;
+    }
+    m_ConsolePrinter.WriteMessage(u8"OpenGL Vendor: %", { glstring });
+
+    glstring = (const char *)::glGetString(GL_VERSION);
+    if (glstring == nullptr) {
+        return OST_ERROR_GL4GETSTRING;
+    }
+    m_ConsolePrinter.WriteMessage(u8"OpenGL Version: %", { glstring });
+
+    glstring = (const char *)::glGetString(GL_SHADING_LANGUAGE_VERSION);
+    if (glstring == nullptr) {
+        return OST_ERROR_GL4GETSTRING;
+    }
+    char glshadermajorversion = glstring[0];
+    m_ConsolePrinter.WriteMessage(u8"OpenGL Shading Language Version: %", { glstring });
+
+    // check GL versions
+    GLint major = 0;
+    ::glGetIntegerv(GL_MAJOR_VERSION, &major);
+    if (major < this->MAJOR_VERSION_MINIMUM) {
+        return OST_ERROR_GL4VERSION;
+    }
+    if (glshadermajorversion < GL_SHADING_LANGUAGE_VERSION_MINIMUM) {
+        return OST_ERROR_GLSHADERVERSION;
+    }
+
+    GLint extcount = 0;
+    std::string extensions;
+    const char *ext;
+    ::glGetIntegerv(GL_NUM_EXTENSIONS, &extcount);
+    for (GLint i = 0; i < extcount; i++) {
+        ext = (const char *)(m_Ext.glGetStringi(GL_EXTENSIONS, i));
+        extensions.append(ext);
+        extensions += ost_char::g_Space;
+    }
+    m_ConsolePrinter.WriteMessage(u8"Supported Extensions: %", { extensions });
+
+    return OST_ERROR_OK;
 }

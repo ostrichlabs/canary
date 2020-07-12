@@ -9,6 +9,7 @@ The EventQueue and its wrappers
 #ifndef EVENTQUEUE_H_
 #define EVENTQUEUE_H_
 
+#include <fstream>
 #include <queue>
 #include <utility>
 
@@ -26,7 +27,11 @@ class EventQueue {
 public:
 
     EventQueue() noexcept {}
-    virtual ~EventQueue() {}
+    virtual ~EventQueue() { m_MessageJournal.close(); }
+    EventQueue(EventQueue &&) = delete;
+    EventQueue(const EventQueue &) = delete;
+    EventQueue &operator=(EventQueue &&) = delete;
+    EventQueue &operator=(const EventQueue &) = delete;
 
     int Initialize();
 
@@ -41,7 +46,10 @@ public:
 
 private:
 
+    void WriteToJournal(const Message &msg);
+
     std::queue<Message> m_MessageQueue;
+    std::fstream m_MessageJournal; // TODO: maybe make this a debug toggle
 };
 
 /////////////////////////////////////////////////

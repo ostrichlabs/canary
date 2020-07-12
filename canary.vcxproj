@@ -191,6 +191,7 @@
     <ClCompile Include="common\utility.cpp" />
     <ClCompile Include="game\eventqueue.cpp" />
     <ClCompile Include="game\ost_main.cpp" />
+    <ClCompile Include="gl4\gl4_extensions.cpp" />
     <ClCompile Include="gl4\gl4_renderer.cpp" />
     <ClCompile Include="gles2\gles2_renderer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -224,6 +225,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="win32\win_display.cpp" />
+    <ClCompile Include="win32\win_gl4extensions.cpp" />
     <ClCompile Include="win32\win_input.cpp" />
     <ClCompile Include="win32\win_main.cpp" />
     <ClCompile Include="win32\win_wndproc.cpp" />
@@ -252,6 +254,7 @@
     <ClInclude Include="game\ost_main.h" />
     <ClInclude Include="game\ost_version.h" />
     <ClInclude Include="gl4\gl4_renderer.h" />
+    <ClInclude Include="gl4\gl4_extensions.h" />
     <ClInclude Include="gles2\gles2_renderer.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -270,6 +273,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="minesweeper\ms_common.h" />
     <ClInclude Include="minesweeper\ms_statemachine.h" />
     <ClInclude Include="raspi\raspi_display.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>

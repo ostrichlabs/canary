@@ -20,11 +20,11 @@ namespace ostrich {
 
 namespace timer {
 
-typedef std::chrono::high_resolution_clock              clock;
-typedef std::chrono::high_resolution_clock::time_point  time_point;
+typedef std::chrono::steady_clock               clock;
+typedef std::chrono::steady_clock::time_point   time_point;
 
 /////////////////////////////////////////////////
-// calls high_resolution_clock::now()
+// calls steady_clock::now()
 time_point now();
 
 /////////////////////////////////////////////////
@@ -38,12 +38,12 @@ double interval_d(const time_point &start, const time_point &end);
 namespace datetime {
 
 /////////////////////////////////////////////////
-// get a timestamp of now() as a string
+// get a simple timestamp of now() as a string
 std::string timestamp();
 
 /////////////////////////////////////////////////
-// convert a given timestamp to a string
-std::string timetostring(time_t &t);
+// get a timestamp of now() as a string with millisecond precision on time
+std::string timestamp_ms();
 
 } // namespace datetime
 

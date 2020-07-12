@@ -81,6 +81,12 @@
     <ClCompile Include="linux\linux_udevdevice.cpp">
       <Filter>linux</Filter>
     </ClCompile>
+    <ClCompile Include="win32\win_gl4extensions.cpp">
+      <Filter>win32</Filter>
+    </ClCompile>
+    <ClCompile Include="gl4\gl4_extensions.cpp">
+      <Filter>gl4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">
@@ -175,6 +181,12 @@
     </ClInclude>
     <ClInclude Include="game\scenedata.h">
       <Filter>game</Filter>
+    </ClInclude>
+    <ClInclude Include="minesweeper\ms_common.h">
+      <Filter>minesweeper</Filter>
+    </ClInclude>
+    <ClInclude Include="gl4\gl4_extensions.h">
+      <Filter>gl4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

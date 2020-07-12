@@ -13,7 +13,10 @@ Then when you want, say, mouse coords, you get just mouse coords.
 #ifndef MESSAGE_H_
 #define MESSAGE_H_
 
+#include <string>
+#include <string_view>
 #include <utility>
+#include "../common/datetime.h"
 #include "../common/ost_common.h"
 
 /////////////////////////////////////////////////
@@ -87,6 +90,7 @@ public:
     int32_t getData2() const noexcept { return m_Data2; }
 
     void *getDataPointer() const noexcept { return m_DataPtr; }
+    std::string_view getTimestamp() const noexcept { return std::string_view(m_Timestamp); }
     const char *getSender() const noexcept { return m_Sender; }
 
 private:
@@ -97,7 +101,8 @@ private:
 
     // Delegate constructor
     Message(Type type, int32_t data1, int32_t data2, void *dataptr, const char *sender) :
-        m_Type(type), m_Data1(data1), m_Data2(data2), m_DataPtr(dataptr), m_Sender(sender) {}
+        m_Type(type), m_Data1(data1), m_Data2(data2), m_DataPtr(dataptr), m_Sender(sender), m_Timestamp(ostrich::datetime::timestamp())
+    {}
 
     // single integer constructor (Button)
     Message(Type type, int32_t buttoncode, const char *sender) :
@@ -117,6 +122,7 @@ private:
     void *m_DataPtr;
 
     const char *m_Sender;
+    std::string m_Timestamp;
 };
 
 } // namespace ostrich
