@@ -43,6 +43,8 @@ public:
 
 private:
 
+    int CheckCaps();
+
     bool m_isActive;
     ConsolePrinter m_ConsolePrinter;
 };

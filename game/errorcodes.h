@@ -61,14 +61,17 @@ Using good ol' defines because enums might by type safe but also I don't care
 #define OST_ERROR_ES2MAKECURRENT        (OST_ERROR_DISPLAY+0x17) // ES2 - call to eglMakeCurrent() failed
 
 // Renderer - OpenGL 4
-#define OST_ERROR_GL4 0x0000'0500 // start of OpenGL 4 renderer errors
+#define OST_ERROR_GL4                   0x0000'0500 // start of OpenGL 4 renderer errors
 #define OST_ERROR_GL4GETSTRING          (OST_ERROR_GL4+0x01) // GL - call to glGetString() failed
 #define OST_ERROR_GL4VERSION            (OST_ERROR_GL4+0x02) // GL - retrieved OpenGL version unsupported
 #define OST_ERROR_GLSHADERVERSION       (OST_ERROR_GL4+0x03) // GL - OpenGL Shading Language version unsupported
 #define OST_ERROR_GL4COREGETPROCADDR    (OST_ERROR_GL4+0x04) // GL - Failed to load a core OpenGL 4 function pointer
 
 // Renderer - OpenGL ES2
-#define OST_ERROR_ES2 0x0000'0700 // start of OpenGL ES2 renderer errors
+#define OST_ERROR_ES2                   0x0000'0700 // start of OpenGL ES2 renderer errors
+#define OST_ERROR_ES2GETSTRING          (OST_ERROR_ES2+0x01) // ES2 - call to glGetString() failed
+#define OST_ERROR_ES2VERSION            (OST_ERROR_ES2+0x02) // ES2 - retrieved OpenGL ES version unsupported
+#define OST_ERROR_ES2SHADERVERSION      (OST_ERROR_ES2+0x03) // ES2 - OpenGL ES Shading Language version unsupported
 
 // State machine
 #define OST_ERROR_STATEMACHINE 0x0000'00900 // start of state machine errors

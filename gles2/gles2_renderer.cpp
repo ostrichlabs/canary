@@ -5,6 +5,7 @@ Copyright (c) 2020 Ostrich Labs
 */
 
 #include "gles2_renderer.h"
+#include <string_view>
 #include "../common/error.h"
 #include "../game/errorcodes.h"
 
@@ -33,6 +34,10 @@ int ostrich::EGLRenderer::Initialize(ostrich::ConsolePrinter conprinter) {
     /*
     TODO: Hardcode resolution - use constants
     */
+
+    int result = this->CheckCaps();
+    if (result != OST_ERROR_OK)
+        return result;
 
     ::glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -65,4 +70,54 @@ void ostrich::EGLRenderer::RenderScene(const SceneData *scenedata, int32_t extra
 
     ::glViewport(0, 0, ostrich::g_ScreenWidth, ostrich::g_ScreenHeight);
     ::glClear(GL_COLOR_BUFFER_BIT);
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+int ostrich::EGLRenderer::CheckCaps() {
+    const char *glstring = nullptr;
+
+    glstring = (const char *)::glGetString(GL_RENDERER);
+    if (glstring == nullptr) {
+        return OST_ERROR_ES2GETSTRING;
+    }
+    m_ConsolePrinter.WriteMessage(u8"OpenGL Renderer: %", { glstring });
+
+    glstring = (const char *)::glGetString(GL_VENDOR);
+    if (glstring == nullptr) {
+        return OST_ERROR_ES2GETSTRING;
+    }
+    m_ConsolePrinter.WriteMessage(u8"OpenGL Vendor: %", { glstring });
+
+    glstring = (const char *)::glGetString(GL_VERSION);
+    if (glstring == nullptr) {
+        return OST_ERROR_ES2GETSTRING;
+    }
+    m_ConsolePrinter.WriteMessage(u8"OpenGL Version: %", { glstring });
+    std::string_view es2version = glstring;
+
+    glstring = (const char *)::glGetString(GL_SHADING_LANGUAGE_VERSION);
+    if (glstring == nullptr) {
+        return OST_ERROR_ES2GETSTRING;
+    }
+    m_ConsolePrinter.WriteMessage(u8"OpenGL Shading Language Version: %", { glstring });
+    std::string_view shadingversion = glstring;
+
+    glstring = (const char *)::glGetString(GL_EXTENSIONS);
+    if (glstring == nullptr) {
+        m_ConsolePrinter.WriteMessage(u8"No OpenGL extensions supported");
+    }
+    else {
+        m_ConsolePrinter.WriteMessage(u8"Supported Extensions: %", { glstring });
+    }
+
+    // check GL versions: ES 2 and shading language 1
+    if (es2version.find("OpenGL ES 2") == std::string_view::npos) {
+        return OST_ERROR_ES2VERSION;
+    }
+    if (shadingversion.find("OpenGL ES GLSL ES 1") == std::string_view::npos) {
+        return OST_ERROR_ES2SHADERVERSION;
+    }
+
+    return OST_ERROR_OK;
 }

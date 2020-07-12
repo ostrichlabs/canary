@@ -230,6 +230,7 @@ bool ostrich::Main::ProcessSystemMessage(const ostrich::Message &msg) {
             if ((signal == SIGINT) || (signal == SIGTERM) || (signal == SIGHUP)) {
                 return true;
             }
+            break;
         }
         case OST_SYSTEMMSG_NULL:
         default:
