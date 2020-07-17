@@ -93,10 +93,10 @@
     <ClCompile Include="gl4\gl4_extensions.cpp">
       <Filter>gl4</Filter>
     </ClCompile>
-    <ClCompile Include="common\win32\datetime_win.cpp">
+    <ClCompile Include="common\win32\win_datetime.cpp">
       <Filter>common\win32</Filter>
     </ClCompile>
-    <ClCompile Include="common\linux\datetime_linux.cpp">
+    <ClCompile Include="common\linux\linux_datetime.cpp">
       <Filter>common\linux</Filter>
     </ClCompile>
   </ItemGroup>
