@@ -52,7 +52,6 @@ namespace ost_char = ostrich::character;
 // Platform defines
 // RASPI has to be defined at the command line for this to function properly
 // Each platform needs to define g_Platform and g_PlatformString
-// TODO: Add generic Linux?
 #undef OST_LINUX
 #undef OST_RASPI
 #undef OST_DEBUG_BUILD

@@ -29,7 +29,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="${ProjName}debug" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488" name="Debug" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.enablement=null,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.image=null,org.eclipse.cdt.docker.launcher.containerbuild.property.connection=null" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postbuildStep="">
+                <configuration artifactName="${ProjName}debug" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488" name="Debug" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.enablement=null,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.connection=null,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.image=null" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postbuildStep="">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488." name="/" resourcePath="">
                         						
@@ -133,12 +133,6 @@
                         					
                     </folderInfo>
                     					
-                    <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1759295711" name="win_datetime.cpp" rcbsApplicability="disable" resourcePath="common/win32/win_datetime.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367.2057404176">
-                        						
-                        <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367.2057404176" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367"/>
-                        					
-                    </fileInfo>
-                    					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1067757989" name="canary.sln" rcbsApplicability="disable" resourcePath="canary.sln" toolsToInvoke=""/>
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1202417259" name="canary.vcxproj" rcbsApplicability="disable" resourcePath="canary.vcxproj" toolsToInvoke=""/>
@@ -187,7 +181,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820" name="Release" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="cdt.managedbuild.config.gnu.cross.exe.release" postbuildStep="">
+                <configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820" name="Release" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=" parent="cdt.managedbuild.config.gnu.cross.exe.release" postbuildStep="">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820." name="/" resourcePath="">
                         						
@@ -288,12 +282,6 @@
                         </toolChain>
                         					
                     </folderInfo>
-                    					
-                    <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.1504305186" name="win_datetime.cpp" rcbsApplicability="disable" resourcePath="common/win32/win_datetime.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874.1633818701">
-                        						
-                        <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874.1633818701" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874"/>
-                        					
-                    </fileInfo>
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.1840011999" name="canary.sln" rcbsApplicability="disable" resourcePath="canary.sln" toolsToInvoke=""/>
                     					

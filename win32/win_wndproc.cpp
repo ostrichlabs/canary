@@ -11,6 +11,7 @@ Copyright (c) 2020 Ostrich Labs
 #endif
 
 #include "win_wndproc.h"
+#include "win_input.h"
 #include <windowsx.h>
 #include "../common/error.h"
 #include "../common/ost_common.h"
@@ -20,13 +21,14 @@ namespace {
 
 ostrich::EventSender l_EventSender;
 
+} // anonymous namespace
+
 /////////////////////////////////////////////////
 // Translates VK_ values into internal/UTF-8 equivalents
 // There are some questions about international keyboards for some keys
 // But I will cross that bridge when I get to it
 /////////////////////////////////////////////////
-int32_t TranslateKey(int32_t vkey) {
-
+int32_t ostrich::windows::TranslateKey(int32_t vkey) {
     // ASCII/UTF-8 0-9 and A-Z
     if (((vkey >= 0x30) && (vkey <= 0x39)) ||
         ((vkey >= 0x41) && (vkey <= 0x5A))) {
@@ -103,6 +105,10 @@ int32_t TranslateKey(int32_t vkey) {
         }
 
     // Those utility keys above the arrow keys
+        case VK_SCROLL:
+        {
+            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SCROLLOCK);
+        }
         case VK_PAUSE:
         {
             return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAUSE);
@@ -156,10 +162,6 @@ int32_t TranslateKey(int32_t vkey) {
         case VK_NUMLOCK:
         {
             return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_NUMLOCK);
-        }
-        case VK_SCROLL:
-        {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SCROLLOCK);
         }
     
     // Those fancy extra characters on US keyboards
@@ -217,9 +219,6 @@ int32_t TranslateKey(int32_t vkey) {
     }
 }
 
-} // anonymous namespace
-
-
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::InitWndProc(ostrich::EventSender eventsender) {
@@ -272,14 +271,14 @@ LRESULT CALLBACK ostrich::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
         case WM_SYSKEYDOWN:
         case WM_KEYDOWN:
         {
-            int32_t vkey = ::TranslateKey(static_cast<int32_t>(wParam));
+            int32_t vkey = ostrich::windows::TranslateKey(static_cast<int32_t>(wParam));
             l_EventSender.Send(ostrich::Message::CreateKeyMessage(vkey, true, OST_FUNCTION_SIGNATURE));
             break;
         }
         case WM_SYSKEYUP:
         case WM_KEYUP:
         {
-            int32_t vkey = ::TranslateKey(static_cast<int32_t>(wParam));
+            int32_t vkey = ostrich::windows::TranslateKey(static_cast<int32_t>(wParam));
             l_EventSender.Send(ostrich::Message::CreateKeyMessage(vkey, false, OST_FUNCTION_SIGNATURE));
             break;
         }

@@ -26,6 +26,14 @@ Meant for use on Linux platforms not using X11 or Wayland for some reason (like 
 
 namespace ostrich {
 
+namespace linux {
+
+/////////////////////////////////////////////////
+// Translates Linux virtual keys to internal ostrich format
+int32_t TranslateKey(__u16 vkey);
+
+} // namespace linux
+
 /////////////////////////////////////////////////
 //
 class InputLinux : public IInput {
@@ -61,8 +69,6 @@ private:
     int ScanDevices();
     void AddDevice(udev_device *device);
     void ClearDevices();
-
-    int32_t TranslateKey(__u16 vkey);
 
     ConsolePrinter m_ConsolePrinter;
     EventSender m_EventSender;

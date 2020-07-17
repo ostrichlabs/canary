@@ -28,192 +28,7 @@ volatile int ostrich::InputLinux::ms_LastRaisedSignal = 0;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::InputLinux::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich::EventSender eventsender) {
-    if (this->isActive()) {
-        return OST_ERROR_ISACTIVE;
-    }
-
-    m_ConsolePrinter = consoleprinter;
-    m_EventSender = eventsender;
-    if ((!m_ConsolePrinter.isValid()) || (!m_EventSender.isValid()))
-        throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
-
-    int result = InputLinux::InitializeSignalHandler();
-    if (result != OST_ERROR_OK)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
-
-    result = this->InitUDev();
-    if (result != OST_ERROR_OK)
-        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
-
-    m_ConsolePrinter.DebugMessage(u8"Added % devices", { std::to_string(m_Devices.size()) });
-
-    m_isActive = true;
-    return OST_ERROR_OK;
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::InputLinux::Destroy() {
-    if (m_isActive) {
-        this->ClearDevices();
-        if (m_Monitor) {
-            ::udev_monitor_unref(m_Monitor);
-            m_Monitor = nullptr;
-        }
-        if (m_udev) {
-            ::udev_unref(m_udev);
-            m_udev = nullptr;
-        }
-        m_EventSender.AttachParent(nullptr);
-        m_ConsolePrinter.AttachParent(nullptr);
-        m_isActive = false;
-    }
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::InputLinux::ProcessKBM() {
-    input_event input[32];
-    ssize_t bytesread = 0;
-    bool done = false;
-    //m_ConsolePrinter.DebugMessage(u8"In InputLinux::ProcessKBM()");
-    for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
-        done = false;
-        int filehandle = (*itr).getFileHandle();
-        while (!done) {
-            bytesread = ::read(filehandle, input, sizeof(input));
-            if (bytesread <= 0) {
-                done = true;
-            }
-            else {
-                int count = bytesread / sizeof(input[0]);
-                m_ConsolePrinter.DebugMessage(u8"Read % bytes, making % events",
-                    { std::to_string(bytesread), std::to_string(count)});
-                for (int i = 0; i < count; i++) {
-                    if (input[i].type == EV_KEY) { // keyboard or mouse buttons
-                        m_ConsolePrinter.DebugMessage(u8"EV_KEY: code \"%\" value \"%\"",
-                            { std::to_string(input[i].code), std::to_string(input[i].value) });
-                        int32_t key = this->TranslateKey(input[i].code);
-                        bool keystate = (input[i].value == 1) ? true : false;
-                        m_EventSender.Send(ostrich::Message::CreateKeyMessage(key, keystate, OST_FUNCTION_SIGNATURE));
-                    }
-                    else if (input[i].type == EV_REL) { // mouse moved
-                        m_ConsolePrinter.DebugMessage(u8"EV_REL: code \"%\" value \"%\"",
-                            { std::to_string(input[i].code), std::to_string(input[i].value) });
-                    }
-                }
-            }
-        }
-    }
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::InputLinux::ProcessOSMessages() {
-    if (InputLinux::ms_LastRaisedSignal != 0) {
-        int32_t code = 0; // TODO: reserved for when system messages get their own defines
-        if (InputLinux::ms_SignalInfo) {
-            code = InputLinux::ms_SignalInfo->si_code;
-        }
-        m_EventSender.Send(ostrich::Message::CreateSystemMessage(OST_SYSTEMMSG_SIGNAL,
-            InputLinux::ms_LastRaisedSignal, OST_FUNCTION_SIGNATURE));
-        InputLinux::ms_LastRaisedSignal = 0;
-        InputLinux::ms_SignalInfo = nullptr;
-    }
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-int ostrich::InputLinux::InitUDev() {
-    m_udev = ::udev_new();
-    if (!m_udev) {
-        return OST_ERROR_UDEVINIT;
-    }
-
-    m_Monitor = ::udev_monitor_new_from_netlink(m_udev, "udev");
-    if (!m_Monitor) {
-        return OST_ERROR_UDEVMONITOR;
-    }
-
-    ::udev_monitor_filter_add_match_subsystem_devtype(m_Monitor, "input", NULL);
-    ::udev_monitor_enable_receiving(m_Monitor);
-
-    this->ScanDevices();
-    if (m_Devices.size() == 0) {
-        return OST_ERROR_UDEVNODEVICES;
-    }
-
-    return OST_ERROR_OK;
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-int ostrich::InputLinux::ScanDevices() {
-    if (m_udev) {
-        udev_enumerate *enumerate = nullptr;
-
-        enumerate = ::udev_enumerate_new(m_udev);
-        if (!enumerate) {
-            return OST_ERROR_UDEVENUM;
-        }
-
-        ::udev_enumerate_add_match_subsystem(enumerate, "input");
-        ::udev_enumerate_scan_devices(enumerate);
-
-        m_ConsolePrinter.DebugMessage(u8"Enumerating devices");
-        udev_list_entry *entrylist = ::udev_enumerate_get_list_entry(enumerate);
-        udev_list_entry *entry = nullptr;
-        for (entry = entrylist;
-             entry != nullptr;
-             entry = ::udev_list_entry_get_next(entry)) {
-            const char *syspath = ::udev_list_entry_get_name(entry);
-            udev_device *device = ::udev_device_new_from_syspath(m_udev, syspath);
-            if (device != nullptr) {
-                this->AddDevice(device);
-                ::udev_device_unref(device);
-            }
-        }
-
-        ::udev_enumerate_unref(enumerate);
-    }
-
-    return OST_ERROR_OK;
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::InputLinux::AddDevice(udev_device *device) {
-    const char *path = ::udev_device_get_devnode(device);
-    if (path == nullptr) {
-        return;
-    }
-
-    // detect if we've added this one already (somehow?)
-    for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
-        if (::strcmp((*itr).getPath(), path) == 0) {
-            return;
-        }
-    }
-
-    ostrich::UDevDevice newdevice;
-    if (newdevice.Initialize(device, path)) {
-        m_Devices.push_back(newdevice);
-    }
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::InputLinux::ClearDevices() {
-    for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
-        (*itr).Destroy();
-    }
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-int32_t ostrich::InputLinux::TranslateKey(__u16 vkey) {
-
+int32_t ostrich::linux::TranslateKey(__u16 vkey) {
     // Using a table for most of these because the Linux event codes are all over the goddamn place
     static int32_t keytable[] =
     { 0, ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ESCAPE),
@@ -330,6 +145,190 @@ int32_t ostrich::InputLinux::TranslateKey(__u16 vkey) {
     }
 
     return 0;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+int ostrich::InputLinux::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich::EventSender eventsender) {
+    if (this->isActive()) {
+        return OST_ERROR_ISACTIVE;
+    }
+
+    m_ConsolePrinter = consoleprinter;
+    m_EventSender = eventsender;
+    if ((!m_ConsolePrinter.isValid()) || (!m_EventSender.isValid()))
+        throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
+
+    int result = InputLinux::InitializeSignalHandler();
+    if (result != OST_ERROR_OK)
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
+
+    result = this->InitUDev();
+    if (result != OST_ERROR_OK)
+        throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
+
+    m_ConsolePrinter.DebugMessage(u8"Added % devices", { std::to_string(m_Devices.size()) });
+
+    m_isActive = true;
+    return OST_ERROR_OK;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::InputLinux::Destroy() {
+    if (m_isActive) {
+        this->ClearDevices();
+        if (m_Monitor) {
+            ::udev_monitor_unref(m_Monitor);
+            m_Monitor = nullptr;
+        }
+        if (m_udev) {
+            ::udev_unref(m_udev);
+            m_udev = nullptr;
+        }
+        m_EventSender.AttachParent(nullptr);
+        m_ConsolePrinter.AttachParent(nullptr);
+        m_isActive = false;
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::InputLinux::ProcessKBM() {
+    input_event input[32];
+    ssize_t bytesread = 0;
+    bool done = false;
+    //m_ConsolePrinter.DebugMessage(u8"In InputLinux::ProcessKBM()");
+    for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
+        done = false;
+        int filehandle = (*itr).getFileHandle();
+        while (!done) {
+            bytesread = ::read(filehandle, input, sizeof(input));
+            if (bytesread <= 0) {
+                done = true;
+            }
+            else {
+                int count = bytesread / sizeof(input[0]);
+                m_ConsolePrinter.DebugMessage(u8"Read % bytes, making % events",
+                    { std::to_string(bytesread), std::to_string(count)});
+                for (int i = 0; i < count; i++) {
+                    if (input[i].type == EV_KEY) { // keyboard or mouse buttons
+                        m_ConsolePrinter.DebugMessage(u8"EV_KEY: code \"%\" value \"%\"",
+                            { std::to_string(input[i].code), std::to_string(input[i].value) });
+                        int32_t key = ostrich::linux::TranslateKey(input[i].code);
+                        bool keystate = (input[i].value == 1) ? true : false;
+                        m_EventSender.Send(ostrich::Message::CreateKeyMessage(key, keystate, OST_FUNCTION_SIGNATURE));
+                    }
+                    else if (input[i].type == EV_REL) { // mouse moved
+                        m_ConsolePrinter.DebugMessage(u8"EV_REL: code \"%\" value \"%\"",
+                            { std::to_string(input[i].code), std::to_string(input[i].value) });
+                    }
+                }
+            }
+        }
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::InputLinux::ProcessOSMessages() {
+    if (InputLinux::ms_LastRaisedSignal != 0) {
+        int32_t code = 0; // TODO: reserved for when system messages get their own defines
+        if (InputLinux::ms_SignalInfo) {
+            code = InputLinux::ms_SignalInfo->si_code;
+        }
+        m_EventSender.Send(ostrich::Message::CreateSystemMessage(OST_SYSTEMMSG_SIGNAL,
+            InputLinux::ms_LastRaisedSignal, OST_FUNCTION_SIGNATURE));
+        InputLinux::ms_LastRaisedSignal = 0;
+        InputLinux::ms_SignalInfo = nullptr;
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+int ostrich::InputLinux::InitUDev() {
+    m_udev = ::udev_new();
+    if (!m_udev) {
+        return OST_ERROR_UDEVINIT;
+    }
+
+    m_Monitor = ::udev_monitor_new_from_netlink(m_udev, "udev");
+    if (!m_Monitor) {
+        return OST_ERROR_UDEVMONITOR;
+    }
+
+    ::udev_monitor_filter_add_match_subsystem_devtype(m_Monitor, "input", NULL);
+    ::udev_monitor_enable_receiving(m_Monitor);
+
+    this->ScanDevices();
+    if (m_Devices.size() == 0) {
+        return OST_ERROR_UDEVNODEVICES;
+    }
+
+    return OST_ERROR_OK;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+int ostrich::InputLinux::ScanDevices() {
+    if (m_udev) {
+        udev_enumerate *enumerate = nullptr;
+
+        enumerate = ::udev_enumerate_new(m_udev);
+        if (!enumerate) {
+            return OST_ERROR_UDEVENUM;
+        }
+
+        ::udev_enumerate_add_match_subsystem(enumerate, "input");
+        ::udev_enumerate_scan_devices(enumerate);
+
+        m_ConsolePrinter.DebugMessage(u8"Enumerating devices");
+        udev_list_entry *entrylist = ::udev_enumerate_get_list_entry(enumerate);
+        udev_list_entry *entry = nullptr;
+        for (entry = entrylist;
+             entry != nullptr;
+             entry = ::udev_list_entry_get_next(entry)) {
+            const char *syspath = ::udev_list_entry_get_name(entry);
+            udev_device *device = ::udev_device_new_from_syspath(m_udev, syspath);
+            if (device != nullptr) {
+                this->AddDevice(device);
+                ::udev_device_unref(device);
+            }
+        }
+
+        ::udev_enumerate_unref(enumerate);
+    }
+
+    return OST_ERROR_OK;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::InputLinux::AddDevice(udev_device *device) {
+    const char *path = ::udev_device_get_devnode(device);
+    if (path == nullptr) {
+        return;
+    }
+
+    // detect if we've added this one already (somehow?)
+    for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
+        if (::strcmp((*itr).getPath(), path) == 0) {
+            return;
+        }
+    }
+
+    ostrich::UDevDevice newdevice;
+    if (newdevice.Initialize(device, path)) {
+        m_Devices.push_back(newdevice);
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::InputLinux::ClearDevices() {
+    for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
+        (*itr).Destroy();
+    }
 }
 
 /////////////////////////////////////////////////

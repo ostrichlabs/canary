@@ -5,10 +5,8 @@ Copyright (c) 2020 Ostrich Labs
 */
 
 #include "datetime.h"
+#include <cstdio>
 #include <ctime>
-#include <iomanip>
-#include <ratio>
-#include <sstream>
 #include "ost_common.h"
 
 /////////////////////////////////////////////////
@@ -41,32 +39,10 @@ std::string ostrich::datetime::timestamp() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 std::string ostrich::datetime::tmtostring(::tm &timedata, int milli) {
-    std::ostringstream oss;
+    constexpr int BUFSIZE = 30;
+    char buffer[BUFSIZE] = { };
+    ::snprintf(buffer, BUFSIZE, "%04d-%02d-%02d %02d:%02d:%02d.%03d", timedata.tm_year, timedata.tm_mon, timedata.tm_mday,
+        timedata.tm_hour, timedata.tm_min, timedata.tm_sec, milli);
 
-    oss << timedata.tm_year << u8'-';
-    if (timedata.tm_mon < 10)
-        oss << u8'0';
-    oss << timedata.tm_mon << u8'-';
-    if (timedata.tm_mday < 10)
-        oss << u8'0';
-    oss << timedata.tm_mday << ost_char::g_Space;
-    if (timedata.tm_hour < 10)
-        oss << u8'0';
-    oss << timedata.tm_hour << u8':';
-    if (timedata.tm_min < 10)
-        oss << u8'0';
-    oss << timedata.tm_min << u8':';
-    if (timedata.tm_sec < 10)
-        oss << u8'0';
-    oss << timedata.tm_sec;
-    if (milli > -1) {
-        oss << u8'.';
-        if (milli < 100)
-            oss << u8'0';
-        if (milli < 10)
-            oss << u8'0';
-        oss << milli;
-    }
-
-    return oss.str();
+    return buffer;
 }
