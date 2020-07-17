@@ -133,6 +133,12 @@
                         					
                     </folderInfo>
                     					
+                    <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1813815964" name="datetime_win.cpp" rcbsApplicability="disable" resourcePath="common/datetime_win.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367.600236718">
+                        						
+                        <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367.600236718" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367"/>
+                        					
+                    </fileInfo>
+                    					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1067757989" name="canary.sln" rcbsApplicability="disable" resourcePath="canary.sln" toolsToInvoke=""/>
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1202417259" name="canary.vcxproj" rcbsApplicability="disable" resourcePath="canary.vcxproj" toolsToInvoke=""/>
@@ -143,7 +149,7 @@
                     					
                     <sourceEntries>
                         						
-                        <entry excluding="unittest|canary.vcxproj.user|canary.vcxproj|canary.sln|canary.vcxproj.filters|win32|gl4" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="common/datetime_win.cpp|unittest|canary.vcxproj.user|canary.vcxproj|canary.sln|canary.vcxproj.filters|win32|gl4" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                         					
                     </sourceEntries>
                     				
@@ -283,6 +289,12 @@
                         					
                     </folderInfo>
                     					
+                    <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.246535368" name="datetime_win.cpp" rcbsApplicability="disable" resourcePath="common/datetime_win.cpp" toolsToInvoke="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874.991900170">
+                        						
+                        <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874.991900170" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874"/>
+                        					
+                    </fileInfo>
+                    					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.1840011999" name="canary.sln" rcbsApplicability="disable" resourcePath="canary.sln" toolsToInvoke=""/>
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.941535560" name="canary.vcxproj" rcbsApplicability="disable" resourcePath="canary.vcxproj" toolsToInvoke=""/>
@@ -293,7 +305,7 @@
                     					
                     <sourceEntries>
                         						
-                        <entry excluding="unittest|gl4|win32|canary.vcxproj.user|canary.vcxproj.filters|canary.vcxproj|canary.sln" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="common/datetime_win.cpp|unittest|gl4|win32|canary.vcxproj.user|canary.vcxproj.filters|canary.vcxproj|canary.sln" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                         					
                     </sourceEntries>
                     				

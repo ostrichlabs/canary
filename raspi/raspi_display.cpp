@@ -148,8 +148,6 @@ int ostrich::DisplayRaspi::InitRenderer() {
     EGLBoolean initresult = ::eglInitialize(m_GLDisplay, &major, &minor);
     if (initresult == EGL_FALSE)
         return OST_ERROR_ES2INITIALIZE;
-    if (major != 2)
-        return OST_ERROR_ES2VERSION;
 
     EGLint numconfigs = 0;
     if (!::eglChooseConfig(m_GLDisplay, configattribs, &m_GLConfig, 1, &numconfigs))

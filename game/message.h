@@ -101,7 +101,7 @@ private:
 
     // Delegate constructor
     Message(Type type, int32_t data1, int32_t data2, void *dataptr, const char *sender) :
-        m_Type(type), m_Data1(data1), m_Data2(data2), m_DataPtr(dataptr), m_Sender(sender), m_Timestamp(ostrich::datetime::timestamp())
+        m_Type(type), m_Data1(data1), m_Data2(data2), m_DataPtr(dataptr), m_Sender(sender), m_Timestamp(ostrich::datetime::timestamp_ms())
     {}
 
     // single integer constructor (Button)

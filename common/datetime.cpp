@@ -11,24 +11,6 @@ Copyright (c) 2020 Ostrich Labs
 #include <sstream>
 #include "ost_common.h"
 
-namespace {
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-std::string timetostring(time_t &t) {
-    std::tm now_tm;
-#if (OST_WINDOWS == 1) // god damn you windows
-    ::localtime_s(&now_tm, &t);
-#else
-    now_tm = *::localtime(&t);
-#endif
-    std::ostringstream oss;
-    oss << std::put_time(&now_tm, "%F %T");
-    return oss.str();
-}
-
-} // anonymous namespace
-
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::timer::time_point ostrich::timer::now() {
@@ -45,18 +27,46 @@ int32_t ostrich::timer::interval(const ostrich::timer::time_point &start, const 
 /////////////////////////////////////////////////
 double ostrich::timer::interval_d(const ostrich::timer::time_point &start, const ostrich::timer::time_point &end) {
     return std::chrono::duration<double, std::milli>(end - start).count();
-    //return std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 std::string ostrich::datetime::timestamp() {
-    time_t now_t = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-    return ::timetostring(now_t);
+    ::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
+    ::tm timedata = { };
+    ostrich::datetime::localtime(&now, &timedata);
+    return ostrich::datetime::tmtostring(timedata);
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-std::string ostrich::datetime::timestamp_ms() {
-    return "";
+std::string ostrich::datetime::tmtostring(::tm &timedata, int milli) {
+    std::ostringstream oss;
+
+    oss << timedata.tm_year << u8'-';
+    if (timedata.tm_mon < 10)
+        oss << u8'0';
+    oss << timedata.tm_mon << u8'-';
+    if (timedata.tm_mday < 10)
+        oss << u8'0';
+    oss << timedata.tm_mday << ost_char::g_Space;
+    if (timedata.tm_hour < 10)
+        oss << u8'0';
+    oss << timedata.tm_hour << u8':';
+    if (timedata.tm_min < 10)
+        oss << u8'0';
+    oss << timedata.tm_min << u8':';
+    if (timedata.tm_sec < 10)
+        oss << u8'0';
+    oss << timedata.tm_sec;
+    if (milli > -1) {
+        oss << u8'.';
+        if (milli < 100)
+            oss << u8'0';
+        if (milli < 10)
+            oss << u8'0';
+        oss << milli;
+    }
+
+    return oss.str();
 }

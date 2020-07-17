@@ -24,11 +24,11 @@ Copyright (c) 2020 Ostrich Labs
 #include "../game/message.h"
 
 volatile int ostrich::InputLinux::ms_LastRaisedSignal = 0;
-siginfo_t *ostrich::InputLinux::ms_SignalInfo = nullptr;
+::siginfo_t *ostrich::InputLinux::ms_SignalInfo = nullptr;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::InputLinux::Initialize(ConsolePrinter consoleprinter, EventSender eventsender) {
+int ostrich::InputLinux::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich::EventSender eventsender) {
     if (this->isActive()) {
         return OST_ERROR_ISACTIVE;
     }
