@@ -12,7 +12,7 @@ IDisplay implementation for Windows
 #include "../common/ost_common.h"
 
 #if (OST_WINDOWS != 1)
-#    error "This module should only be included in Windows builds"
+#   error "This module should only be included in Windows builds"
 #endif
 
 #include <windows.h>

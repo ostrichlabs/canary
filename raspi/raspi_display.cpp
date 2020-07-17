@@ -1,10 +1,14 @@
 /*
 ==========================================
 Copyright (c) 2020 Ostrich Labs
-
-IDisplay implementation for the Raspberry Pi
 ==========================================
 */
+
+#include "../common/ost_common.h"
+
+#if (OST_RASPI != 1)
+#   error "This module should only be included in Raspberry Pi builds"
+#endif
 
 #include "raspi_display.h"
 #include "../common/error.h"

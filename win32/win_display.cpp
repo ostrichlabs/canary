@@ -4,8 +4,13 @@ Copyright (c) 2020 Ostrich Labs
 ==========================================
 */
 
-#include "win_display.h"
+#include "../common/ost_common.h"
 
+#if (OST_WINDOWS != 1)
+#   error "This module should only be included in Windows builds"
+#endif
+
+#include "win_display.h"
 #include <string>
 #include "win_wndproc.h"
 #include "../common/error.h"

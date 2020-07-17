@@ -4,6 +4,12 @@ Copyright (c) 2020 Ostrich Labs
 ==========================================
 */
 
+#include "../common/ost_common.h"
+
+#if (OST_RASPI != 1)
+#    error "This module should only be included in Raspberry Pi (or Linux I guess) builds"
+#endif
+
 #include "linux_input.h"
 #include <cerrno>
 #include <cstring>

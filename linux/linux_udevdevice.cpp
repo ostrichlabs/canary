@@ -1,10 +1,14 @@
 /*
 ==========================================
 Copyright (c) 2020 Ostrich Labs
-
-A udev device
 ==========================================
 */
+
+#include "../common/ost_common.h"
+
+#if (OST_RASPI != 1)
+#    error "This module should only be included in Raspberry Pi (or Linux I guess) builds"
+#endif
 
 #include "linux_udevdevice.h"
 #include <cstring>

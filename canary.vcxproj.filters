@@ -87,6 +87,12 @@
     <ClCompile Include="gl4\gl4_extensions.cpp">
       <Filter>gl4</Filter>
     </ClCompile>
+    <ClCompile Include="common\datetime_linux.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\datetime_win.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">

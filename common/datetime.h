@@ -3,10 +3,6 @@
 Copyright (c) 2020 Ostrich Labs
 
 Functions and classes for retrieving the date and time
-Includes high-resolution clock access, though it's mostly a wrapper for <chrono>
-
-The expectation is that we have nanosecond-level granularity in high_performance_clock
-Reading <chrono> for both Windows and the Raspberry Pi version of GCC says we do
 ==========================================
 */
 
@@ -43,6 +39,7 @@ std::string timestamp();
 
 /////////////////////////////////////////////////
 // get a timestamp of now() as a string with millisecond precision on time
+// there is no C++ standard way to do this, so it must be implemented for each platform
 std::string timestamp_ms();
 
 } // namespace datetime
