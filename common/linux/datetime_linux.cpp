@@ -6,13 +6,13 @@ Linux/Raspi implementations of datetime
 ==========================================
 */
 
-#include "ost_common.h"
+#include "../ost_common.h"
 
 #if ((OST_LINUX != 1) && (OST_RASPI != 1))
 #   error "This module should only be included in Raspberry Pi or Linux builds"
 #endif
 
-#include "datetime.h"
+#include "../datetime.h"
 
 #include <ctime>
 

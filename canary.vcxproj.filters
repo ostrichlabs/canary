@@ -28,6 +28,12 @@
     <Filter Include="linux">
       <UniqueIdentifier>{4ae73dba-ce14-4454-a8a8-8599c07e6311}</UniqueIdentifier>
     </Filter>
+    <Filter Include="common\win32">
+      <UniqueIdentifier>{384a93fc-25ef-41ff-9707-926924e342f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\linux">
+      <UniqueIdentifier>{bee22e6d-d828-4417-8077-7b2da9078a0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="win32\win_display.cpp">
@@ -87,11 +93,11 @@
     <ClCompile Include="gl4\gl4_extensions.cpp">
       <Filter>gl4</Filter>
     </ClCompile>
-    <ClCompile Include="common\datetime_linux.cpp">
-      <Filter>common</Filter>
+    <ClCompile Include="common\win32\datetime_win.cpp">
+      <Filter>common\win32</Filter>
     </ClCompile>
-    <ClCompile Include="common\datetime_win.cpp">
-      <Filter>common</Filter>
+    <ClCompile Include="common\linux\datetime_linux.cpp">
+      <Filter>common\linux</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
