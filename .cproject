@@ -29,7 +29,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="${ProjName}debug" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488" name="Debug" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.enablement=null,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.connection=null,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.image=null" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postbuildStep="">
+                <configuration artifactName="${ProjName}debug" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488" name="Debug" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.enablement=null,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.image=null,org.eclipse.cdt.docker.launcher.containerbuild.property.connection=null" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postbuildStep="">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488." name="/" resourcePath="">
                         						
@@ -141,9 +141,33 @@
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1395774912" name="canary.vcxproj.filters" rcbsApplicability="disable" resourcePath="canary.vcxproj.filters" toolsToInvoke=""/>
                     					
+                    <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1642416021" name="/" resourcePath="packages">
+                        						
+                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.1992147092" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug" unusedChildren="">
+                            							
+                            <option id="cdt.managedbuild.option.gnu.cross.prefix.1599196915.1958536692" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.1599196915"/>
+                            							
+                            <option id="cdt.managedbuild.option.gnu.cross.path.666654223.1183660386" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.666654223"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.997687323" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.1953820454"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.663097894" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.1782988723" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.628489413"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.438116143" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.1590059122"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.82698277" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.1135110725"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.792950843" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1797062581"/>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
                     <sourceEntries>
                         						
-                        <entry excluding="common/win32/win_datetime.cpp|common/win32/datetime_win.cpp|common/datetime_win.cpp|unittest|canary.vcxproj.user|canary.vcxproj|canary.sln|canary.vcxproj.filters|win32|gl4" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="packages|common/win32/win_datetime.cpp|common/win32/datetime_win.cpp|common/datetime_win.cpp|unittest|canary.vcxproj.user|canary.vcxproj|canary.sln|canary.vcxproj.filters|win32|gl4" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                         					
                     </sourceEntries>
                     				
@@ -181,7 +205,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820" name="Release" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=" parent="cdt.managedbuild.config.gnu.cross.exe.release" postbuildStep="">
+                <configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820" name="Release" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="cdt.managedbuild.config.gnu.cross.exe.release" postbuildStep="">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820." name="/" resourcePath="">
                         						
@@ -291,9 +315,33 @@
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.1436509597" name="canary.vcxproj.filters" rcbsApplicability="disable" resourcePath="canary.vcxproj.filters" toolsToInvoke=""/>
                     					
+                    <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.210900259" name="/" resourcePath="packages">
+                        						
+                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.release.1989205778" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.release" unusedChildren="">
+                            							
+                            <option id="cdt.managedbuild.option.gnu.cross.prefix.747375977.1035843026" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.747375977"/>
+                            							
+                            <option id="cdt.managedbuild.option.gnu.cross.path.1935491707.647508749" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.1935491707"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.37533390" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.268434439"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.574164126" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.18606509" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.1710896624"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.519702146" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.354785700"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.1963603290" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.2041362587"/>
+                            							
+                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.253039398" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1829857357"/>
+                            						
+                        </toolChain>
+                        					
+                    </folderInfo>
+                    					
                     <sourceEntries>
                         						
-                        <entry excluding="common/win32/win_datetime.cpp|common/win32/datetime_win.cpp|common/datetime_win.cpp|unittest|gl4|win32|canary.vcxproj.user|canary.vcxproj.filters|canary.vcxproj|canary.sln" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="packages|common/win32/win_datetime.cpp|common/win32/datetime_win.cpp|common/datetime_win.cpp|unittest|gl4|win32|canary.vcxproj.user|canary.vcxproj.filters|canary.vcxproj|canary.sln" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                         					
                     </sourceEntries>
                     				
