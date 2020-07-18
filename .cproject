@@ -139,35 +139,35 @@
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1813186579" name="canary.vcxproj.user" rcbsApplicability="disable" resourcePath="canary.vcxproj.user" toolsToInvoke=""/>
                     					
-                    <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1395774912" name="canary.vcxproj.filters" rcbsApplicability="disable" resourcePath="canary.vcxproj.filters" toolsToInvoke=""/>
-                    					
-                    <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1642416021" name="/" resourcePath="packages">
+                    <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.883729411" name="/" resourcePath="unittest">
                         						
-                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.1992147092" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug" unusedChildren="">
+                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.777832337" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug" unusedChildren="">
                             							
-                            <option id="cdt.managedbuild.option.gnu.cross.prefix.1599196915.1958536692" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.1599196915"/>
+                            <option id="cdt.managedbuild.option.gnu.cross.prefix.1599196915.1203301189" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.1599196915"/>
                             							
-                            <option id="cdt.managedbuild.option.gnu.cross.path.666654223.1183660386" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.666654223"/>
+                            <option id="cdt.managedbuild.option.gnu.cross.path.666654223.656052057" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.666654223"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.997687323" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.1953820454"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1387916177" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.1953820454"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.663097894" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1311218484" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.1782988723" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.628489413"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.188978173" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.628489413"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.438116143" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.1590059122"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.764740220" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.1590059122"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.82698277" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.1135110725"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.1821462419" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.1135110725"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.792950843" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1797062581"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.314018884" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1797062581"/>
                             						
                         </toolChain>
                         					
                     </folderInfo>
                     					
+                    <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1395774912" name="canary.vcxproj.filters" rcbsApplicability="disable" resourcePath="canary.vcxproj.filters" toolsToInvoke=""/>
+                    					
                     <sourceEntries>
                         						
-                        <entry excluding="packages|common/win32/win_datetime.cpp|common/win32/datetime_win.cpp|common/datetime_win.cpp|unittest|canary.vcxproj.user|canary.vcxproj|canary.sln|canary.vcxproj.filters|win32|gl4" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="unittest|unittest/win32|unittest/packages|packages|common/win32/win_datetime.cpp|common/win32/datetime_win.cpp|common/datetime_win.cpp|canary.vcxproj.user|canary.vcxproj|canary.sln|canary.vcxproj.filters|win32|gl4" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                         					
                     </sourceEntries>
                     				
@@ -313,35 +313,35 @@
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.360940774" name="canary.vcxproj.user" rcbsApplicability="disable" resourcePath="canary.vcxproj.user" toolsToInvoke=""/>
                     					
-                    <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.1436509597" name="canary.vcxproj.filters" rcbsApplicability="disable" resourcePath="canary.vcxproj.filters" toolsToInvoke=""/>
-                    					
-                    <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.210900259" name="/" resourcePath="packages">
+                    <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.383199858" name="/" resourcePath="unittest">
                         						
-                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.release.1989205778" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.release" unusedChildren="">
+                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.release.952707737" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.release" unusedChildren="">
                             							
-                            <option id="cdt.managedbuild.option.gnu.cross.prefix.747375977.1035843026" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.747375977"/>
+                            <option id="cdt.managedbuild.option.gnu.cross.prefix.747375977.294480288" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.747375977"/>
                             							
-                            <option id="cdt.managedbuild.option.gnu.cross.path.1935491707.647508749" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.1935491707"/>
+                            <option id="cdt.managedbuild.option.gnu.cross.path.1935491707.64878909" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.1935491707"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.37533390" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.268434439"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1854084563" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.268434439"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.574164126" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1474826574" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.18606509" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.1710896624"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.859823151" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.1710896624"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.519702146" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.354785700"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.511162060" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.354785700"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.1963603290" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.2041362587"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.1393148056" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.2041362587"/>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.253039398" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1829857357"/>
+                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.1233320789" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1829857357"/>
                             						
                         </toolChain>
                         					
                     </folderInfo>
                     					
+                    <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.1436509597" name="canary.vcxproj.filters" rcbsApplicability="disable" resourcePath="canary.vcxproj.filters" toolsToInvoke=""/>
+                    					
                     <sourceEntries>
                         						
-                        <entry excluding="packages|common/win32/win_datetime.cpp|common/win32/datetime_win.cpp|common/datetime_win.cpp|unittest|gl4|win32|canary.vcxproj.user|canary.vcxproj.filters|canary.vcxproj|canary.sln" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+                        <entry excluding="unittest|unittest/win32|unittest/packages|packages|common/win32/win_datetime.cpp|common/win32/datetime_win.cpp|common/datetime_win.cpp|gl4|win32|canary.vcxproj.user|canary.vcxproj.filters|canary.vcxproj|canary.sln" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
                         					
                     </sourceEntries>
                     				

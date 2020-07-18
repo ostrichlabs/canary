@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "canary", "canary.vcxproj", "{DB0CA1D8-BA42-458C-B3E8-0DE32AEC8343}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "unittest\unittest.vcxproj", "{D5797A6D-4F3D-4E14-B2DB-E05B7048F34E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "unittest", "..\unittest\unittest.vcxproj", "{D5797A6D-4F3D-4E14-B2DB-E05B7048F34E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
