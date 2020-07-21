@@ -29,7 +29,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="${ProjName}debug" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488" name="Debug" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.enablement=null,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.image=null,org.eclipse.cdt.docker.launcher.containerbuild.property.connection=null" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postbuildStep="">
+                <configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488" name="Debug" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.enablement=null,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.image=null,org.eclipse.cdt.docker.launcher.containerbuild.property.connection=null" parent="cdt.managedbuild.config.gnu.cross.exe.debug" postbuildStep="">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488." name="/" resourcePath="">
                         						
@@ -75,9 +75,11 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;C:\dev\SysGCC\raspberry\arm-linux-gnueabihf\include\c++\8&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\src\external\libudev\include&quot;"/>
-                                    									
                                     <listOptionValue builtIn="false" value="&quot;C:\dev\SysGCC\raspberry\arm-linux-gnueabihf\sysroot\opt\vc\include&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\external&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\external\libudev\include&quot;"/>
                                     								
                                 </option>
                                 								
@@ -91,9 +93,15 @@
                                 								
                                 <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.link.option.libs.823726209" name="Libraries (-l)" superClass="gnu.cpp.link.option.libs" useByScannerDiscovery="false" valueType="libs">
                                     									
-                                    <listOptionValue builtIn="false" value="brcmEGL"/>
+                                    <listOptionValue builtIn="false" value="png"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="png16"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="z"/>
                                     									
                                     <listOptionValue builtIn="false" value="udev"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="brcmEGL"/>
                                     									
                                     <listOptionValue builtIn="false" value="bcm_host"/>
                                     									
@@ -105,9 +113,13 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;C:\dev\SysGCC\raspberry\arm-linux-gnueabihf\lib&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\src\external\libudev\lib&quot;"/>
-                                    									
                                     <listOptionValue builtIn="false" value="&quot;C:\dev\SysGCC\raspberry\arm-linux-gnueabihf\sysroot\opt\vc\lib&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\external\libudev\lib&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\external\zlib\lib\raspi&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\external\libpng\lib\raspi&quot;"/>
                                     								
                                 </option>
                                 								
@@ -138,30 +150,6 @@
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1202417259" name="canary.vcxproj" rcbsApplicability="disable" resourcePath="canary.vcxproj" toolsToInvoke=""/>
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1813186579" name="canary.vcxproj.user" rcbsApplicability="disable" resourcePath="canary.vcxproj.user" toolsToInvoke=""/>
-                    					
-                    <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.883729411" name="/" resourcePath="unittest">
-                        						
-                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.debug.777832337" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.debug" unusedChildren="">
-                            							
-                            <option id="cdt.managedbuild.option.gnu.cross.prefix.1599196915.1203301189" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.1599196915"/>
-                            							
-                            <option id="cdt.managedbuild.option.gnu.cross.path.666654223.656052057" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.666654223"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1387916177" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.1953820454"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1311218484" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.720728367"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.188978173" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.628489413"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.764740220" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.1590059122"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.1821462419" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.1135110725"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.314018884" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1797062581"/>
-                            						
-                        </toolChain>
-                        					
-                    </folderInfo>
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.debug.841840488.1395774912" name="canary.vcxproj.filters" rcbsApplicability="disable" resourcePath="canary.vcxproj.filters" toolsToInvoke=""/>
                     					
@@ -205,7 +193,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820" name="Release" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="cdt.managedbuild.config.gnu.cross.exe.release" postbuildStep="">
+                <configuration artifactName="" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.exe,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" errorParsers="org.eclipse.cdt.core.GASErrorParser;org.eclipse.cdt.core.GmakeErrorParser;org.eclipse.cdt.core.GLDErrorParser;org.eclipse.cdt.core.CWDLocator;org.eclipse.cdt.core.GCCErrorParser" id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820" name="Release" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.enablement=null,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.image=null,org.eclipse.cdt.docker.launcher.containerbuild.property.connection=null" parent="cdt.managedbuild.config.gnu.cross.exe.release" postbuildStep="">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820." name="/" resourcePath="">
                         						
@@ -221,9 +209,9 @@
                             							
                             <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.268434439" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler">
                                 								
-                                <option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.1083273405" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" useByScannerDiscovery="false" valueType="enumerated"/>
+                                <option defaultValue="gnu.c.optimization.level.most" id="gnu.c.compiler.option.optimization.level.1083273405" name="Optimization Level" superClass="gnu.c.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.c.optimization.level.none" valueType="enumerated"/>
                                 								
-                                <option defaultValue="gnu.c.debugging.level.none" id="gnu.c.compiler.option.debugging.level.1606442542" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" valueType="enumerated"/>
+                                <option defaultValue="gnu.c.debugging.level.none" id="gnu.c.compiler.option.debugging.level.1606442542" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.c.debugging.level.max" valueType="enumerated"/>
                                 								
                                 <option id="gnu.c.compiler.option.dialect.std.1966302205" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
                                 								
@@ -233,9 +221,9 @@
                             							
                             <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
                                 								
-                                <option id="gnu.cpp.compiler.option.optimization.level.2031687411" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.most" valueType="enumerated"/>
+                                <option id="gnu.cpp.compiler.option.optimization.level.2031687411" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
                                 								
-                                <option defaultValue="gnu.cpp.compiler.debugging.level.none" id="gnu.cpp.compiler.option.debugging.level.124886002" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" valueType="enumerated"/>
+                                <option defaultValue="gnu.cpp.compiler.debugging.level.none" id="gnu.cpp.compiler.option.debugging.level.124886002" name="Debug Level" superClass="gnu.cpp.compiler.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
                                 								
                                 <option id="gnu.cpp.compiler.option.dialect.std.1901697926" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.c++17" valueType="enumerated"/>
                                 								
@@ -243,15 +231,19 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;C:\dev\SysGCC\raspberry\arm-linux-gnueabihf\include\c++\8&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\src\external\libudev\include&quot;"/>
-                                    									
                                     <listOptionValue builtIn="false" value="&quot;C:\dev\SysGCC\raspberry\arm-linux-gnueabihf\sysroot\opt\vc\include&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\external&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\external\libudev\include&quot;"/>
                                     								
                                 </option>
                                 								
                                 <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.compiler.option.preprocessor.def.185318805" name="Defined symbols (-D)" superClass="gnu.cpp.compiler.option.preprocessor.def" useByScannerDiscovery="false" valueType="definedSymbols">
                                     									
                                     <listOptionValue builtIn="false" value="RASPI"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="GCC_DEBUG"/>
                                     								
                                 </option>
                                 								
@@ -279,9 +271,9 @@
                                     									
                                     <listOptionValue builtIn="false" value="&quot;C:\dev\SysGCC\raspberry\arm-linux-gnueabihf\lib&quot;"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\src\external\libudev\lib&quot;"/>
-                                    									
                                     <listOptionValue builtIn="false" value="&quot;C:\dev\SysGCC\raspberry\arm-linux-gnueabihf\sysroot\opt\vc\lib&quot;"/>
+                                    									
+                                    <listOptionValue builtIn="false" value="&quot;C:\projects\canary\external\libudev\lib&quot;"/>
                                     								
                                 </option>
                                 								
@@ -312,30 +304,6 @@
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.941535560" name="canary.vcxproj" rcbsApplicability="disable" resourcePath="canary.vcxproj" toolsToInvoke=""/>
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.360940774" name="canary.vcxproj.user" rcbsApplicability="disable" resourcePath="canary.vcxproj.user" toolsToInvoke=""/>
-                    					
-                    <folderInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.383199858" name="/" resourcePath="unittest">
-                        						
-                        <toolChain id="cdt.managedbuild.toolchain.gnu.cross.exe.release.952707737" name="Cross GCC" superClass="cdt.managedbuild.toolchain.gnu.cross.exe.release" unusedChildren="">
-                            							
-                            <option id="cdt.managedbuild.option.gnu.cross.prefix.747375977.294480288" name="Prefix" superClass="cdt.managedbuild.option.gnu.cross.prefix.747375977"/>
-                            							
-                            <option id="cdt.managedbuild.option.gnu.cross.path.1935491707.64878909" name="Path" superClass="cdt.managedbuild.option.gnu.cross.path.1935491707"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.c.compiler.1854084563" name="Cross GCC Compiler" superClass="cdt.managedbuild.tool.gnu.cross.c.compiler.268434439"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.1474826574" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler.875476874"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.c.linker.859823151" name="Cross GCC Linker" superClass="cdt.managedbuild.tool.gnu.cross.c.linker.1710896624"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.linker.511162060" name="Cross G++ Linker" superClass="cdt.managedbuild.tool.gnu.cross.cpp.linker.354785700"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.archiver.1393148056" name="Cross GCC Archiver" superClass="cdt.managedbuild.tool.gnu.cross.archiver.2041362587"/>
-                            							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.assembler.1233320789" name="Cross GCC Assembler" superClass="cdt.managedbuild.tool.gnu.cross.assembler.1829857357"/>
-                            						
-                        </toolChain>
-                        					
-                    </folderInfo>
                     					
                     <fileInfo id="cdt.managedbuild.config.gnu.cross.exe.release.1570608820.1436509597" name="canary.vcxproj.filters" rcbsApplicability="disable" resourcePath="canary.vcxproj.filters" toolsToInvoke=""/>
                     					
