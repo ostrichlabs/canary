@@ -7,9 +7,6 @@
     <Filter Include="win32">
       <UniqueIdentifier>{1bd84346-f25d-4f77-ad0c-ed0818aba7bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="external">
-      <UniqueIdentifier>{fbba8570-7cbb-49ae-9f1d-95f6c65220ff}</UniqueIdentifier>
-    </Filter>
     <Filter Include="game">
       <UniqueIdentifier>{8ad08c03-7f14-4498-809f-429e4dacd1fa}</UniqueIdentifier>
     </Filter>
@@ -33,6 +30,15 @@
     </Filter>
     <Filter Include="common\linux">
       <UniqueIdentifier>{bee22e6d-d828-4417-8077-7b2da9078a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders">
+      <UniqueIdentifier>{d5714d98-c76d-43a8-8008-23bcb0999e5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\gl4">
+      <UniqueIdentifier>{d4a1b625-9586-4d35-9b15-46bf514eff66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="shaders\es2">
+      <UniqueIdentifier>{59844182-052f-4395-8dfd-c276b2025d81}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -58,9 +64,6 @@
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="common\datetime.cpp">
-      <Filter>common</Filter>
-    </ClCompile>
-    <ClCompile Include="common\filesystem.cpp">
       <Filter>common</Filter>
     </ClCompile>
     <ClCompile Include="common\utility.cpp">
@@ -99,6 +102,15 @@
     <ClCompile Include="common\linux\linux_datetime.cpp">
       <Filter>common\linux</Filter>
     </ClCompile>
+    <ClCompile Include="common\fimage.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\win32\win_filesystem.cpp">
+      <Filter>common\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="common\linux\linux_filesystem.cpp">
+      <Filter>common\linux</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">
@@ -127,21 +139,6 @@
     </ClInclude>
     <ClInclude Include="gl4\gl4_renderer.h">
       <Filter>gl4</Filter>
-    </ClInclude>
-    <ClInclude Include="external\gl\glcorearb.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="external\gl\glext.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="external\gl\glxext.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="external\gl\wgl.h">
-      <Filter>external</Filter>
-    </ClInclude>
-    <ClInclude Include="external\gl\wglext.h">
-      <Filter>external</Filter>
     </ClInclude>
     <ClInclude Include="common\console.h">
       <Filter>common</Filter>
@@ -199,6 +196,9 @@
     </ClInclude>
     <ClInclude Include="gl4\gl4_extensions.h">
       <Filter>gl4</Filter>
+    </ClInclude>
+    <ClInclude Include="common\fimage.h">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

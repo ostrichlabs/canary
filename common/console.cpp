@@ -13,7 +13,7 @@ A logging console.
 /////////////////////////////////////////////////
 void ostrich::Console::Initialize() {
     // TODO: LogSizeMax and WriteLogOnExit should be hardcoded constants
-    ostrich::OpenFile(u8"debug.log", ostrich::filemode::g_WRITETRUNCATE, m_DebugMessageLog);
+    ostrich::OpenFile(u8"debug.log", ostrich::FileMode::OPEN_READONLY, m_DebugMessageLog);
 }
 
 /////////////////////////////////////////////////
@@ -68,7 +68,7 @@ void ostrich::Console::DebugMessage(std::string_view msg) {
 void ostrich::Console::WriteLogToFile() {
     if (m_MessageLog.size() > 0) {
         std::fstream logfile;
-        ostrich::OpenFile(u8"console.log", ost_filemode::g_WRITETRUNCATE, logfile);
+        ostrich::OpenFile(u8"console.log", ostrich::FileMode::OPEN_WRITETRUNCATE, logfile);
         if (!logfile.is_open())
             return;
 

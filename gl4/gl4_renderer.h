@@ -18,9 +18,9 @@ OpenGL 4.0 interface
 #include <windows.h>
 #include <gl/GL.h>
 #include "gl4_extensions.h"
+#include "gl/glcorearb.h"
+#include "gl/glext.h"
 #include "../game/i_renderer.h"
-#include "../external/gl/glcorearb.h"
-#include "../external/gl/glext.h"
 
 namespace ostrich {
 

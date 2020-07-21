@@ -11,7 +11,7 @@ Copyright (c) 2020 Ostrich Labs
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 int ostrich::EventQueue::Initialize() {
-    ostrich::OpenFile(u8"message.log", ost_filemode::g_WRITETRUNCATE, m_MessageJournal);
+    ostrich::OpenFile(u8"message.log", ostrich::FileMode::OPEN_WRITETRUNCATE, m_MessageJournal);
     if (!m_MessageJournal.is_open())
         return OST_ERROR_JOURNAL;
 
