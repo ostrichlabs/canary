@@ -18,8 +18,8 @@ Linux/Raspi implementations of datetime
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::datetime::localtime(::time_t *time, ::tm *now_tm) {
-    ::localtime_r(time, now_tm);
+void ostrich::datetime::localtime(::time_t *time, ::tm *timedata) {
+    ::localtime_r(time, timedata);
 }
 
 /////////////////////////////////////////////////
@@ -34,7 +34,7 @@ std::string ostrich::datetime::timestamp_ms() {
 
     ostrich::datetime::localtime(&ts.tv_sec, &timedata);
 
-    // adjust wacky Linux ranges to match the Ostrich Standard
+    // adjust wacky ranges to match the Ostrich Standard
     timedata.tm_mon += 1;
     timedata.tm_year += 1900;
 

@@ -11,9 +11,9 @@ Copyright (c) 2020 Ostrich Labs
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 int ostrich::EventQueue::Initialize() {
-    ostrich::OpenFile(u8"message.log", ostrich::FileMode::OPEN_WRITETRUNCATE, m_MessageJournal);
-    if (!m_MessageJournal.is_open())
+    if (!m_MessageJournal.Open(u8"message.log", ostrich::FileMode::OPEN_WRITETRUNCATE)) {
         return OST_ERROR_JOURNAL;
+    }
 
     return OST_ERROR_OK;
 }
@@ -45,7 +45,7 @@ ostrich::EventSender ostrich::EventQueue::CreateSender() noexcept {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::EventQueue::WriteToJournal(const Message &msg) {
-    if (!m_MessageJournal.is_open())
+    if (!m_MessageJournal.isOpen())
         return;
 
     std::string message = u8"[";
@@ -59,6 +59,7 @@ void ostrich::EventQueue::WriteToJournal(const Message &msg) {
     message += u8"< Sender: >";
     message += msg.getSender();
     message += u8"<";
-    m_MessageJournal.write(message.c_str(), message.length());
-    m_MessageJournal.put(ost_char::g_NewLine);
+    std::fstream &handle = m_MessageJournal.getFStream();
+    handle.write(message.c_str(), message.length());
+    handle.put(ost_char::g_NewLine);
 }

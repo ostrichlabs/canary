@@ -124,11 +124,11 @@ TGAFooter::TGAFooter(uint8_t data[TGAFooter::SIZE]) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::Image ostrich::Image::LoadTGA(const char *filename) {
-    std::fstream handle;
-    ostrich::OpenFile(filename, ostrich::FileMode::OPEN_READONLY, handle);
-    if (!handle.is_open()) {
+    ostrich::File file;
+    if (!file.Open(filename, ostrich::FileMode::OPEN_READONLY)) {
         return ostrich::Image();
     }
+    std::fstream &handle = file.getFStream();
 
     uint8_t headerdata[TGAHeader::SIZE] = { };
     handle.read((char *)&headerdata, TGAHeader::SIZE);
@@ -136,6 +136,14 @@ ostrich::Image ostrich::Image::LoadTGA(const char *filename) {
         return ostrich::Image();
     }
     TGAHeader header(headerdata);
+
+    uint8_t footerdata[TGAFooter::SIZE] = { };
+    handle.seekg((0 - TGAFooter::SIZE), std::ios_base::end);
+    handle.read((char *)&footerdata, TGAFooter::SIZE);
+    if (handle.bad()) {
+        return ostrich::Image();
+    }
+    TGAFooter footer(footerdata);
 
     // color maps unsupported (for now)
     if (header.m_ColorMapType != 0) {
@@ -155,16 +163,9 @@ ostrich::Image ostrich::Image::LoadTGA(const char *filename) {
         pixformat = ostrich::PixelFormat::FORMAT_RGBA;
     }
 
-    // Detecting TGA version - this only means something if we need the footer
+    // Detecting TGA version - this only means something once RLE is supported, maybe
     int TGAversion = 1;
-    uint8_t footerdata[TGAFooter::SIZE] = { };
-    handle.seekg((0 - TGAFooter::SIZE), std::ios_base::end);
-    handle.read((char *)&footerdata, TGAFooter::SIZE);
-    if (handle.bad()) {
-        return ostrich::Image();
-    }
-    TGAFooter footer(footerdata);
-    if (::strcmp((const char *)footer.m_Signature, "TRUEVISION-XFILE.") == 0) {
+    if (::memcmp(&footer.m_Signature, "TRUEVISION-XFILE.", sizeof(footer.m_Signature)) == 0) {
         TGAversion = 2;
     }
 

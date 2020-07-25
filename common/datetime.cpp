@@ -33,6 +33,11 @@ std::string ostrich::datetime::timestamp() {
     ::time_t now = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
     ::tm timedata = { };
     ostrich::datetime::localtime(&now, &timedata);
+
+    // adjust for display
+    timedata.tm_year += 1900;
+    timedata.tm_mon += 1;
+
     return ostrich::datetime::tmtostring(timedata);
 }
 
@@ -41,8 +46,15 @@ std::string ostrich::datetime::timestamp() {
 std::string ostrich::datetime::tmtostring(::tm &timedata, int milli) {
     constexpr int BUFSIZE = 30;
     char buffer[BUFSIZE] = { };
-    ::snprintf(buffer, BUFSIZE, "%04d-%02d-%02d %02d:%02d:%02d.%03d", timedata.tm_year, timedata.tm_mon, timedata.tm_mday,
-        timedata.tm_hour, timedata.tm_min, timedata.tm_sec, milli);
+
+    if (milli == -1) {
+        ::snprintf(buffer, BUFSIZE, "%04d-%02d-%02d %02d:%02d:%02d", timedata.tm_year, timedata.tm_mon, timedata.tm_mday,
+            timedata.tm_hour, timedata.tm_min, timedata.tm_sec);
+    }
+    else {
+        ::snprintf(buffer, BUFSIZE, "%04d-%02d-%02d %02d:%02d:%02d.%03d", timedata.tm_year, timedata.tm_mon, timedata.tm_mday,
+            timedata.tm_hour, timedata.tm_min, timedata.tm_sec, milli);
+    }
 
     return buffer;
 }

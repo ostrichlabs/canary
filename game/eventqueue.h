@@ -9,10 +9,9 @@ The EventQueue and its wrappers
 #ifndef EVENTQUEUE_H_
 #define EVENTQUEUE_H_
 
-#include <fstream>
 #include <queue>
 #include <utility>
-
+#include "../common/filesystem.h"
 #include "message.h"
 
 namespace ostrich {
@@ -26,8 +25,8 @@ class EventSender;
 class EventQueue {
 public:
 
-    EventQueue() noexcept {}
-    virtual ~EventQueue() { m_MessageJournal.close(); }
+    EventQueue() noexcept { }
+    virtual ~EventQueue() { }
     EventQueue(EventQueue &&) = delete;
     EventQueue(const EventQueue &) = delete;
     EventQueue &operator=(EventQueue &&) = delete;
@@ -49,7 +48,7 @@ private:
     void WriteToJournal(const Message &msg);
 
     std::queue<Message> m_MessageQueue;
-    std::fstream m_MessageJournal; // TODO: maybe make this a debug toggle
+    ostrich::File m_MessageJournal; // TODO: maybe make this a debug toggle
 };
 
 /////////////////////////////////////////////////

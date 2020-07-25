@@ -29,16 +29,6 @@ const wchar_t *FILEModesW[] = {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void OpenWide(const std::string_view filename, std::ios_base::openmode mode, std::fstream &filehandle) {
-    std::wstring widename;
-    ostrich::UTF8toUTF16(std::string(filename.data()), widename);
-    filehandle.open(widename, mode);
-    if (::GetLastError() == 0xb7) // ERROR_ALREADY_EXISTS
-        ::SetLastError(0);
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
 bool OpenWide(const std::string_view filename, const wchar_t *mode, FILE **filehandle) {
     std::wstring widename;
     ostrich::UTF8toUTF16(std::string(filename.data()), widename);
@@ -46,13 +36,6 @@ bool OpenWide(const std::string_view filename, const wchar_t *mode, FILE **fileh
 }
 
 } // anonymous namespace
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
-void ostrich::OpenFile(const std::string_view filename, ostrich::FileMode mode, std::fstream &filehandle) {
-    filehandle.close();
-    ::OpenWide(filename, ostrich::FStreamModes[static_cast<int32_t>(mode)], filehandle);
-}
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

@@ -191,7 +191,10 @@
   <ItemGroup>
     <ClCompile Include="common\console.cpp" />
     <ClCompile Include="common\datetime.cpp" />
-    <ClCompile Include="common\fimage.cpp" />
+    <ClCompile Include="common\filesystem.cpp" />
+    <ClCompile Include="common\image_dds.cpp" />
+    <ClCompile Include="common\image_png.cpp" />
+    <ClCompile Include="common\image_tga.cpp" />
     <ClCompile Include="common\linux\linux_datetime.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -253,7 +256,7 @@
     <ClInclude Include="common\datetime.h" />
     <ClInclude Include="common\error.h" />
     <ClInclude Include="common\filesystem.h" />
-    <ClInclude Include="common\fimage.h" />
+    <ClInclude Include="common\image.h" />
     <ClInclude Include="common\ost_common.h" />
     <ClInclude Include="common\utility.h" />
     <ClInclude Include="game\errorcodes.h" />

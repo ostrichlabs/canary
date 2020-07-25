@@ -13,7 +13,10 @@ A logging console.
 /////////////////////////////////////////////////
 void ostrich::Console::Initialize() {
     // TODO: LogSizeMax and WriteLogOnExit should be hardcoded constants
-    ostrich::OpenFile(u8"debug.log", ostrich::FileMode::OPEN_READONLY, m_DebugMessageLog);
+    // TODO: debug log should be a toggle
+    if (!m_DebugMessageLog.Open(u8"debug.log", ostrich::FileMode::OPEN_WRITETRUNCATE)) {
+        m_MessageLog.push_back(u8"Unable to open debug.log");
+    }
 }
 
 /////////////////////////////////////////////////
@@ -21,8 +24,7 @@ void ostrich::Console::Initialize() {
 void ostrich::Console::Destroy() {
     this->WriteLogToFile();
     m_MessageLog.clear();
-    if (m_DebugMessageLog.is_open())
-        m_DebugMessageLog.close();
+    m_DebugMessageLog.Close();
 }
 
 /////////////////////////////////////////////////
@@ -46,20 +48,22 @@ void ostrich::Console::WriteMessage(std::string_view msg) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::Console::DebugMessage(const std::string &msg) {
-    if (!msg.empty() && m_DebugMessageLog.is_open()) {
-        m_DebugMessageLog.write(msg.c_str(), msg.length());
-        m_DebugMessageLog.put(ost_char::g_NewLine);
-        m_DebugMessageLog.flush();
+    if (!msg.empty() && m_DebugMessageLog.isOpen()) {
+        std::fstream &handle = m_DebugMessageLog.getFStream();
+        handle.write(msg.c_str(), msg.length());
+        handle.put(ost_char::g_NewLine);
+        handle.flush();
     }
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::Console::DebugMessage(std::string_view msg) {
-    if (!msg.empty() && m_DebugMessageLog.is_open()) {
-        m_DebugMessageLog.write(msg.data(), msg.length());
-        m_DebugMessageLog.put(ost_char::g_NewLine);
-        m_DebugMessageLog.flush();
+    if (!msg.empty() && m_DebugMessageLog.isOpen()) {
+        std::fstream &handle = m_DebugMessageLog.getFStream();
+        handle.write(msg.data(), msg.length());
+        handle.put(ost_char::g_NewLine);
+        handle.flush();
     }
 }
 
@@ -67,17 +71,16 @@ void ostrich::Console::DebugMessage(std::string_view msg) {
 /////////////////////////////////////////////////
 void ostrich::Console::WriteLogToFile() {
     if (m_MessageLog.size() > 0) {
-        std::fstream logfile;
-        ostrich::OpenFile(u8"console.log", ostrich::FileMode::OPEN_WRITETRUNCATE, logfile);
-        if (!logfile.is_open())
+        ostrich::File logfile;
+        if (!logfile.Open(u8"console.log", ostrich::FileMode::OPEN_WRITETRUNCATE)) {
             return;
-
-        for (auto itr = m_MessageLog.begin(); itr != m_MessageLog.end(); std::advance(itr, 1)) {
-            logfile.write((*itr).c_str(), (*itr).length());
-            logfile.put(ost_char::g_NewLine);
         }
 
-        logfile.close();
+        std::fstream &handle = logfile.getFStream();
+        for (auto itr = m_MessageLog.begin(); itr != m_MessageLog.end(); std::advance(itr, 1)) {
+            handle.write((*itr).c_str(), (*itr).length());
+            handle.put(ost_char::g_NewLine);
+        }
     }
 }
 

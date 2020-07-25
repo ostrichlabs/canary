@@ -13,11 +13,10 @@ The main console can create ConsolePrinter objects - these can take multiple str
 #ifndef CONSOLE_H_
 #define CONSOLE_H_
 
-#include <array>
-#include <fstream>
 #include <list>
 #include <string>
 #include <string_view>
+#include "filesystem.h"
 #include "utility.h"
 
 namespace ostrich {
@@ -60,7 +59,7 @@ private:
     void TrimLog();
 
     std::list<std::string> m_MessageLog;
-    std::fstream m_DebugMessageLog;
+    ostrich::File m_DebugMessageLog;
 };
 
 /////////////////////////////////////////////////

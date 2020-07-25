@@ -29,13 +29,6 @@ const char *FILEModes[] = {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::OpenFile(const std::string_view filename, ostrich::FileMode mode, std::fstream &filehandle) {
-    filehandle.close();
-    filehandle.open(filename.data(), ostrich::FStreamModes[static_cast<int32_t>(mode)]);
-}
-
-/////////////////////////////////////////////////
-/////////////////////////////////////////////////
 bool ostrich::OpenFile(const std::string_view filename, ostrich::FileMode mode, FILE **filehandle) {
     if (filehandle && *filehandle)
         ::fclose(*filehandle);
