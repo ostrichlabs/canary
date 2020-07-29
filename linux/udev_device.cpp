@@ -10,7 +10,7 @@ Copyright (c) 2020 Ostrich Labs
 #    error "This module should only be included in Raspberry Pi (or Linux I guess) builds"
 #endif
 
-#include "linux_udevdevice.h"
+#include "udev_device.h"
 #include <cstring>
 #include <fcntl.h>
 #include <unistd.h>

@@ -84,12 +84,6 @@
     <ClCompile Include="minesweeper\ms_statemachine.cpp">
       <Filter>minesweeper</Filter>
     </ClCompile>
-    <ClCompile Include="linux\linux_input.cpp">
-      <Filter>linux</Filter>
-    </ClCompile>
-    <ClCompile Include="linux\linux_udevdevice.cpp">
-      <Filter>linux</Filter>
-    </ClCompile>
     <ClCompile Include="win32\win_gl4extensions.cpp">
       <Filter>win32</Filter>
     </ClCompile>
@@ -122,6 +116,24 @@
     </ClCompile>
     <ClCompile Include="gl4\gl4_texture.cpp">
       <Filter>gl4</Filter>
+    </ClCompile>
+    <ClCompile Include="linux\linux_gl4extensions.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="linux\linux_main.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="linux\x11_display.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="linux\x11_input.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="linux\udev_input.cpp">
+      <Filter>linux</Filter>
+    </ClCompile>
+    <ClCompile Include="linux\udev_device.cpp">
+      <Filter>linux</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -188,12 +200,6 @@
     <ClInclude Include="game\message.h">
       <Filter>game</Filter>
     </ClInclude>
-    <ClInclude Include="linux\linux_input.h">
-      <Filter>linux</Filter>
-    </ClInclude>
-    <ClInclude Include="linux\linux_udevdevice.h">
-      <Filter>linux</Filter>
-    </ClInclude>
     <ClInclude Include="game\errorcodes.h">
       <Filter>game</Filter>
     </ClInclude>
@@ -214,6 +220,18 @@
     </ClInclude>
     <ClInclude Include="gl4\gl4_texture.h">
       <Filter>gl4</Filter>
+    </ClInclude>
+    <ClInclude Include="linux\x11_display.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="linux\x11_input.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="linux\udev_input.h">
+      <Filter>linux</Filter>
+    </ClInclude>
+    <ClInclude Include="linux\udev_device.h">
+      <Filter>linux</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

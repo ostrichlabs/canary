@@ -10,7 +10,7 @@ Copyright (c) 2020 Ostrich Labs
 #    error "This module should only be included in Raspberry Pi (or Linux I guess) builds"
 #endif
 
-#include "linux_input.h"
+#include "udev_input.h"
 #include <cerrno>
 #include <cstring>
 #include <string>
@@ -23,8 +23,8 @@ Copyright (c) 2020 Ostrich Labs
 #include "../game/keydef.h"
 #include "../game/message.h"
 
-volatile int ostrich::InputLinux::ms_LastRaisedSignal = 0;
-::siginfo_t *ostrich::InputLinux::ms_SignalInfo = nullptr;
+volatile int ostrich::InputUDev::ms_LastRaisedSignal = 0;
+::siginfo_t *ostrich::InputUDev::ms_SignalInfo = nullptr;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -149,7 +149,7 @@ int32_t ostrich::linux::TranslateKey(__u16 vkey) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::InputLinux::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich::EventSender eventsender) {
+int ostrich::InputUDev::Initialize(ostrich::ConsolePrinter consoleprinter, ostrich::EventSender eventsender) {
     if (this->isActive()) {
         return OST_ERROR_ISACTIVE;
     }
@@ -159,7 +159,7 @@ int ostrich::InputLinux::Initialize(ostrich::ConsolePrinter consoleprinter, ostr
     if ((!m_ConsolePrinter.isValid()) || (!m_EventSender.isValid()))
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
-    int result = InputLinux::InitializeSignalHandler();
+    int result = InputUDev::InitializeSignalHandler();
     if (result != OST_ERROR_OK)
         throw ostrich::InitException(OST_FUNCTION_SIGNATURE, result);
 
@@ -175,7 +175,7 @@ int ostrich::InputLinux::Initialize(ostrich::ConsolePrinter consoleprinter, ostr
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputLinux::Destroy() {
+void ostrich::InputUDev::Destroy() {
     if (m_isActive) {
         this->ClearDevices();
         if (m_Monitor) {
@@ -194,7 +194,7 @@ void ostrich::InputLinux::Destroy() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputLinux::ProcessKBM() {
+void ostrich::InputUDev::ProcessKBM() {
     input_event input[32];
     ssize_t bytesread = 0;
     bool done = false;
@@ -231,22 +231,22 @@ void ostrich::InputLinux::ProcessKBM() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputLinux::ProcessOSMessages() {
-    if (InputLinux::ms_LastRaisedSignal != 0) {
+void ostrich::InputUDev::ProcessOSMessages() {
+    if (InputUDev::ms_LastRaisedSignal != 0) {
         int32_t code = 0; // TODO: reserved for when system messages get their own defines
-        if (InputLinux::ms_SignalInfo) {
-            code = InputLinux::ms_SignalInfo->si_code;
+        if (InputUDev::ms_SignalInfo) {
+            code = InputUDev::ms_SignalInfo->si_code;
         }
         m_EventSender.Send(ostrich::Message::CreateSystemMessage(OST_SYSTEMMSG_SIGNAL,
-            InputLinux::ms_LastRaisedSignal, OST_FUNCTION_SIGNATURE));
-        InputLinux::ms_LastRaisedSignal = 0;
-        InputLinux::ms_SignalInfo = nullptr;
+            InputUDev::ms_LastRaisedSignal, OST_FUNCTION_SIGNATURE));
+        InputUDev::ms_LastRaisedSignal = 0;
+        InputUDev::ms_SignalInfo = nullptr;
     }
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::InputLinux::InitUDev() {
+int ostrich::InputUDev::InitUDev() {
     m_udev = ::udev_new();
     if (!m_udev) {
         return OST_ERROR_UDEVINIT;
@@ -270,7 +270,7 @@ int ostrich::InputLinux::InitUDev() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::InputLinux::ScanDevices() {
+int ostrich::InputUDev::ScanDevices() {
     if (m_udev) {
         udev_enumerate *enumerate = nullptr;
 
@@ -304,7 +304,7 @@ int ostrich::InputLinux::ScanDevices() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputLinux::AddDevice(udev_device *device) {
+void ostrich::InputUDev::AddDevice(udev_device *device) {
     const char *path = ::udev_device_get_devnode(device);
     if (path == nullptr) {
         return;
@@ -325,7 +325,7 @@ void ostrich::InputLinux::AddDevice(udev_device *device) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputLinux::ClearDevices() {
+void ostrich::InputUDev::ClearDevices() {
     for (auto itr = m_Devices.begin(); itr != m_Devices.end(); std::advance(itr, 1)) {
         (*itr).Destroy();
     }
@@ -333,9 +333,9 @@ void ostrich::InputLinux::ClearDevices() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::InputLinux::InitializeSignalHandler() {
-    InputLinux::ms_LastRaisedSignal = 0;
-    InputLinux::ms_SignalInfo = nullptr;
+int ostrich::InputUDev::InitializeSignalHandler() {
+    InputUDev::ms_LastRaisedSignal = 0;
+    InputUDev::ms_SignalInfo = nullptr;
 
     struct sigaction action = { }, oldaction = { };
     action.sa_sigaction = ostrich::InputLinux::SignalHandler;
@@ -365,7 +365,7 @@ int ostrich::InputLinux::InitializeSignalHandler() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-void ostrich::InputLinux::SignalHandler(int signum, siginfo_t *info, void *ucontext) {
-    InputLinux::ms_LastRaisedSignal = signum;
-    InputLinux::ms_SignalInfo = info;
+void ostrich::InputUDev::SignalHandler(int signum, siginfo_t *info, void *ucontext) {
+    InputUDev::ms_LastRaisedSignal = signum;
+    InputUDev::ms_SignalInfo = info;
 }

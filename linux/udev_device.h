@@ -8,8 +8,8 @@ But since after initialization the device should be read-only it doesn't matter 
 ==========================================
 */
 
-#ifndef LINUX_UDEVDEVICE_H_
-#define LINUX_UDEVDEVICE_H_
+#ifndef UDEV_DEVICE_H_
+#define UDEV_DEVICE_H_
 
 #include "../common/ost_common.h"
 

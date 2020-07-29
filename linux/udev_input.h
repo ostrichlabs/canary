@@ -7,8 +7,8 @@ Meant for use on Linux platforms not using X11 or Wayland for some reason (like 
 ==========================================
 */
 
-#ifndef LINUX_INPUT_H_
-#define LINUX_INPUT_H_
+#ifndef UDEV_INPUT_H_
+#define UDEV_INPUT_H_
 
 #include "../common/ost_common.h"
 
@@ -20,7 +20,7 @@ Meant for use on Linux platforms not using X11 or Wayland for some reason (like 
 #include <libudev.h>
 #include <list>
 #include <linux/input.h>
-#include "linux_udevdevice.h"
+#include "udev_device.h"
 #include "../game/eventqueue.h"
 #include "../game/i_input.h"
 
@@ -36,16 +36,16 @@ int32_t TranslateKey(__u16 vkey);
 
 /////////////////////////////////////////////////
 //
-class InputLinux : public IInput {
+class InputUDev : public IInput {
 public:
 
-    InputLinux() noexcept : m_isActive(false), m_udev(nullptr), m_Monitor(nullptr)
+    InputUDev() noexcept : m_isActive(false), m_udev(nullptr), m_Monitor(nullptr)
     { }
-    virtual ~InputLinux() { }
-    InputLinux(InputLinux &&) = delete;
-    InputLinux(const InputLinux &) = delete;
-    InputLinux &operator=(InputLinux &&) = delete;
-    InputLinux &operator=(const InputLinux &) = delete;
+    virtual ~InputUDev() { }
+    InputUDev(InputUDev &&) = delete;
+    InputUDev(const InputUDev &) = delete;
+    InputUDev &operator=(InputUDev &&) = delete;
+    InputUDev &operator=(const InputUDev &) = delete;
 
     bool isActive() const noexcept override { return m_isActive; }
 
