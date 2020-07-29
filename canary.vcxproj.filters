@@ -120,6 +120,9 @@
     <ClCompile Include="common\filesystem.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="gl4\gl4_texture.cpp">
+      <Filter>gl4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">
@@ -208,6 +211,9 @@
     </ClInclude>
     <ClInclude Include="common\image.h">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="gl4\gl4_texture.h">
+      <Filter>gl4</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

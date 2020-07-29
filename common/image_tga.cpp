@@ -172,17 +172,21 @@ ostrich::Image ostrich::Image::LoadTGA(const char *filename) {
     handle.seekg(TGAHeader::SIZE, std::ios_base::beg);
 
     // this is the UNPACKED data size
-    uint64_t datasize = static_cast<uint64_t>(header.m_Height) * header.m_Width * header.m_BitsPerPixel;
+    int32_t datasize = static_cast<int32_t>(header.m_Height) * header.m_Width * header.m_BitsPerPixel;
     uint8_t *imgdata = nullptr;
 
     if (!isRLE) {
         imgdata = new uint8_t[datasize];
         handle.read((char *)imgdata, datasize);
+        if (handle.fail()) {
+            delete[] imgdata;
+            return ostrich::Image();
+        }
     }
     else {
         return ostrich::Image();
     }
 
     return ostrich::Image(filename, ostrich::ImageType::IMGTYPE_TGA, pixformat, header.m_Width,
-        header.m_Height, header.m_BitsPerPixel, imgdata);
+        header.m_Height, header.m_BitsPerPixel, datasize, imgdata);
 }

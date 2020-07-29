@@ -6,6 +6,10 @@ Copyright (c) 2020 Ostrich Labs
 
 #include "filesystem.h"
 
+#if (OST_WINDOWS == 1)
+#   include <Windows.h>
+#endif
+
 namespace {
 
 static constexpr std::ios_base::openmode FStreamModes[] = {
@@ -28,6 +32,11 @@ bool ostrich::File::Open(const std::string_view filename, ostrich::FileMode mode
     m_Handle.clear();
 
     m_Handle.open(m_Path, ::FStreamModes[static_cast<int32_t>(mode)]);
+
+#if (OST_WINDOWS == 1)
+    if (::GetLastError() == 0xb7) // ERROR_ALREADY_EXISTS
+        ::SetLastError(0);
+#endif
 
     return ((m_Handle.is_open()) && (!m_Handle.fail()));
 }

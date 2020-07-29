@@ -33,8 +33,17 @@ enum class ImageType : int32_t {
 //
 enum class PixelFormat : int32_t {
     FORMAT_NONE = 0,
-    FORMAT_RGB,
-    FORMAT_RGBA,
+    FORMAT_RGB,     // TGA
+    FORMAT_RGBA,    // TGA
+    FORMAT_BGR,     // DDS
+    FORMAT_BGRA,    // DDS
+
+    FORMAT_COMPRESSED_START = 100,
+    FORMAT_DXT1,
+    FORMAT_DXT3,
+    FORMAT_DXT5,
+    FORMAT_COMPRESSED_END = 199,
+
     FORMAT_MAX
 };
 
@@ -59,6 +68,8 @@ public:
     static Image LoadPNG(const char *filename);
 
     bool isValid() const noexcept { return ((m_Type != ostrich::ImageType::IMGTYPE_NONE) ? true : false); }
+    bool isCompressed() const noexcept
+    { return ((m_Format > ostrich::PixelFormat::FORMAT_COMPRESSED_START) && (m_Format < ostrich::PixelFormat::FORMAT_COMPRESSED_END)); }
 
     std::string_view getFilename() const noexcept { return m_Filename; }
     ImageType getType() const noexcept { return m_Type; }
@@ -66,16 +77,17 @@ public:
     int32_t getWidth() const noexcept { return m_Width; }
     int32_t getHeight() const noexcept { return m_Height; }
     int32_t getBitsPerPixel() const noexcept { return m_Depth; }
+    int32_t getDataSize() const noexcept { return m_DataSize; }
     std::weak_ptr<uint8_t[]> getData() const noexcept { return m_Data; }
 
 private:
     
     Image() noexcept :
         m_Filename(""), m_Type(ostrich::ImageType::IMGTYPE_NONE), m_Format(ostrich::PixelFormat::FORMAT_NONE),
-        m_Width(0), m_Height(0), m_Depth(0), m_Data(nullptr) {}
+        m_Width(0), m_Height(0), m_Depth(0), m_DataSize(0), m_Data(nullptr) {}
 
-    Image(const char *filename, ImageType type, PixelFormat format, int32_t width, int32_t height, int32_t depth, uint8_t data[]) noexcept :
-        m_Filename(filename), m_Type(type), m_Format(format), m_Width(width), m_Height(height), m_Depth(depth), m_Data(data) {}
+    Image(const char *filename, ImageType type, PixelFormat format, int32_t width, int32_t height, int32_t depth, int32_t datasize, uint8_t data[]) noexcept :
+        m_Filename(filename), m_Type(type), m_Format(format), m_Width(width), m_Height(height), m_Depth(depth), m_DataSize(datasize), m_Data(data) {}
 
     const char *m_Filename;
 
@@ -86,6 +98,7 @@ private:
     int32_t m_Height;
     int32_t m_Depth;
 
+    int32_t m_DataSize;
     std::shared_ptr<uint8_t[]> m_Data;
 };
 

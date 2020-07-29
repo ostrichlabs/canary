@@ -214,6 +214,7 @@
     <ClCompile Include="game\ost_main.cpp" />
     <ClCompile Include="gl4\gl4_extensions.cpp" />
     <ClCompile Include="gl4\gl4_renderer.cpp" />
+    <ClCompile Include="gl4\gl4_texture.cpp" />
     <ClCompile Include="gles2\gles2_renderer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -272,6 +273,7 @@
     <ClInclude Include="game\ost_version.h" />
     <ClInclude Include="gl4\gl4_renderer.h" />
     <ClInclude Include="gl4\gl4_extensions.h" />
+    <ClInclude Include="gl4\gl4_texture.h" />
     <ClInclude Include="gles2\gles2_renderer.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>

@@ -36,16 +36,17 @@ int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
     TODO: Hardcode resolution - use constants
     */
 
-    int result = m_Ext.Load();
-    if (result != OST_ERROR_OK) {
-        return result;
-    }
-
-    result = this->CheckCaps();
+    int result = this->CheckCaps();
     if (result != OST_ERROR_OK) {
         m_ConsolePrinter.WriteMessage(u8"Last GL Error: %", { std::to_string(::glGetError()) });
         return result;
     }
+
+    result = m_Ext.Load(m_ConsolePrinter);
+    if (result != OST_ERROR_OK) {
+        return result;
+    }
+
 
     ::glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -81,8 +82,6 @@ void ostrich::GL4Renderer::RenderScene(const SceneData *scenedata, int32_t extra
 }
 
 /////////////////////////////////////////////////
-// To print:
-// GL_EXTENSIONS
 /////////////////////////////////////////////////
 int ostrich::GL4Renderer::CheckCaps() {
     const char *glstring = nullptr;
@@ -121,17 +120,6 @@ int ostrich::GL4Renderer::CheckCaps() {
     if (glshadermajorversion < GL_SHADING_LANGUAGE_VERSION_MINIMUM) {
         return OST_ERROR_GLSHADERVERSION;
     }
-
-    GLint extcount = 0;
-    std::string extensions;
-    const char *ext;
-    ::glGetIntegerv(GL_NUM_EXTENSIONS, &extcount);
-    for (GLint i = 0; i < extcount; i++) {
-        ext = (const char *)(m_Ext.glGetStringi(GL_EXTENSIONS, i));
-        extensions.append(ext);
-        extensions += ost_char::g_Space;
-    }
-    m_ConsolePrinter.WriteMessage(u8"Supported Extensions: %", { extensions });
 
     return OST_ERROR_OK;
 }

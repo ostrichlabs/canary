@@ -34,7 +34,7 @@ struct DDSHeader {
 
     uint32_t m_PixelFormatSize;     // should be 32
     uint32_t m_PixelFormatFlags;    // Tells of presence of extra data in next 28 bytes
-    uint32_t m_FileFormat;          // DXT1, DXT3, DXT5
+    uint32_t m_FourCC;              // DXT1, DXT3, DXT5
     uint32_t m_BitsPerPixel;
     uint32_t m_RedBitMask;
     uint32_t m_GreenBitMask;
@@ -46,6 +46,56 @@ struct DDSHeader {
     uint32_t m_Caps4;               // unused
     uint32_t m_Reserved2;
 };
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+ostrich::PixelFormat DeterminePixelFormat(const DDSHeader &header) {
+    const uint32_t FIRSTMASK = 0xFF00'0000;
+    const uint32_t DXT1 = 0x44585431; // "DXT1"
+    const uint32_t DXT3 = 0x44585433; // "DXT3"
+    const uint32_t DXT5 = 0x44585435; // "DXT5"
+
+    // compressed
+    if (header.m_PixelFormatFlags & 0x4) { // DDPF_FOURCC
+        switch (header.m_FourCC) {
+            case DXT1:
+            {
+                return ostrich::PixelFormat::FORMAT_DXT1;
+            }
+            case DXT3:
+            {
+                return ostrich::PixelFormat::FORMAT_DXT3;
+            }
+            case DXT5:
+            {
+                return ostrich::PixelFormat::FORMAT_DXT5;
+            }
+            default:
+            {
+                return ostrich::PixelFormat::FORMAT_NONE;
+            }
+        }
+    }
+
+    // uncompressed
+    bool hasAlpha = (header.m_PixelFormatFlags & 0x1) ? true : false; // DDPF_ALPHAPIXELS
+    if (header.m_BlueBitMask == FIRSTMASK) {
+        if (hasAlpha) {
+            return ostrich::PixelFormat::FORMAT_BGRA;
+        }
+        return ostrich::PixelFormat::FORMAT_BGR;
+    }
+
+    // this might not be necessary, but I'm doing it anyway
+    if (header.m_RedBitMask == FIRSTMASK) {
+        if (hasAlpha) {
+            return ostrich::PixelFormat::FORMAT_RGBA;
+        }
+        return ostrich::PixelFormat::FORMAT_RGB;
+    }
+
+    return ostrich::PixelFormat::FORMAT_NONE;
+}
 
 } // anonymous namespace
 
@@ -74,14 +124,25 @@ ostrich::Image ostrich::Image::LoadDDS(const char *filename) {
     // verify supported features
     if ((header.m_VolumeDepth > 1) ||       // no cubemaps
         (header.m_MipMapCount > 1) ||       // no mipmaps
-        (header.m_FileFormat != 0) ||       // no compression
         (header.m_Caps != 0x0000'1000)) {   // also no mipmaps/cubemaps
         return ostrich::Image();
     }
 
-    // determine file size
-    //handle.seekg(std::ios_base::end);
-    //uint64_t filesize = (uint64_t(handle.tellg()) - sizeof(DDSHeader));
+    // determine pixel format
+    ostrich::PixelFormat pixformat = ::DeterminePixelFormat(header);
 
-    return ostrich::Image();
+    // determine data size
+    auto &path = file.getPath();
+    auto datasize = std::filesystem::file_size(path) - 128;
+
+    // everything after the header is pixel data regardless of compression
+    uint8_t *imgdata = new uint8_t[datasize];
+    handle.read((char *)imgdata, datasize);
+    if (handle.fail()) {
+        delete[] imgdata;
+        return ostrich::Image();
+    }
+
+    return ostrich::Image(filename, ostrich::ImageType::IMGTYPE_DDS, pixformat, header.m_Width,
+        header.m_Height, header.m_BitsPerPixel, static_cast<int32_t>(datasize), imgdata);
 }

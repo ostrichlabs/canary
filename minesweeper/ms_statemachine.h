@@ -15,6 +15,7 @@ Check docs for more details
 #include <cstring>
 #include <list>
 #include <memory>
+#include <vector>
 #include "../common/console.h"
 #include "../common/ost_common.h"
 #include "../game/eventqueue.h"
@@ -84,6 +85,25 @@ private:
     ostrich::SceneData m_SceneData;
 
     std::list<ostrich::IEntity> m_MasterEntityList;
+
+    /////////////////////////////////////////////////
+    // all of the above state could be considered generic stuff for any game
+    // the below is specific to Minesweeper
+    /////////////////////////////////////////////////
+
+    enum class TileState : int32_t {
+        STATE_UNREVEALED,   // state is unknown to player
+        STATE_REVEALED,     // state is known to the player
+        STATE_FLAGGED       // player planted a flag on the tile
+    };
+
+    struct Tile {
+        TileState m_State;
+        bool m_isAMine;
+    };
+
+    // board represented by a single-dimension vector of power-of-two size
+    std::vector<ostrich::IEntity> m_Board;
 };
 
 } // namespace ms

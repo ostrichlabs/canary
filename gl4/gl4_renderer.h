@@ -18,6 +18,7 @@ OpenGL 4.0 interface
 #include <windows.h>
 #include <gl/GL.h>
 #include "gl4_extensions.h"
+#include "gl4_texture.h"
 #include "gl/glcorearb.h"
 #include "gl/glext.h"
 #include "../game/i_renderer.h"
