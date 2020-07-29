@@ -51,17 +51,18 @@ namespace ost_char = ostrich::character;
 /////////////////////////////////////////////////
 // Platform defines
 // RASPI has to be defined at the command line for this to function properly
+// For GCC debug builds, -DGCC_DEBUG should be specified
 // Each platform needs to define g_Platform and g_PlatformString
+#undef OST_DEBUG_BUILD
 #undef OST_LINUX
 #undef OST_RASPI
-#undef OST_DEBUG_BUILD
 #undef OST_WINDOWS
 #undef OST_MSVC
 #undef OST_MACHINE_X64
 #undef OST_MACHINE_X32
 #undef OST_FUNCTION_SIGNATURE
 
-#if defined(RASPI) // Raspberry Pi
+#if defined(RASPI) // Raspberry Pi - must be defined globally via compiler setting
 
 #   define OST_RASPI 1
 
@@ -76,7 +77,7 @@ const int32_t g_Platform = g_PlatformRaspi;
 const char *const g_PlatformString = u8"Raspberry Pi";
 }
 
-#elif defined(LINUX) // non-Raspberry Pi Linux flavors
+#elif defined(__linux__) // non-Raspberry Pi Linux flavors
 
 #   define OST_LINUX 1
 
@@ -116,10 +117,8 @@ const char *const g_PlatformString = u8"Windows";
 
 #endif
 
-#if ((OST_RASPI != 1) && (OST_WINDOWS != 1))
-#   error "You must define RASPI or use Microsoft Visual Studio to build this project"
-#elif (OST_LINUX == 1)
-#   error "The Linux platform is not yet supported"
+#if ((OST_RASPI != 1) && (OST_WINDOWS != 1) && (OST_LINUX != 1))
+#   error "Platform not specified or unsupported; check ost_common.h"
 #endif
 
 /////////////////////////////////////////////////
@@ -128,7 +127,7 @@ const char *const g_PlatformString = u8"Windows";
 #endif
 
 // TODO: Work on memory tracker
-#define OST_USE_MEMORYTRACKER 1
+#define OST_USE_MEMORYTRACKER 0
 //#include "sys_memory.h"
 
 #endif /* COMMON_H_ */

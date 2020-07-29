@@ -71,11 +71,6 @@ int ostrich::Main::Initialize() {
         }
 
         if (initresult == OST_ERROR_OK) {
-            m_ConsolePrinter.WriteMessage(u8"Initializing Input Handler");
-            initresult = m_Input->Initialize(m_Console.CreatePrinter(), m_EventQueue.CreateSender());
-        }
-
-        if (initresult == OST_ERROR_OK) {
             m_ConsolePrinter.WriteMessage(u8"Initializing Display");
             initresult = m_Display->Initialize(m_Console.CreatePrinter());
         }
@@ -83,6 +78,11 @@ int ostrich::Main::Initialize() {
         if (initresult == OST_ERROR_OK) {
             m_ConsolePrinter.WriteMessage(u8"Initializing Renderer");
             initresult = m_Renderer->Initialize(m_Console.CreatePrinter());
+        }
+
+        if (initresult == OST_ERROR_OK) {
+            m_ConsolePrinter.WriteMessage(u8"Initializing Input Handler");
+            initresult = m_Input->Initialize(m_Console.CreatePrinter(), m_EventQueue.CreateSender());
         }
 
         if (initresult == OST_ERROR_OK) {
@@ -126,6 +126,10 @@ int ostrich::Main::Initialize() {
 /////////////////////////////////////////////////
 void ostrich::Main::Destroy() {
     m_Console.WriteMessage(u8"Shutting down...");
+    if (m_Input) {
+        m_Input->Destroy();
+        m_Input = nullptr;
+    }
     if (m_Renderer) {
         m_Renderer->Destroy();
         m_Renderer = nullptr;
@@ -133,10 +137,6 @@ void ostrich::Main::Destroy() {
     if (m_Display) {
         m_Display->Destroy();
         m_Display = nullptr;
-    }
-    if (m_Input) {
-        m_Input->Destroy();
-        m_Input = nullptr;
     }
     m_Console.Destroy();
     m_isActive = false;

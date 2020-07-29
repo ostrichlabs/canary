@@ -35,6 +35,7 @@ Using good ol' defines because enums might by type safe but also I don't care
 #define OST_ERROR_UDEVMONITOR   (OST_ERROR_INPUT+0x02)  // udev - call to udev_monitor_new_from_netlink() failed
 #define OST_ERROR_UDEVNODEVICES (OST_ERROR_INPUT+0x03)  // udev - unable to add any devices
 #define OST_ERROR_UDEVENUM      (OST_ERROR_INPUT+0x04)  // udev - call to udev_enumerate_new() failed
+#define OST_ERROR_GLXGETDISPLAY (OST_ERROR_INPUT+0x05)  // GLX - call to glXGetCurrentDisplay() failed
 
 // Display handler
 #define OST_ERROR_DISPLAY               0x0000'0400 // start of display handler errors
@@ -59,6 +60,16 @@ Using good ol' defines because enums might by type safe but also I don't care
 #define OST_ERROR_ES2CREATEWINSURFACE   (OST_ERROR_DISPLAY+0x15) // ES2 - call to eglCreateWindowSurface() failed
 #define OST_ERROR_ES2CREATECONTEXT      (OST_ERROR_DISPLAY+0x16) // ES2 - call to eglCreateContext() failed
 #define OST_ERROR_ES2MAKECURRENT        (OST_ERROR_DISPLAY+0x17) // ES2 - call to eglMakeCurrent() failed
+
+#define OST_ERROR_X11OPENDISPLAY        (OST_ERROR_DISPLAY+0x18) // X11 - call to XOpenDisplay() failed
+#define OST_ERROR_GLXQUERYVERSION       (OST_ERROR_DISPLAY+0x19) // GLX - call to glXQueryVersion() failed
+#define OST_ERROR_GLXVERSION            (OST_ERROR_DISPLAY+0x1A) // GLX - version is not 1.3 or newer
+#define OST_ERROR_GLXCHOOSEFBCONFIG     (OST_ERROR_DISPLAY+0x1B) // GLX - call to glXChooseFBConfig() failed
+#define OST_ERROR_GLXGETVISUALFROMFB    (OST_ERROR_DISPLAY+0x1C) // GLX - call to glXGetVisualFromFBConfig() failed
+#define OST_ERROR_XCREATEWINDOW         (OST_ERROR_DISPLAY+0x1D) // X11 - call to XCreateWindow() failed
+#define OST_ERROR_GLXCREATECONTEXT      (OST_ERROR_DISPLAY+0x1E) // GLX - unable to generate context
+#define OST_ERROR_GLXINDIRECT           (OST_ERROR_DISPLAY+0x1F) // GLX - context is indirect somehow
+#define OST_ERROR_GLXMAKECURRENT        (OST_ERROR_DISPLAY+0x20) // GLX - call to glXMakeCurrent() failed
 
 // Renderer - OpenGL 4
 #define OST_ERROR_GL4                   0x0000'0500 // start of OpenGL 4 renderer errors
