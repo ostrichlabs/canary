@@ -15,8 +15,8 @@ Entry point for Linux using X11
 
 #include <iostream>
 
-#include "x11_display.h"
 #include "x11_input.h"
+#include "x11_display.h"
 #include "../common/error.h"
 #include "../game/ost_main.h"
 #include "../gl4/gl4_renderer.h"
@@ -25,8 +25,8 @@ namespace {
 
 ostrich::Main Game;
 
-ostrich::DisplayX11     Display;
-ostrich::IDisplay*      DisplayPtr = &Display;
+ostrich::DisplayX11     DisplayObj;
+ostrich::IDisplay*      DisplayPtr = &DisplayObj;
 
 ostrich::GL4Renderer    Renderer;
 ostrich::IRenderer*     RendererPtr = &Renderer;
@@ -38,7 +38,7 @@ ostrich::IInput*        InputPtr = &Input;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int main(int argc, char *argv) {
+int main(int argc, char *argv[]) {
     UNUSED_PARAMETER(argc);
     UNUSED_PARAMETER(argv);
 

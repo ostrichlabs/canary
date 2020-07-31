@@ -14,9 +14,10 @@ The file name is used as the common ID because it's there.
 #include "../common/ost_common.h"
 
 #if (OST_WINDOWS == 1)
-#   include <Windows.h>
+#   include <Windows.h> // required for gl.h
 #endif
-#include <gl/GL.h>
+
+#include <GL/gl.h>
 #include <string>
 #include "gl4_extensions.h"
 #include "../common/image.h"

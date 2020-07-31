@@ -28,9 +28,9 @@ int ostrich::DisplayX11::GLXErrorHandler(Display *display, XErrorEvent *event) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-ostrich::DisplayX11::DisplayX11() :
+ostrich::DisplayX11::DisplayX11() noexcept :
 m_isActive(false), m_FrameBufferConfig(nullptr), m_Display(nullptr),
-m_Colormap(nullptr), m_GLWindow(0), m_GLContext(nullptr) {
+m_Colormap(0), m_GLWindow(0), m_GLContext(nullptr) {
 
 }
 
@@ -123,8 +123,9 @@ int ostrich::DisplayX11::InitWindow() {
     }
 
     int fbcount = 0;
-    GLXFBConfig *fbconfigs = ::glXChooseFBConfig(m_Display, DefaultScreen(m_Display), glattribs, &fbcount);
-    if (fbconfigs != nullptr) {
+    GLXFBConfig *fbconfigs = ::glXChooseFBConfig(m_Display, DefaultScreen(m_Display),
+        glattribs, &fbcount);
+    if (fbconfigs == nullptr) {
         return OST_ERROR_GLXCHOOSEFBCONFIG;
     }
 

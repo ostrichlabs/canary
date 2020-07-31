@@ -9,9 +9,7 @@ IDisplay implementation for Linux, using X11
 #ifndef X11_DISPLAY_H_
 #define X11_DISPLAY_H_
 
-#include "../i_display.h"
-#include <X11/Xlib.h>
-#include <GL/gl.h>
+#include "../game/i_display.h"
 #include <GL/glx.h>
 
 namespace ostrich {

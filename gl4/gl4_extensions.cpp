@@ -5,7 +5,12 @@ Copyright(c) 2020 Ostrich Labs
 */
 
 #include "gl4_extensions.h"
-#include <gl/GL.h>
+
+#if (OST_WINDOWS == 1)
+#   include <windows.h> // required for GL.h
+#endif
+
+#include <GL/gl.h>
 #include "../game/errorcodes.h"
 
 /////////////////////////////////////////////////

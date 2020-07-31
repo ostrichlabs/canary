@@ -14,8 +14,8 @@ Actually retrieving function pointers is platform specific, through a common ost
 #ifndef GL4_EXTENSIONS_H_
 #define GL4_EXTENSIONS_H_
 
-#include "gl/glcorearb.h"
-#include "gl/glext.h"
+#include "GL/glcorearb.h"
+#include "GL/glext.h"
 #include "../common/console.h"
 
 namespace ostrich {

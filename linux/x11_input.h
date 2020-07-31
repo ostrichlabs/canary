@@ -9,10 +9,9 @@ IInput implementation for Linux, using X11
 #ifndef X11_INPUT_H_
 #define X11_INPUT_H_
 
+#include "../game/i_input.h"
 #include <csignal>
 #include <X11/Xlib.h>
-#include "../game/eventqueue.h"
-#include "../game/i_input.h"
 
 namespace ostrich {
 
@@ -58,7 +57,7 @@ private:
 
     bool m_isActive;
 
-    Display m_Display;
+    Display *m_Display;
 };
 
 } // namespace ostrich

@@ -11,16 +11,15 @@ OpenGL 4.0 interface
 
 #include "../common/ost_common.h"
 
-#if (OST_WINDOWS != 1)
-#    error "This module should only be included in Windows builds"
+#if (OST_WINDOWS == 1)
+#   include <windows.h> // required for GL.h
 #endif
 
-#include <windows.h>
-#include <gl/GL.h>
+#include <GL/gl.h>
 #include "gl4_extensions.h"
 #include "gl4_texture.h"
-#include "gl/glcorearb.h"
-#include "gl/glext.h"
+#include "GL/glcorearb.h"
+#include "GL/glext.h"
 #include "../game/i_renderer.h"
 
 namespace ostrich {
