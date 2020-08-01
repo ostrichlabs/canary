@@ -168,10 +168,10 @@ int ostrich::DisplayX11::InitWindow() {
     XSetWindowAttributes xwinattribs = {};
     xwinattribs.colormap = m_Colormap;
     xwinattribs.border_pixel = 0;
-    xwinattribs.event_mask = VisibilityChangeMask | ExposureMask |      // Window masks
-                             FocusChangeMask |
-                             KeyPressMask | KeyReleaseMask |            // Keyboard masks
-                             ButtonMotionMask | PointerMotionHintMask;  // Mouse masks
+    xwinattribs.event_mask = VisibilityChangeMask |                 // Window masks
+                             KeyPressMask | KeyReleaseMask |        // Keyboard masks
+                             ButtonPressMask | ButtonReleaseMask |  // Mouse masks
+                             ButtonMotionMask | PointerMotionMask;
 
     m_GLWindow = ::XCreateWindow(m_Display, rootwindow, 0, 0, 1920, 1080, 0, visual->depth,
         InputOutput, visual->visual, CWBorderPixel | CWColormap | CWEventMask, &xwinattribs);

@@ -11,6 +11,7 @@ IInput implementation for Linux, using X11
 
 #include "../game/i_input.h"
 #include <csignal>
+#include <X11/keysym.h>
 #include <X11/Xlib.h>
 
 namespace ostrich {
@@ -19,7 +20,7 @@ namespace x11 {
 
 /////////////////////////////////////////////////
 // Translates X11 virtual keys to internal ostrich format
-int32_t TranslateKey(int32_t vkey);
+int32_t TranslateKey(XKeyEvent *ev);
 
 } // namespace x11
 

@@ -22,8 +22,14 @@ volatile int ostrich::InputX11::ms_LastRaisedSignal = 0;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int32_t ostrich::x11::TranslateKey(int32_t vkey) {
+int32_t ostrich::x11::TranslateKey(XKeyEvent *ev) {
+    int vkey = ::XLookupKeysym(ev, 0); // TODO: maybe use XLookupString later for debugging?
 
+    if (vkey == NoSymbol)
+        return 0;
+
+    if (vkey == XK_KP_Space)
+        return ' ';
 
     return 0;
 }
@@ -62,6 +68,48 @@ void ostrich::InputX11::Destroy() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::InputX11::ProcessKBM() {
+    if (!this->isActive()) {
+        return;
+    }
+
+    XEvent event = {};
+    while(::XPending(m_Display) > 0) {
+        ::XNextEvent(m_Display, &event);
+        switch (event.type) {
+            case KeyPress:
+            {
+                int32_t vkey = ostrich::x11::TranslateKey(&event.xkey);
+                m_EventSender.Send(ostrich::Message::CreateKeyMessage(vkey, true, OST_FUNCTION_SIGNATURE));
+                break;
+            }
+            case KeyRelease:
+            {
+                int32_t vkey = ostrich::x11::TranslateKey(&event.xkey);
+                m_EventSender.Send(ostrich::Message::CreateKeyMessage(vkey, false, OST_FUNCTION_SIGNATURE));
+                break;
+            }
+            case ButtonPress:
+            {
+                break;
+            }
+            case ButtonRelease:
+            {
+                break;
+            }
+            case MotionNotify:
+            {
+                break;
+            }
+            case VisibilityNotify:
+            {
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
 }
 
 /////////////////////////////////////////////////
