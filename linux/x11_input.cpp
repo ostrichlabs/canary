@@ -22,14 +22,23 @@ volatile int ostrich::InputX11::ms_LastRaisedSignal = 0;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int32_t ostrich::x11::TranslateKey(XKeyEvent *ev) {
-    int vkey = ::XLookupKeysym(ev, 0); // TODO: maybe use XLookupString later for debugging?
+KeySym GetVKey(XKeyEvent *ev) {
+    return ::XLookupKeysym(ev, 0); // TODO: maybe use XLookupString later for debugging?;
+}
 
-    if (vkey == NoSymbol)
-        return 0;
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+int32_t ostrich::x11::TranslateKey(KeySym vkey) {
 
-    if (vkey == XK_KP_Space)
-        return ' ';
+    // a range of XKs that map directly to ASCII/UTF-8
+    if ((vkey >= XK_space) && (vkey <= XK_asciitilde)) {
+        if ((vkey >= XK_a) && (vkey <= XK_z)) {
+            return (vkey - 32); // return capital letters
+        }
+        else {
+            return vkey;
+        }
+    }
 
     return 0;
 }
@@ -78,13 +87,13 @@ void ostrich::InputX11::ProcessKBM() {
         switch (event.type) {
             case KeyPress:
             {
-                int32_t vkey = ostrich::x11::TranslateKey(&event.xkey);
+                int32_t vkey = ostrich::x11::TranslateKey(ostrich::x11::GetVKey(&event.xkey));
                 m_EventSender.Send(ostrich::Message::CreateKeyMessage(vkey, true, OST_FUNCTION_SIGNATURE));
                 break;
             }
             case KeyRelease:
             {
-                int32_t vkey = ostrich::x11::TranslateKey(&event.xkey);
+                int32_t vkey = ostrich::x11::TranslateKey(ostrich::x11::GetVKey(&event.xkey));
                 m_EventSender.Send(ostrich::Message::CreateKeyMessage(vkey, false, OST_FUNCTION_SIGNATURE));
                 break;
             }

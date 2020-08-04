@@ -20,7 +20,11 @@ namespace x11 {
 
 /////////////////////////////////////////////////
 // Translates X11 virtual keys to internal ostrich format
-int32_t TranslateKey(XKeyEvent *ev);
+// Takes two functions because I want to be able to unit test
+//     without building my own XKeyEvent objects every time
+//     (also I don't know how)
+KeySym GetVKey(XKeyEvent *ev);
+int32_t TranslateKey(KeySym vkey);
 
 } // namespace x11
 

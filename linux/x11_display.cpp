@@ -37,7 +37,6 @@ m_Colormap(0), m_GLWindow(0), m_GLContext(nullptr) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::DisplayX11::~DisplayX11() {
-    this->Destroy();
 }
 
 /////////////////////////////////////////////////
@@ -66,9 +65,9 @@ int ostrich::DisplayX11::Initialize(ostrich::ConsolePrinter consoleprinter) {
 /////////////////////////////////////////////////
 int ostrich::DisplayX11::Destroy() {
     if (this->isActive()) {
-        ::glXMakeCurrent(m_Display, None, nullptr);
+        ::glXMakeCurrent(m_Display, 0, nullptr);
         ::glXDestroyContext(m_Display, m_GLContext);
-        ::glXDestroyWindow(m_Display, m_GLWindow);
+        ::XDestroyWindow(m_Display, m_GLWindow);
         ::XFreeColormap(m_Display, m_Colormap);
         ::XCloseDisplay(m_Display);
         m_isActive = false;
