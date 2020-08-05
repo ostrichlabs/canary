@@ -261,6 +261,7 @@ void ostrich::InputX11::Destroy() {
 }
 
 /////////////////////////////////////////////////
+// Have to process some non-KBM events here, I really should refactor this but meh
 /////////////////////////////////////////////////
 void ostrich::InputX11::ProcessKBM() {
     if (!this->isActive()) {
@@ -270,6 +271,7 @@ void ostrich::InputX11::ProcessKBM() {
     XEvent event = {};
     KeySym sym = 0;
     int32_t vkey = 0;
+    int32_t buttons = 0;
     while(::XPending(m_Display) > 0) {
         ::XNextEvent(m_Display, &event);
         switch (event.type) {
@@ -298,15 +300,28 @@ void ostrich::InputX11::ProcessKBM() {
                 break;
             }
             case ButtonPress:
-            {
-                break;
-            }
             case ButtonRelease:
             {
+                buttons = ostrich::Message::MOUSE_NONE;
+                // unlike Windows, there's no batching of mouse button events
+                if (event.xbutton.button == 1) {
+                    buttons = ostrich::Message::MOUSE_LBUTTON;
+                }
+                else if (event.xbutton.button == 3) {
+                    buttons = ostrich::Message::MOUSE_RBUTTON;
+                }
+                else if (event.xbutton.button == 2) {
+                    buttons = ostrich::Message::MOUSE_MBUTTON;
+                }
+                if (buttons > 0) {
+                    m_EventSender.Send(ostrich::Message::CreateButtonMessage(buttons, OST_FUNCTION_SIGNATURE));
+                }
                 break;
             }
             case MotionNotify:
             {
+                m_EventSender.Send(ostrich::Message::CreateMousePosMessage(event.xmotion.x_root,
+                    event.xmotion.y_root, OST_FUNCTION_SIGNATURE));
                 break;
             }
             case VisibilityNotify:
@@ -315,6 +330,7 @@ void ostrich::InputX11::ProcessKBM() {
             }
             default:
             {
+                m_ConsolePrinter.DebugMessage(u8"Unhandled event of type %", { std::to_string(event.type) });
                 break;
             }
         }
