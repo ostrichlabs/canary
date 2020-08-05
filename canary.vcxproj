@@ -340,6 +340,9 @@
     <ClInclude Include="win32\win_input.h" />
     <ClInclude Include="win32\win_wndproc.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\gl4\vertex.vert" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

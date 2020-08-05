@@ -9,12 +9,6 @@ IDisplay implementation for Windows
 #ifndef WIN_DISPLAY_H_
 #define WIN_DISPLAY_H_
 
-#include "../common/ost_common.h"
-
-#if (OST_WINDOWS != 1)
-#   error "This module should only be included in Windows builds"
-#endif
-
 #include <windows.h>
 #include <gl/GL.h>
 #include "../external/gl/glcorearb.h"

@@ -11,12 +11,6 @@ But since after initialization the device should be read-only it doesn't matter 
 #ifndef UDEV_DEVICE_H_
 #define UDEV_DEVICE_H_
 
-#include "../common/ost_common.h"
-
-#if (OST_RASPI != 1)
-#    error "This module should only be included in Raspberry Pi (or Linux I guess) builds"
-#endif
-
 #include <libudev.h>
 #include <list>
 

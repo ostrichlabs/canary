@@ -234,4 +234,9 @@
       <Filter>linux</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\gl4\vertex.vert">
+      <Filter>shaders\gl4</Filter>
+    </None>
+  </ItemGroup>
 </Project>

@@ -10,12 +10,6 @@ Meant for use on Linux platforms not using X11 or Wayland for some reason (like 
 #ifndef UDEV_INPUT_H_
 #define UDEV_INPUT_H_
 
-#include "../common/ost_common.h"
-
-#if (OST_RASPI != 1)
-#    error "This module should only be included in Raspberry Pi (or Linux I guess) builds"
-#endif
-
 #include <csignal>
 #include <libudev.h>
 #include <list>

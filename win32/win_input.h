@@ -9,12 +9,6 @@ Interface for retrieving input information from Windows
 #ifndef WIN_INPUT_H_
 #define WIN_INPUT_H_
 
-#include "../common/ost_common.h"
-
-#if (OST_WINDOWS != 1)
-#   error "This module should only be included in Windows builds"
-#endif
-
 #include "../game/eventqueue.h"
 #include "../game/i_input.h"
 
