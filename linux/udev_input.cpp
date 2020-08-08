@@ -31,29 +31,29 @@ volatile int ostrich::InputUDev::ms_LastRaisedSignal = 0;
 int32_t ostrich::linux::TranslateKey(__u16 vkey) {
     // Using a table for most of these because the Linux event codes are all over the goddamn place
     static int32_t keytable[] =
-    { 0, ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ESCAPE),
+    { 0, static_cast<int32_t>(ostrich::Keys::OSTKEY_ESCAPE),
       '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=',
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_BACKSPACE), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_TAB),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_BACKSPACE), static_cast<int32_t>(ostrich::Keys::OSTKEY_TAB),
       'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', '[', ']',
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ENTER), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_CTRL),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_ENTER), static_cast<int32_t>(ostrich::Keys::OSTKEY_CTRL),
       'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ';', '\'', '`',
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SHIFT), '\\',
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_SHIFT), '\\',
       'Z', 'X' ,'C' ,'V' ,'B', 'N', 'M', ',', '.', '/',
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SHIFT), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_STAR),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ALT), ' ', ostrich::KeyToInt32(ostrich::Keys::OSTKEY_CAPSLOCK),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F1), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F2),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F3), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F4),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F5), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F6),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F7), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F8),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F9), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F10),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_NUMLOCK), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SCROLLOCK),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_7), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_8),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_9), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_MINUS),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_4), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_5),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_6), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_PLUS),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_1), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_2),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_3), ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_0),
-      ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_DELETE)
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_SHIFT), static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_STAR),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_ALT), ' ', static_cast<int32_t>(ostrich::Keys::OSTKEY_CAPSLOCK),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_F1), static_cast<int32_t>(ostrich::Keys::OSTKEY_F2),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_F3), static_cast<int32_t>(ostrich::Keys::OSTKEY_F4),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_F5), static_cast<int32_t>(ostrich::Keys::OSTKEY_F6),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_F7), static_cast<int32_t>(ostrich::Keys::OSTKEY_F8),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_F9), static_cast<int32_t>(ostrich::Keys::OSTKEY_F10),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_NUMLOCK), static_cast<int32_t>(ostrich::Keys::OSTKEY_SCROLLOCK),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_7), static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_8),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_9), static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_MINUS),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_4), static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_5),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_6), static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_PLUS),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_1), static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_2),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_3), static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_0),
+      static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_DELETE)
     };
 
     // table keys, which is most of them
@@ -63,83 +63,83 @@ int32_t ostrich::linux::TranslateKey(__u16 vkey) {
 
     // mouse buttons 1-3
     if ((vkey >= BTN_LEFT) && (vkey <= BTN_MIDDLE)) {
-        return static_cast<int32_t>((vkey) + (ostrich::KeyToInt32(ostrich::Keys::OSTKEY_MOUSE1) - BTN_LEFT));
+        return static_cast<int32_t>((vkey) + (static_cast<int32_t>(ostrich::Keys::OSTKEY_MOUSE1) - BTN_LEFT));
     }
 
     // the wacky remainder
     switch (vkey) {
         case KEY_F11:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F11);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_F11);
         }
         case KEY_F12:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F12);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_F12);
         }
 
         case KEY_KPENTER: // treat keypad enter as regular enter
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ENTER);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_ENTER);
         }
         case KEY_RIGHTCTRL:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_CTRL);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_CTRL);
         }
         case KEY_KPSLASH:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_SLASH);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_SLASH);
         }
         case KEY_RIGHTALT:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ALT);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_ALT);
         }
 
         // Arrow keys
         case KEY_UP:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_UPARROW);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_UPARROW);
         }
         case KEY_LEFT:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_LEFTARROW);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_LEFTARROW);
         }
         case KEY_DOWN:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_DOWNARROW);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_DOWNARROW);
         }
         case KEY_RIGHT:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_RIGHTARROW);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_RIGHTARROW);
         }
 
         // Those utility keys above the arrow keys
         case KEY_PAUSE:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAUSE);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_PAUSE);
         }
         case KEY_INSERT:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_INSERT);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_INSERT);
         }
         case KEY_DELETE:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_DELETE);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_DELETE);
         }
         case KEY_HOME:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_HOME);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_HOME);
         }
         case KEY_END:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_END);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_END);
         }
         case KEY_PAGEUP:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAGEUP);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_PAGEUP);
         }
         case KEY_PAGEDOWN:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAGEDOWN);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_PAGEDOWN);
         }
 
     }

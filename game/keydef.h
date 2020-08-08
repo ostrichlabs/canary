@@ -91,10 +91,6 @@ enum class Keys : int32_t {
     OSTKEY_LAST = 255
 };
 
-constexpr int32_t KeyToInt32(Keys key) {
-    return static_cast<int32_t>(key);
-}
-
 } // namespace ostrich
 
 #endif /* KEYDEF_H_ */

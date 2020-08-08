@@ -44,12 +44,12 @@ int32_t ostrich::x11::TranslateKey(KeySym vkey) {
 
     // F keys
     if ((vkey >= XK_F1) && (vkey <= XK_F12)) {
-        return static_cast<int32_t>((static_cast<int32_t>(vkey) + (ostrich::KeyToInt32(ostrich::Keys::OSTKEY_F1) - XK_F1)));
+        return static_cast<int32_t>((static_cast<int32_t>(vkey) + (static_cast<int32_t>(ostrich::Keys::OSTKEY_F1) - XK_F1)));
     }
 
     // Number keys on keypad
     if ((vkey >= XK_KP_0) && (vkey <= XK_KP_9)) {
-        return static_cast<int32_t>((static_cast<int32_t>(vkey) + (ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_0) - XK_KP_0)));
+        return static_cast<int32_t>((static_cast<int32_t>(vkey) + (static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_0) - XK_KP_0)));
     }
 
     switch (vkey) {
@@ -59,119 +59,119 @@ int32_t ostrich::x11::TranslateKey(KeySym vkey) {
         }
         case XK_Escape:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ESCAPE);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_ESCAPE);
         }
         case XK_Tab:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_TAB);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_TAB);
         }
         case XK_Caps_Lock:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_CAPSLOCK);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_CAPSLOCK);
         }
         case XK_Return:
         case XK_KP_Enter:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ENTER);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_ENTER);
         }
         case XK_BackSpace:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_BACKSPACE);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_BACKSPACE);
         }
 
         // Arrow keys
         case XK_Up:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_UPARROW);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_UPARROW);
         }
         case XK_Left:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_LEFTARROW);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_LEFTARROW);
         }
         case XK_Down:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_DOWNARROW);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_DOWNARROW);
         }
         case XK_Right:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_RIGHTARROW);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_RIGHTARROW);
         }
 
         // Modifier keys
         case XK_Shift_L:
         case XK_Shift_R:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SHIFT);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_SHIFT);
         }
         case XK_Control_L:
         case XK_Control_R:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_CTRL);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_CTRL);
         }
         case XK_Alt_L:
         case XK_Alt_R:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_ALT);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_ALT);
         }
 
         // Those utility keys above the arrow keys
         case XK_Scroll_Lock:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_SCROLLOCK);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_SCROLLOCK);
         }
         case XK_Pause:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAUSE);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_PAUSE);
         }
         case XK_Insert:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_INSERT);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_INSERT);
         }
         case XK_Delete:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_DELETE);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_DELETE);
         }
         case XK_Home:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_HOME);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_HOME);
         }
         case XK_End:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_END);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_END);
         }
         case XK_Page_Up:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAGEUP);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_PAGEUP);
         }
         case XK_Page_Down:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_PAGEDOWN);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_PAGEDOWN);
         }
 
         // Keypad keys
         case XK_KP_Add:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_PLUS);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_PLUS);
         }
         case XK_KP_Subtract:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_MINUS);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_MINUS);
         }
         case XK_KP_Multiply:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_STAR);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_STAR);
         }
         case XK_KP_Divide:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_SLASH);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_SLASH);
         }
         case XK_KP_Decimal:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_DELETE);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_DELETE);
         }
         case XK_Num_Lock:
         {
-            return ostrich::KeyToInt32(ostrich::Keys::OSTKEY_KEYPAD_NUMLOCK);
+            return static_cast<int32_t>(ostrich::Keys::OSTKEY_KEYPAD_NUMLOCK);
         }
 
         // Those fancy extra characters on US keyboards
