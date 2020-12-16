@@ -80,7 +80,8 @@ ostrich::GL4Texture ostrich::GL4Texture::CreateTexture(const ostrich::Image &ima
         }
     }
 
-    auto *imgdata = image.getData().lock().get();
+    auto imgdataptr = image.getData().lock();
+    auto *imgdata = imgdataptr.get();
 
     if (image.isCompressed()) {
         ext.glCompressedTexImage2D(GL_TEXTURE_2D, 0, internalformat, image.getWidth(), image.getHeight(), 0, image.getDataSize(), imgdata);

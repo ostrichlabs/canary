@@ -172,8 +172,8 @@ int ostrich::DisplayX11::InitWindow() {
                              ButtonPressMask | ButtonReleaseMask |  // Mouse masks
                              ButtonMotionMask | PointerMotionMask;
 
-    m_GLWindow = ::XCreateWindow(m_Display, rootwindow, 0, 0, 1920, 1080, 0, visual->depth,
-        InputOutput, visual->visual, CWBorderPixel | CWColormap | CWEventMask, &xwinattribs);
+    m_GLWindow = ::XCreateWindow(m_Display, rootwindow, 0, 0, ostrich::g_ScreenWidth, ostrich::g_ScreenHeight,
+        0, visual->depth, InputOutput, visual->visual, CWBorderPixel | CWColormap | CWEventMask, &xwinattribs);
     if (m_GLWindow == 0) {
         return OST_ERROR_XCREATEWINDOW;
     }

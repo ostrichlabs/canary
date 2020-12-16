@@ -19,13 +19,13 @@ namespace character {
 /////////////////////////////////////////////////
 // character defines
 // using these avoids character/string literals everywhere
-constexpr char g_Null           { '\0' };
-constexpr char g_NewLine        { '\n' };
-constexpr char g_CarriageReturn { '\r' };
-constexpr char g_Space          { ' ' };
-constexpr char g_SemiColon      { ';' };
-constexpr char g_ForwardSlash   { '/' };
-constexpr char g_Quote          { '\"' };
+constexpr char g_Null           { u8'\0' };
+constexpr char g_NewLine        { u8'\n' };
+constexpr char g_CarriageReturn { u8'\r' };
+constexpr char g_Space          { u8' ' };
+constexpr char g_SemiColon      { u8';' };
+constexpr char g_ForwardSlash   { u8'/' };
+constexpr char g_Quote          { u8'\"' };
 const char * const g_Whitespace = u8" \t\n\r";
 
 } // namespace character
