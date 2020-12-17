@@ -60,28 +60,80 @@ public:
 
     /////////////////////////////////////////////////
     // Write (copy) a message to the main message log
-    // Three versions to make the types of string explicit
+    // This version takes a const reference to a C++ string
+    //
+    // Simple strings get passed straight to the internal Console
     //
     // in:
     //      msg - The UTF-8 formatted string to write to the message log
     // returns:
     //      void
     void WriteMessage(const std::string &msg);
+
+    /////////////////////////////////////////////////
+    // Write (copy) a message to the main message log
+    // This version takes a string_view
+    //
+    // Simple strings get passed straight to the internal Console
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the message log
+    // returns:
+    //      void
     void WriteMessage(std::string_view msg);
+
+    /////////////////////////////////////////////////
+    // Write (copy) a message to the main message log
+    // This version takes a string literal or C-style string
+    //
+    // Simple strings get passed straight to the internal Console
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the message log
+    // returns:
+    //      void
     void WriteMessage(const char *msg) { this->WriteMessage(std::string_view(msg)); }
 
     /////////////////////////////////////////////////
-    // Write (copy) a message to the debug log file
-    // Three versions to make the types of string explicit
+    // Write a message to the debug log file
+    // This version takes a const reference to a C++ string
     //
     // The debug log is an open file, so messages are written as they come in rather than all at once at the end
+    //
+    // Simple strings get passed straight to the internal Console
     //
     // in:
     //      msg - The UTF-8 formatted string to write to the debug log
     // returns:
     //      void
     void DebugMessage(const std::string &msg);
+
+    /////////////////////////////////////////////////
+    // Write a message to the debug log file
+    // This version takes a string_view
+    //
+    // The debug log is an open file, so messages are written as they come in rather than all at once at the end
+    //
+    // Simple strings get passed straight to the internal Console
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the debug log
+    // returns:
+    //      void
     void DebugMessage(std::string_view msg);
+
+    /////////////////////////////////////////////////
+    // Write a message to the debug log file
+    // This version takes a string literal or C-style string
+    //
+    // The debug log is an open file, so messages are written as they come in rather than all at once at the end
+    //
+    // Simple strings get passed straight to the internal Console
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the debug log
+    // returns:
+    //      void
     void DebugMessage(const char *msg) { this->DebugMessage(std::string_view(msg)); }
 
     /////////////////////////////////////////////////
@@ -116,6 +168,7 @@ private:
 /////////////////////////////////////////////////
 // A proxy class only exposing WriteMessage() methods of a Console
 // Has some extra methods to allow printf-like insertion of variables into strings
+// C++20 has <format> that makes all of those methods unnecessary, but no compiler supports it as of Dec 2020, sooooooooooo
 class ConsolePrinter {
 public:
 
@@ -153,7 +206,7 @@ public:
 
     /////////////////////////////////////////////////
     // Write (copy) a message to the main message log
-    // Three versions to make the types of string explicit
+    // This version takes a const reference to a C++ string
     //
     // Simple strings get passed straight to the internal Console
     //
@@ -162,12 +215,34 @@ public:
     // returns:
     //      void
     void WriteMessage(const std::string &msg) { if (m_Parent) m_Parent->WriteMessage(msg); }
+
+    /////////////////////////////////////////////////
+    // Write (copy) a message to the main message log
+    // This version takes a string_view
+    //
+    // Simple strings get passed straight to the internal Console
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the message log
+    // returns:
+    //      void
     void WriteMessage(std::string_view msg) { if (m_Parent) m_Parent->WriteMessage(msg); }
+
+    /////////////////////////////////////////////////
+    // Write (copy) a message to the main message log
+    // This version takes a string literal or C-style string
+    //
+    // Simple strings get passed straight to the internal Console
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the message log
+    // returns:
+    //      void
     void WriteMessage(const char *msg) { if (m_Parent) m_Parent->WriteMessage(msg); }
 
     /////////////////////////////////////////////////
-    // Write (copy) a message to the debug log file
-    // Three versions to make the types of string explicit
+    // Write a message to the debug log file
+    // This version takes a const reference to a C++ string
     //
     // The debug log is an open file, so messages are written as they come in rather than all at once at the end
     //
@@ -178,12 +253,38 @@ public:
     // returns:
     //      void
     void DebugMessage(const std::string &msg) { if (m_Parent) m_Parent->DebugMessage(msg); }
+
+    /////////////////////////////////////////////////
+    // Write a message to the debug log file
+    // This version takes a string_view
+    //
+    // The debug log is an open file, so messages are written as they come in rather than all at once at the end
+    //
+    // Simple strings get passed straight to the internal Console
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the debug log
+    // returns:
+    //      void
     void DebugMessage(std::string_view msg) { if (m_Parent) m_Parent->DebugMessage(msg); }
+
+    /////////////////////////////////////////////////
+    // Write a message to the debug log file
+    // This version takes a string literal or C-style string
+    //
+    // The debug log is an open file, so messages are written as they come in rather than all at once at the end
+    //
+    // Simple strings get passed straight to the internal Console
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the debug log
+    // returns:
+    //      void
     void DebugMessage(const char *msg) { if (m_Parent) m_Parent->DebugMessage(msg); }
 
     /////////////////////////////////////////////////
     // Write (copy) a message to the main message log
-    // Three versions to make the types of string explicit
+    // This version takes a const reference to a C++ string
     //
     // Allows passing extra data in a {} enclosed list; all data must be strings or converted to strings at the time of the call
     // Each % is replaced with a string from the argument list, in order (to insert a %, put %%)
@@ -195,12 +296,40 @@ public:
     // returns:
     //      void
     void WriteMessage(std::string_view msg, std::initializer_list<std::string> args);
+
+    /////////////////////////////////////////////////
+    // Write (copy) a message to the main message log
+    // This version takes a string_view
+    //
+    // Allows passing extra data in a {} enclosed list; all data must be strings or converted to strings at the time of the call
+    // Each % is replaced with a string from the argument list, in order (to insert a %, put %%)
+    // If the list is empty when a % is found, leave it as-is
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the message log
+    //      args - A list of strings to use as arguments in the message
+    // returns:
+    //      void
     void WriteMessage(const std::string &msg, std::initializer_list<std::string> args) { this->WriteMessage(std::string_view(msg), args); }
+
+    /////////////////////////////////////////////////
+    // Write (copy) a message to the main message log
+    // This version takes a string literal or C-style string
+    //
+    // Allows passing extra data in a {} enclosed list; all data must be strings or converted to strings at the time of the call
+    // Each % is replaced with a string from the argument list, in order (to insert a %, put %%)
+    // If the list is empty when a % is found, leave it as-is
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the message log
+    //      args - A list of strings to use as arguments in the message
+    // returns:
+    //      void
     void WriteMessage(const char *msg, std::initializer_list<std::string> args) { this->WriteMessage(std::string_view(msg), args); }
 
     /////////////////////////////////////////////////
-    // Write (copy) a message to the debug log file
-    // Three versions to make the types of string explicit
+    // Write a message to the debug log file
+    // This version takes a const reference to a C++ string
     //
     // The debug log is an open file, so messages are written as they come in rather than all at once at the end
     //
@@ -214,7 +343,39 @@ public:
     // returns:
     //      void
     void DebugMessage(std::string_view msg, std::initializer_list<std::string> args);
+
+    /////////////////////////////////////////////////
+    // Write a message to the debug log file
+    // This version takes a string_view
+    //
+    // The debug log is an open file, so messages are written as they come in rather than all at once at the end
+    //
+    // Allows passing extra data in a {} enclosed list; all data must be strings or converted to strings at the time of the call
+    // Each % is replaced with a string from the argument list, in order (to insert a %, put %%)
+    // If the list is empty when a % is found, leave it as-is
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the message log
+    //      args - A list of strings to use as arguments in the message
+    // returns:
+    //      void
     void DebugMessage(const std::string &msg, std::initializer_list<std::string> args) { this->DebugMessage(std::string_view(msg), args); }
+
+    /////////////////////////////////////////////////
+    // Write a message to the debug log file
+    // This version takes a string literal or C-style string
+    //
+    // The debug log is an open file, so messages are written as they come in rather than all at once at the end
+    //
+    // Allows passing extra data in a {} enclosed list; all data must be strings or converted to strings at the time of the call
+    // Each % is replaced with a string from the argument list, in order (to insert a %, put %%)
+    // If the list is empty when a % is found, leave it as-is
+    //
+    // in:
+    //      msg - The UTF-8 formatted string to write to the message log
+    //      args - A list of strings to use as arguments in the message
+    // returns:
+    //      void
     void DebugMessage(const char *msg, std::initializer_list<std::string> args) { this->DebugMessage(std::string_view(msg), args); }
 
 private:
