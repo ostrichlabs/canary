@@ -5,6 +5,7 @@ Copyright (c) 2020 Ostrich Labs
 */
 
 #include "datetime.h"
+
 #include <cstdio>
 #include <ctime>
 #include "ost_common.h"

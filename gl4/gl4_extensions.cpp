@@ -11,6 +11,7 @@ Copyright(c) 2020 Ostrich Labs
 #endif
 
 #include <GL/gl.h>
+#include "../common/ost_common.h"
 #include "../game/errorcodes.h"
 
 /////////////////////////////////////////////////

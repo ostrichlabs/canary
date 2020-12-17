@@ -4,14 +4,19 @@ Copyright (c) 2020 Ostrich Labs
 ==========================================
 */
 
-#include "filesystem.h"
+#include "ost_common.h"
 
-#if (OST_WINDOWS == 1)
+#if (OST_WINDOWS == 1) // required for a check in File::Open()
 #   include <Windows.h>
 #endif
 
+#include "filesystem.h"
+
 namespace {
 
+/////////////////////////////////////////////////
+// translations of FileMode to fstream modes
+// needs to be manually maintained (for now maybe I dunno)
 static constexpr std::ios_base::openmode FStreamModes[] = {
     std::ios::in | std::ios::binary,                    // OPEN_READONLY
     std::ios::out | std::ios::binary,                   // OPEN_WRITEONLY
@@ -34,6 +39,7 @@ bool ostrich::File::Open(const std::string_view filename, ostrich::FileMode mode
     m_Handle.open(m_Path, ::FStreamModes[static_cast<int32_t>(mode)]);
 
 #if (OST_WINDOWS == 1)
+    // an obnoxious setting of the global error state in Windows that I do not care about
     if (::GetLastError() == 0xb7) // ERROR_ALREADY_EXISTS
         ::SetLastError(0);
 #endif

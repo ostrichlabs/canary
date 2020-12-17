@@ -8,17 +8,20 @@ Utility functions that don't quite belong anywhere else
 
 #define _SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING
 
+#include "ost_common.h"
+
 #if (OST_WINDOWS == 1)
 #   pragma warning(disable : 4996) // yes I know codecvt is deprecated, gimme something standard to use and I'll switch...
 #endif
 
-#include "ost_common.h"
 #include "utility.h"
 
 #include <codecvt>
 #include <locale>
 
 /////////////////////////////////////////////////
+// uses standard functionality that is deprecated in C++17
+// give me better standard library support and I will use it
 /////////////////////////////////////////////////
 void ostrich::UTF8toUTF16(const std::string &source, std::wstring &destination) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
@@ -27,6 +30,8 @@ void ostrich::UTF8toUTF16(const std::string &source, std::wstring &destination) 
 
 
 /////////////////////////////////////////////////
+// uses standard functionality that is deprecated in C++17
+// give me better standard library support and I will use it
 /////////////////////////////////////////////////
 void ostrich::UTF16toUTF8(const std::wstring &source, std::string &destination) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;

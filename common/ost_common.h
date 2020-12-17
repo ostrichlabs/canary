@@ -6,8 +6,8 @@ Common definitions
 ==========================================
 */
 
-#ifndef COMMON_H_
-#define COMMON_H_
+#ifndef OSTRICH_COMMON_H_
+#define OSTRICH_COMMON_H_
 
 #include <cstddef>
 #include <cstdint>
@@ -130,4 +130,4 @@ const char *const g_PlatformString = u8"Windows";
 #define OST_USE_MEMORYTRACKER 0
 //#include "sys_memory.h"
 
-#endif /* COMMON_H_ */
+#endif /* OSTRICH_COMMON_H_ */

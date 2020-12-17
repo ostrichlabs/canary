@@ -14,9 +14,9 @@ Windows implementations of datetime
 
 #include "../datetime.h"
 
-#include <Windows.h>
 #include <ctime>
 #include <sstream>
+#include <Windows.h>
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////

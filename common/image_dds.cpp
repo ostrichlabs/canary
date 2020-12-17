@@ -13,6 +13,7 @@ No plans to support cubemaps (yet)
 */
 
 #include "image.h"
+
 #include "filesystem.h"
 
 namespace {
@@ -48,6 +49,12 @@ struct DDSHeader {
 };
 
 /////////////////////////////////////////////////
+// Determine Pixel Format
+//
+// in:
+//      header - a fully-initialized DDS header
+// returns:
+//      PixelFormat - one of the valid formats, or FORMAT_NONE if it could not be determined 
 /////////////////////////////////////////////////
 ostrich::PixelFormat DeterminePixelFormat(const DDSHeader &header) {
     const uint32_t FIRSTMASK = 0xFF00'0000;
@@ -133,7 +140,7 @@ ostrich::Image ostrich::Image::LoadDDS(const char *filename) {
 
     // determine data size
     auto &path = file.getPath();
-    auto datasize = std::filesystem::file_size(path) - 128;
+    auto datasize = std::filesystem::file_size(path) - 128; // TODO: replace magic number with sizeof(header)
 
     // everything after the header is pixel data regardless of compression
     uint8_t *imgdata = new uint8_t[datasize];

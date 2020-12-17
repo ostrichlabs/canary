@@ -2,18 +2,17 @@
 ==========================================
 Copyright (c) 2020 Ostrich Labs
 
-Standard file system functions.
+Standard file system functions
 ==========================================
 */
 
-#ifndef FILESYSTEM_H_
-#define FILESYSTEM_H_
+#ifndef OSTRICH_FILESYSTEM_H_
+#define OSTRICH_FILESYSTEM_H_
 
+#include <cstdio>
 #include <filesystem>
 #include <fstream>
-#include <cstdio>
 #include <string_view>
-#include "ost_common.h"
 
 namespace ostrich {
 
@@ -31,6 +30,13 @@ enum class FileMode : int32_t {
 /////////////////////////////////////////////////
 // Wrapper function for opening a file using C-style FILE handles
 // Largely untested for now, because it's only meant for use with the PNG loader
+//
+// in:
+//      filename - a string_view with the file/path+file name. May be UTF-8 or UTF-16 encoded.
+//      mode - a constant specifying the file mode to open with (see definition of FileMode)
+//      filehandle - a C-style FILE handle
+// returns:
+//      true/false whether or not the open was successful
 bool OpenFile(const std::string_view filename, FileMode mode, FILE **filehandle);
 
 /////////////////////////////////////////////////
@@ -42,17 +48,45 @@ bool OpenFile(const std::string_view filename, FileMode mode, FILE **filehandle)
 class File {
 public:
 
+    /////////////////////////////////////////////////
+    // Constructor is default; all data is default constructible. Use Open() to "construct"
+    // Destructor can do nothing because all data has their own destructors
+    // fstream cannot be copied, so copy constructor/operator is deleted
     File() noexcept { }
     virtual ~File() { }
-    File(File &&) = delete;
+    File(File &&) = default;
     File(const File &) = delete;
-    File &operator=(File &&) = delete;
+    File &operator=(File &&) = default;
     File &operator=(const File &) = delete;
 
+    /////////////////////////////////////////////////
+    // Open a file and get path information
+    //
+    // in:
+    //      filename - a string_view with the file/path+file name. May be UTF-8 or UTF-16 encoded. 
+    //      mode - a constant specifying the file mode to open with (see definition of FileMode)
+    // returns:
+    //      true/false whether or not the open was successful
     bool Open(const std::string_view filename, ostrich::FileMode mode);
+
+    /////////////////////////////////////////////////
+    // Manually close the file
+    //
+    // returns:
+    //      void
     void Close();
 
+    /////////////////////////////////////////////////
+    // Check whether or not the file is open
+    //
+    // returns:
+    //      true/false depending on if file handle is open
     bool isOpen() const noexcept { return m_Handle.is_open(); }
+
+    /////////////////////////////////////////////////
+    // accessor methods
+    // return references; you can get creative if you don't want to use reference objects (ex. file.getFStream().read())
+    /////////////////////////////////////////////////
 
     std::fstream &getFStream() noexcept { return m_Handle; }
     const std::filesystem::path &getPath() const noexcept { return m_Path; }
@@ -65,4 +99,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* FILESYSTEM_H_ */
+#endif /* OSTRICH_FILESYSTEM_H_ */

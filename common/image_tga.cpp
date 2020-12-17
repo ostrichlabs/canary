@@ -17,6 +17,7 @@ Future supported planned but not implemented (and low priority):
 */
 
 #include "image.h"
+
 #include <cstring>
 #include <fstream>
 #include "filesystem.h"
@@ -24,7 +25,7 @@ Future supported planned but not implemented (and low priority):
 namespace {
 
 /////////////////////////////////////////////////
-//
+// Requires some parsing since padding wrecks alignment in memory vs disk
 struct TGAHeader {
 
     // size on disk (without padding)
@@ -56,7 +57,7 @@ struct TGAHeader {
 };
 
 /////////////////////////////////////////////////
-//
+// Requires some parsing since padding wrecks alignment in memory vs disk
 struct TGAFooter {
 
     // size on disk (without padding)
@@ -77,7 +78,7 @@ struct TGAFooter {
 };
 
 /////////////////////////////////////////////////
-//
+// For use in RLE-encoded 24-bit images
 struct TGAPacket24 {
     uint8_t m_Type : 1;
     uint8_t m_Count : 7;
@@ -85,14 +86,12 @@ struct TGAPacket24 {
 };
 
 /////////////////////////////////////////////////
-//
+// For use in RLE-encoded 32-bit images
 struct TGAPacket32 {
     uint8_t m_Type : 1;
     uint8_t m_Count : 7;
     uint8_t m_Pixel[4];
 };
-
-} // anonymous namespace
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -120,6 +119,8 @@ TGAFooter::TGAFooter(uint8_t data[TGAFooter::SIZE]) {
     std::memcpy(&m_DeveloperAreaOffset, &data[4], sizeof(m_DeveloperAreaOffset));
     std::memcpy(&m_Signature, &data[8], sizeof(m_Signature));
 }
+
+} // anonymous namespace
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
