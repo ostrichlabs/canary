@@ -8,13 +8,13 @@ Using good ol' defines because enums might by type safe but also I don't care
 ==========================================
 */
 
-#ifndef ERRORCODES_H_
-#define ERRORCODES_H_
+#ifndef OSTRICH_ERRORCODES_H_
+#define OSTRICH_ERRORCODES_H_
 
 // generic
 #define OST_ERROR_OK            0x0000'0000 // no error
 #define OST_ERROR_ISACTIVE      0x0000'0001 // subsystem is already active
-#define OST_ERROR_EXCEPTCPP     0x0000'0002 // std::exception caught in MAin
+#define OST_ERROR_EXCEPTCPP     0x0000'0002 // std::exception caught in Main
 #define OST_ERROR_EXCEPTGENERIC 0x0000'0003 // ostrich::Exception caught in Main
 #define OST_ERROR_EXCEPTINIT    0x0000'0004 // InitException caught in Main
 #define OST_ERROR_EXCEPTPROXY   0x0000'0005 // ProxyException caught in Main
@@ -87,4 +87,4 @@ Using good ol' defines because enums might by type safe but also I don't care
 // State machine
 #define OST_ERROR_STATEMACHINE 0x0000'00900 // start of state machine errors
 
-#endif /* ERRORCODES_H_ */
+#endif /* OSTRICH_ERRORCODES_H_ */

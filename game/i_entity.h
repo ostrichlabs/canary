@@ -14,8 +14,8 @@ Early versions of canary will be nothing but 2D objects, so that will suffice fo
 ==========================================
 */
 
-#ifndef I_ENTITY_H_
-#define I_ENTITY_H_
+#ifndef OSTRICH_I_ENTITY_H_
+#define OSTRICH_I_ENTITY_H_
 
 #include "../common/ost_common.h"
 
@@ -47,4 +47,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* I_ENTITY_H_ */
+#endif /* OSTRICH_I_ENTITY_H_ */

@@ -10,8 +10,8 @@ Then when you want, say, mouse coords, you get just mouse coords.
 ==========================================
 */
 
-#ifndef MESSAGE_H_
-#define MESSAGE_H_
+#ifndef OSTRICH_MESSAGE_H_
+#define OSTRICH_MESSAGE_H_
 
 #include <string>
 #include <string_view>
@@ -127,4 +127,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* MESSAGE_H_ */
+#endif /* OSTRICH_MESSAGE_H_ */

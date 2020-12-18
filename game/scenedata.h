@@ -16,8 +16,8 @@ I am hoping any optimization can be done in the collection of scene data so ther
 ==========================================
 */
 
-#ifndef SCENEDATA_H_
-#define SCENEDATA_H_
+#ifndef OSTRICH_SCENEDATA_H_
+#define OSTRICH_SCENEDATA_H_
 
 #include <list>
 #include "i_entity.h"
@@ -29,6 +29,10 @@ namespace ostrich {
 class SceneData {
 public:
 
+    /////////////////////////////////////////////////
+    // Constructor is effectively default. No doubt I will need new constructors or data setters over time.
+    // Destructor can do nothing because all data is either simple or has its own destructors
+    // Copy/move constructors/operators are deleted for performance reasons (this may have to change)
     SceneData() noexcept :
         m_ClearColorRed(0.0f), m_ClearColorGreen(0.0f), m_ClearColorBlue(0.0f), m_ClearColorAlpha(1.0f) {}
     virtual ~SceneData() {}
@@ -37,10 +41,24 @@ public:
     SceneData &operator=(SceneData &&) = delete;
     SceneData &operator=(const SceneData &) = delete;
 
+    /////////////////////////////////////////////////
+    // set the screen clear color
+    //
+    // in:
+    //      source - a UTF-8 encoded C++ string
+    // out:
+    //      destination - a UTF-16 encoded C++ string; original contents are destroyed
+    // returns:
+    //      void
     void setClearColor(float red, float green, float blue, float alpha) noexcept
     {
         m_ClearColorRed = red; m_ClearColorGreen = green; m_ClearColorBlue = blue; m_ClearColorAlpha = alpha;
     }
+
+    /////////////////////////////////////////////////
+    // accessor methods
+    // TODO: while I'm pretty sure GetEntityList() is fine as-is, may want to make sure its data is actually const at some point
+    /////////////////////////////////////////////////
 
     float getClearColorRed() const noexcept { return m_ClearColorRed; }
     float getClearColorGreen() const noexcept { return m_ClearColorGreen; }
@@ -60,4 +78,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* SCENEDATA_H_ */
+#endif /* OSTRICH_SCENEDATA_H_ */

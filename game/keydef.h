@@ -6,15 +6,15 @@ Definitions of internal keys and key state
 ==========================================
 */
 
-#ifndef KEYDEF_H_
-#define KEYDEF_H_
+#ifndef OSTRICH_KEYDEF_H_
+#define OSTRICH_KEYDEF_H_
 
 #include <cstdint>
 
 namespace ostrich {
 
 /////////////////////////////////////////////////
-// mouse and keyboard keys, some of which don't have a UTF-8 equivalent
+// Mouse and keyboard keys, some of which don't have a UTF-8 equivalent
 //
 // Canary doesn't differentiate between left and right shift/alt/ctrl
 enum class Keys : int32_t {
@@ -93,4 +93,4 @@ enum class Keys : int32_t {
 
 } // namespace ostrich
 
-#endif /* KEYDEF_H_ */
+#endif /* OSTRICH_KEYDEF_H_ */

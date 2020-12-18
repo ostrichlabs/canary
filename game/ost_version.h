@@ -6,8 +6,8 @@ Engine version defines
 ==========================================
 */
 
-#ifndef OST_VERSION_H_
-#define OST_VERSION_H_
+#ifndef OSTRICH_OST_VERSION_H_
+#define OSTRICH_OST_VERSION_H_
 
 namespace ostrich {
 
@@ -32,4 +32,4 @@ constexpr int g_EngineBuild = 1;
 
 namespace ost_version = ostrich::version;
 
-#endif /* OST_VERSION_H_ */
+#endif /* OSTRICH_OST_VERSION_H_ */

@@ -6,8 +6,8 @@ Common interface for initializing and accessing the display
 ==========================================
 */
 
-#ifndef I_DISPLAY_H_
-#define I_DISPLAY_H_
+#ifndef OSTRICH_I_DISPLAY_H_
+#define OSTRICH_I_DISPLAY_H_
 
 #include "../common/console.h"
 
@@ -18,22 +18,62 @@ namespace ostrich {
 class IDisplay {
 public:
 
+    /////////////////////////////////////////////////
+    // Empty constructor and destructor; interface has no data.
+    // Copy/move constructors/operators are implicitly defaulted. ... that's probably fine for this yeah? (TODO: add them anyway)
     IDisplay() noexcept {}
     virtual ~IDisplay() {}
 
-    virtual bool isActive() const = 0;
+    /////////////////////////////////////////////////
+    // Initialize the display.
+    // Actual implementation depends on the platform, but typically each platform only has one windowing system.
+    //
+    // in:
+    //      consoleprinter - an initialized ConsolePrinter for logging
+    // returns:
+    //      An error code (OST_ERROR_OK (0) is the only successful code)
+    virtual int Initialize(ConsolePrinter consoleprinter) = 0;
 
-    virtual int Initialize(ConsolePrinter) = 0;
+    /////////////////////////////////////////////////
+    // Cleans up any allocated data or created objects as required by the input handler.
+    //
+    // returns:
+    //      An error code (OST_ERROR_OK (0) is the only successful code)
     virtual int Destroy() = 0;
 
+    /////////////////////////////////////////////////
+    // Check if the object is valid (by checking the m_isActive flag).
+    // I suppose I could have made the m_isActive flag a part of the interface, but I didn't (TODO: should I?)
+    //
+    // returns:
+    //      m_isActive flag
+    virtual bool isActive() const = 0;
+
+    /////////////////////////////////////////////////
+    // Call the display's swap buffer function.
+    //
+    // returns:
+    //      true/false if operation was successful
     virtual bool SwapBuffers() = 0;
 
-private:
+protected:
 
+    /////////////////////////////////////////////////
+    // Helper method to initialize the platform's window.
+    //
+    // returns:
+    //      An error code (OST_ERROR_OK (0) is the only successful code)
     virtual int InitWindow() = 0;
+
+    /////////////////////////////////////////////////
+    // Helper method to initialize the platform's renderer.
+    // GL4/ES2 (and probably DX11) are tied to the window they render to, so there's some work to do in IDisplay.
+    //
+    // returns:
+    //      An error code (OST_ERROR_OK (0) is the only successful code)
     virtual int InitRenderer() = 0;
 };
 
 } // namespace ostrich
 
-#endif /* I_DISPLAY_H_ */
+#endif /* OSTRICH_I_DISPLAY_H_ */

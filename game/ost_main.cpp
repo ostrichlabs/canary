@@ -143,7 +143,6 @@ void ostrich::Main::Destroy() {
 }
 
 /////////////////////////////////////////////////
-// game loop
 /////////////////////////////////////////////////
 void ostrich::Main::Run() {
     int32_t lag = 0;
@@ -174,7 +173,6 @@ void ostrich::Main::Run() {
 }
 
 /////////////////////////////////////////////////
-// collects key/mouse input from the EventQueue
 /////////////////////////////////////////////////
 void ostrich::Main::ProcessInput() {
     if (m_Input) {
@@ -184,8 +182,6 @@ void ostrich::Main::ProcessInput() {
 }
 
 /////////////////////////////////////////////////
-// sends events to state manager to update game state
-// returns true if the game should stop running
 /////////////////////////////////////////////////
 bool ostrich::Main::UpdateState() {
     while (m_EventQueue.isPending()) {
