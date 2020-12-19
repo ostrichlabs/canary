@@ -32,7 +32,7 @@ class Console {
 public:
 
     /////////////////////////////////////////////////
-    // Constructors is effectively default; all data has default constructors
+    // Constructor is effectively default; all data has default constructors
     // Destructor can do nothing because all data is self-destructible (no allocation within class itself)
     // Copy/move constructors/operators are deleted for performance reasons
     Console() noexcept {}

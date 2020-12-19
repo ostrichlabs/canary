@@ -33,7 +33,9 @@ namespace ostrich {
 class Message {
 public:
 
-// add new message types as they are used
+    /////////////////////////////////////////////////
+    // Official Supported Message Types
+    // Add new types here as they are used
     enum class Type : int32_t {
         NULLTYPE = 0,
 
@@ -50,33 +52,108 @@ public:
         MAXTYPES
     };
 
-// mouse button constants
+    /////////////////////////////////////////////////
+    // Mouse button constants
     static const int MOUSE_NONE = 0;
     static const int MOUSE_LBUTTON = 0x01;
     static const int MOUSE_RBUTTON = 0x02;
     static const int MOUSE_MBUTTON = 0x04;
 
+    /////////////////////////////////////////////////
+    // Constructors are all private; use the static factory methods to create Messages
+    // Destructor can do nothing because all data is either simple or has its own destructor
+    // Data is all either simple or copyable, so copy/move constructors/operators are default
     virtual ~Message() {}
     Message(Message &&) = default;
     Message(const Message &) = default;
     Message &operator=(Message &&) = default;
     Message &operator=(const Message &) = default;
 
+    /////////////////////////////////////////////////
+    // Create an empty message.
+    // Used when trying to remove a message from an empty event queue.
+    //
+    // returns:
+    //      A default-constructed NULLTYPE message.
     static Message CreateNullMessage() { return Message(); }
+
+    /////////////////////////////////////////////////
+    // Create an empty message where the sender is known.
+    //
+    // returns:
+    //      A default-constructed NULLTYPE message with a known sender.
     static Message CreateNullMessage(const char *sender) { return Message(sender); }
+
+    /////////////////////////////////////////////////
+    // Create a system message.
+    //
+    // in:
+    //      systemcode - a system-defined code from the list of defines in this file
+    //      addldata - miscellaneous extra data if necessary; its actual contents are dependent on the message
+    //      sender - a string literal describing the message sender
+    // returns:
+    //      A constructed SYSTEM-type message.
     static Message CreateSystemMessage(int32_t systemcode, int32_t addldata, const char *sender)
     { return Message(Type::SYSTEM, systemcode, addldata, sender); }
+
+    /////////////////////////////////////////////////
+    // Create a Keyboard input message.
+    // May also double for joystick/controller buttons.
+    //
+    // in:
+    //      keycode - an int representation of an ostrich::Keys enum (TODO: should this take a ostrich::Keys variable directly and cast it here?)
+    //      keydown - true if the key was pressed; false if the key was previously down but is no longer
+    //      sender - a string literal describing the message sender
+    // returns:
+    //      A constructed KEY-type message.
     static Message CreateKeyMessage(int32_t keycode, bool keydown, const char *sender)
     { return Message(Type::INPUT_KEY, keycode, keydown, sender); }
+
+    /////////////////////////////////////////////////
+    // Create a Button input message.
+    // Buttons are handled differently from other keys mostly because Windows handles them differently.
+    // This is a good candidate for junking if it's possible to just use Key messages.
+    //
+    // in:
+    //      buttoncode - a bitmap of the mouse buttons' status
+    //      sender - a string literal describing the message sender
+    // returns:
+    //      A constructed BUTTON-type message.
     static Message CreateButtonMessage(int32_t buttoncode, const char *sender)
     { return Message(Type::INPUT_BUTTON, buttoncode, sender); }
+
+    /////////////////////////////////////////////////
+    // Create a Mouse Position message.
+    // Note that mouse messages will need to be changed, because window systems will report coordinates differently.
+    // TODO: Come up with a standard for this.
+    //
+    // in:
+    //      xpos - the mouse's current xpos as reported by the window system
+    //      ypos - the mouse's current ypos as reported by the window system
+    //      sender - a string literal describing the message sender
+    // returns:
+    //      A constructed MOUSEPOS-type message.
     static Message CreateMousePosMessage(int32_t xpos, int32_t ypos, const char *sender)
     { return Message(Type::INPUT_MOUSEPOS, xpos, ypos, sender); }
 
+    /////////////////////////////////////////////////
+    // accessor methods
+    // generic to each message
+    // data pointer is currently unused
+    /////////////////////////////////////////////////
+
     Type getType() const noexcept { return m_Type; }
     int32_t getTypeAsInt() const noexcept{ return static_cast<int32_t>(m_Type); }
+
+    void *getDataPointer() const noexcept { return m_DataPtr; }
+    std::string_view getTimestamp() const noexcept { return std::string_view(m_Timestamp); }
+    const char *getSender() const noexcept { return m_Sender; }
     
-    /* message-specific getters */
+    /////////////////////////////////////////////////
+    // contextual accessor methods
+    // I'm not trying to get fancy with these; if you have a x message, use x accessors.
+    // That should ensure you get the data you want regardless of its location.
+    /////////////////////////////////////////////////
 
     int32_t getSystemCode() const noexcept { return m_Data1; }
     int32_t getSystemAddlData() const noexcept { return m_Data2; }
@@ -84,35 +161,49 @@ public:
     int32_t getButtonStatus() const noexcept { return m_Data1; }
     std::pair<int32_t, int32_t> getMouseCoords() const noexcept { return std::make_pair(m_Data1, m_Data2); }
 
-    /* generic getters */
+    /////////////////////////////////////////////////
+    // generic data accessor methods
+    // in case you just want the two data fields and don't care about context
+    /////////////////////////////////////////////////
 
     int32_t getData1() const noexcept { return m_Data1; }
     int32_t getData2() const noexcept { return m_Data2; }
 
-    void *getDataPointer() const noexcept { return m_DataPtr; }
-    std::string_view getTimestamp() const noexcept { return std::string_view(m_Timestamp); }
-    const char *getSender() const noexcept { return m_Sender; }
-
 private:
 
+    /////////////////////////////////////////////////
+    // Default constructor
+    // Creates a NULLTYPE message with 0 or null data
     Message() : m_Type(Type::NULLTYPE), m_Data1(0), m_Data2(0), m_DataPtr(nullptr), m_Sender(nullptr) {}
 
+    /////////////////////////////////////////////////
+    // Semi-default constructor
+    // Creates a NULLTYPE message with 0 or null data, except for the sender
     Message(const char *sender) : m_Type(Type::NULLTYPE), m_Data1(0), m_Data2(0), m_DataPtr(nullptr), m_Sender(sender) {}
 
+    /////////////////////////////////////////////////
     // Delegate constructor
+    // Used as a helper for the more specific constructors; should fill the entire message object
     Message(Type type, int32_t data1, int32_t data2, void *dataptr, const char *sender) :
         m_Type(type), m_Data1(data1), m_Data2(data2), m_DataPtr(dataptr), m_Sender(sender), m_Timestamp(ostrich::datetime::timestamp_ms())
     {}
 
-    // single integer constructor (Button)
+    /////////////////////////////////////////////////
+    // Single integer constructor
+    // Currently used with BUTTON type messages
     Message(Type type, int32_t buttoncode, const char *sender) :
         Message(type, buttoncode, 0, nullptr, sender) {}
 
-    // integer + boolean constructor (keypress)
+    /////////////////////////////////////////////////
+    // Integer + boolean constructor
+    // The boolean is converted to a known 1/0 value rather than trusting the compiler to be consistent
+    // Currently used with KEY type messages
     Message(Type type, int32_t keycode, bool keydown, const char *sender) :
         Message(type, keycode, (keydown ? 1 : 0), nullptr, sender) {}
 
-    // dual integer constructor (Mouse coords, system messages)
+    /////////////////////////////////////////////////
+    // Dual integer constructor
+    // Currently used with MOUSEPOS and SYSTEM type messages
     Message(Type type, int32_t data1, int32_t data2, const char *sender) :
         Message(type, data1, data2, nullptr, sender) {}
 

@@ -77,7 +77,7 @@ std::string tmtostring(::tm &timedata, int milli = -1);
 /////////////////////////////////////////////////
 
 /////////////////////////////////////////////////
-// Calls the safe version of localtime(), which for some dumb reason is different on each platform
+// Calls the safe version of localtime(), because Windows' version does not conform to the standard
 // Look to the definitions of localtime() for implemented platforms for more about their usage
 //
 // Whatever the case, this call should adapt to any version of localtime() required

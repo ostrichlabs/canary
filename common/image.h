@@ -137,8 +137,9 @@ private:
         m_Width(0), m_Height(0), m_Depth(0), m_DataSize(0), m_Data(nullptr) {}
 
     /////////////////////////////////////////////////
-    // Regular constructor, when image data is available
-    // All data is immutable once set here
+    // Regular constructor, when image data is available.
+    // Should set all data fields.
+    // All data is immutable once set here.
     Image(const char *filename, ImageType type, PixelFormat format, int32_t width, int32_t height, int32_t depth, int32_t datasize, uint8_t data[]) noexcept :
         m_Filename(filename), m_Type(type), m_Format(format), m_Width(width), m_Height(height), m_Depth(depth), m_DataSize(datasize), m_Data(data) {}
 
