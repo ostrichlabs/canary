@@ -6,8 +6,8 @@ The EventQueue and its wrappers
 ==========================================
 */
 
-#ifndef EVENTQUEUE_H_
-#define EVENTQUEUE_H_
+#ifndef OSTRICH_EVENTQUEUE_H_
+#define OSTRICH_EVENTQUEUE_H_
 
 #include <queue>
 #include <utility>
@@ -151,4 +151,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* EVENTQUEUE_H_ */
+#endif /* OSTRICH_EVENTQUEUE_H_ */

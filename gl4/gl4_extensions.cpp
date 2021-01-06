@@ -33,6 +33,11 @@ int ostrich::GL4Extensions::LoadCore(ostrich::ConsolePrinter consoleprinter) {
         return OST_ERROR_GL4COREGETPROCADDR;
     }
 
+    m_glCompressedTexImage2D = (PFNGLCOMPRESSEDTEXIMAGE2DPROC)ostrich::glGetProcAddress("glCompressedTexImage2D");
+    if (m_glCompressedTexImage2D == nullptr) {
+        return OST_ERROR_GL4COREGETPROCADDR;
+    }
+
     return OST_ERROR_OK;
 }
 

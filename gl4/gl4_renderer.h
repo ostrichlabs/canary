@@ -6,8 +6,8 @@ OpenGL 4.0 interface
 ==========================================
 */
 
-#ifndef GL4_RENDERER_H_
-#define GL4_RENDERER_H_
+#ifndef OSTRICH_GL4_RENDERER_H_
+#define OSTRICH_GL4_RENDERER_H_
 
 #include "../common/ost_common.h"
 
@@ -16,10 +16,10 @@ OpenGL 4.0 interface
 #endif
 
 #include <GL/gl.h>
+#include "GL/glcorearb.h"   // taken from https://github.com/KhronosGroup/OpenGL-Registry
+#include "GL/glext.h"       // taken from https://github.com/KhronosGroup/OpenGL-Registry
 #include "gl4_extensions.h"
 #include "gl4_texture.h"
-#include "GL/glcorearb.h"
-#include "GL/glext.h"
 #include "../game/i_renderer.h"
 
 namespace ostrich {
@@ -29,6 +29,11 @@ namespace ostrich {
 class GL4Renderer : public IRenderer {
 public:
 
+    /////////////////////////////////////////////////
+    // Constructor is defined in cpp but I'm not sure if it needs to be.
+    // Destructor is defined, but no memory is allocated so it may not be necessary.
+    // Copy/move constructors/operators are deleted to prevent accidentally creating two GL renderers
+    // (if you want to make another, you can do it manually)
     GL4Renderer() noexcept;
     virtual ~GL4Renderer();
     GL4Renderer(GL4Renderer &&) = delete;
@@ -36,15 +41,49 @@ public:
     GL4Renderer &operator=(GL4Renderer &&) = delete;
     GL4Renderer &operator=(const GL4Renderer &) = delete;
 
-    bool isActive() const override { return m_isActive; }
-
+    /////////////////////////////////////////////////
+    // Initialize the renderer.
+    // Sets the m_isActive flag to true when done.
+    //
+    // in:
+    //      consoleprinter - an initialized ConsolePrinter for logging
+    // returns:
+    //      An error code (OST_ERROR_OK (0) is the only successful code)
     int Initialize(ConsolePrinter conprinter) override;
+
+    /////////////////////////////////////////////////
+    // Cleans up any allocated data or created objects as required by the renderer.
+    // Flips the m_isActive flag to false when done.
+    //
+    // returns:
+    //      An error code (OST_ERROR_OK (0) is the only successful code)
     int Destroy() override;
 
+    /////////////////////////////////////////////////
+    // Check if the object is valid (by checking the m_isActive flag).
+    // The flag should be false by default & after Destroy() and true after Initialize()
+    //
+    // returns:
+    //      m_isActive flag
+    bool isActive() const override { return m_isActive; }
+
+    /////////////////////////////////////////////////
+    // Given passed scene data, draw to the screen
+    //
+    // in:
+    //      scenedata - a pointer to the scene data (think right now it's just screen clear color and an entity list)
+    //      extrapolation - how far into the next frame we are, in milliseconds (lag/msperframe)
+    // returns:
+    //      void
     void RenderScene(const SceneData *scenedata, int32_t extrapolation) override;
 
 private:
 
+    /////////////////////////////////////////////////
+    // Check the OpenGL and GLSL versions
+    //
+    // returns:
+    //      An error code (OST_ERROR_OK (0) is the only successful code)
     int CheckCaps();
 
     const GLint MAJOR_VERSION_MINIMUM = 4;
@@ -58,4 +97,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* GL4_RENDERER_H_ */
+#endif /* OSTRICH_GL4_RENDERER_H_ */
