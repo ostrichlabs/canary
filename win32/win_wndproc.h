@@ -8,8 +8,8 @@ Requires an interface to the EventQueue to add events based on messages received
 ==========================================
 */
 
-#ifndef WIN_WNDPROC_H_
-#define WIN_WNDPROC_H_
+#ifndef OSTRICH_WIN_WNDPROC_H_
+#define OSTRICH_WIN_WNDPROC_H_
 
 #include "../game/eventqueue.h"
 
@@ -38,4 +38,4 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 } // namespace ostrich
 
-#endif /* WIN_WNDPROC_H_ */
+#endif /* OSTRICH_WIN_WNDPROC_H_ */

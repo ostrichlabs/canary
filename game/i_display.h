@@ -35,7 +35,7 @@ public:
     virtual int Initialize(ConsolePrinter consoleprinter) = 0;
 
     /////////////////////////////////////////////////
-    // Cleans up any allocated data or created objects as required by the input handler.
+    // Cleans up any allocated data or created objects as required by the display.
     //
     // returns:
     //      An error code (OST_ERROR_OK (0) is the only successful code)

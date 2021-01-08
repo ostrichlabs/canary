@@ -12,9 +12,6 @@ Entry point for Linux using X11
 #   error "This module should only be included in Linux builds"
 #endif
 
-
-#include <iostream>
-
 #include "x11_input.h"
 #include "x11_display.h"
 #include "../common/error.h"
@@ -50,7 +47,6 @@ int main(int argc, char *argv[]) {
         returncode = Game.Start(DisplayPtr, RendererPtr, InputPtr);
     }
     catch (...) {
-        std::cerr << u8"Unknown exception during runtime" << ost_char::g_NewLine;
         returncode = -500000;
     }
 

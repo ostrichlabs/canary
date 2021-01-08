@@ -14,8 +14,6 @@ Entry point for Windows
 
 #include <Windows.h>
 
-#include <iostream>
-
 #include "win_display.h"
 #include "win_input.h"
 #include "../common/error.h"
@@ -54,7 +52,6 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
         returncode = Game.Start(DisplayPtr, RendererPtr, InputPtr);
     }
     catch (...) {
-        std::cerr << u8"Unknown exception during runtime" << ost_char::g_NewLine;
         returncode = -500000;
     }
 

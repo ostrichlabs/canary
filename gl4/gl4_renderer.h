@@ -65,7 +65,7 @@ public:
     //
     // returns:
     //      m_isActive flag
-    bool isActive() const override { return m_isActive; }
+    bool isActive() const noexcept override { return m_isActive; }
 
     /////////////////////////////////////////////////
     // Given passed scene data, draw to the screen

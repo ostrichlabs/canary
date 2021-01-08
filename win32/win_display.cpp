@@ -25,13 +25,11 @@ int ostrich::WGLExtensions::Retrieve(HDC hdc) {
         PFNWGLGETEXTENSIONSSTRINGARBPROC(::wglGetProcAddress("wglGetExtensionsStringARB"));
     if (wglGetExtensionsStringARB == nullptr)
         return OST_ERROR_WGLGETPROCADDR;
-    m_WGL_ARB_extensions_string = true;
     extensionlist = this->wglGetExtensionsStringARB(hdc);
 
 // WGL_ARB_create_context
     if (extensionlist.find("WGL_ARB_create_context") == std::string::npos)
         return OST_ERROR_WGLGETPROCADDR;
-    m_WGL_ARB_create_context = true;
     wglCreateContextAttribsARB =
         PFNWGLCREATECONTEXTATTRIBSARBPROC(::wglGetProcAddress("wglCreateContextAttribsARB"));
 
@@ -43,7 +41,6 @@ int ostrich::WGLExtensions::Retrieve(HDC hdc) {
 // WGL_ARB_pixel_format
     if (extensionlist.find("WGL_ARB_pixel_format") == std::string::npos)
         return OST_ERROR_WGLGETPROCADDR;
-    m_WGL_ARB_pixel_format = true;
     wglGetPixelFormatAttribivARB =
         PFNWGLGETPIXELFORMATATTRIBIVARBPROC(::wglGetProcAddress("wglGetPixelFormatAttribivARB"));
     wglChoosePixelFormatARB =
