@@ -109,6 +109,10 @@ int ostrich::Main::Initialize() {
         m_ConsolePrinter.WriteMessage(u8"std::exception: %", { e.what() });
         initresult = OST_ERROR_EXCEPTCPP;
     }
+    catch (...) {
+        m_ConsolePrinter.WriteMessage(u8"Unknown or unhandled exception");
+        initresult = OST_ERROR_EXCEPTUNKNOWN;
+    }
 
     if (initresult == OST_ERROR_OK) {
         auto finish = ostrich::timer::now();

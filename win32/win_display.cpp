@@ -123,7 +123,7 @@ int ostrich::DisplayWindows::InitWindow() {
     wndclass.hInstance = m_HInstance;
     wndclass.hIcon = 0;
     wndclass.hCursor = 0;
-    wndclass.hbrBackground = (HBRUSH)COLOR_GRAYTEXT;
+    wndclass.hbrBackground = HBRUSH(COLOR_GRAYTEXT);
     wndclass.lpszMenuName = 0;
     wndclass.lpszClassName = m_WindowClassName;
     if (!::RegisterClassW(&wndclass)) {

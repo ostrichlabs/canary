@@ -65,7 +65,7 @@ public:
     // these should all exist, or something is seriously wrong
     /////////////////////////////////////////////////
     
-    // 1.3
+    // 1.3 - GL_ARB_texture_compression
     void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data)
     { if (this->m_glCompressedTexImage2D != nullptr) m_glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data); }
 

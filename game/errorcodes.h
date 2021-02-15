@@ -18,6 +18,7 @@ Using good ol' defines because enums might by type safe but also I don't care
 #define OST_ERROR_EXCEPTGENERIC 0x0000'0003 // ostrich::Exception caught in Main
 #define OST_ERROR_EXCEPTINIT    0x0000'0004 // InitException caught in Main
 #define OST_ERROR_EXCEPTPROXY   0x0000'0005 // ProxyException caught in Main
+#define OST_ERROR_EXCEPTUNKNOWN 0x0000'0006 // Unhandled exception in Main
 
 // Event Queue
 #define OST_ERROR_EVENTQUEUE    0x0000'0100 // start of event queue errors
