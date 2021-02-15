@@ -33,8 +33,7 @@ int ostrich::InputWindows::Initialize(ostrich::ConsolePrinter consoleprinter, os
     // Initialize our WndProc - just use a copy of the input event sender
     ostrich::InitWndProc(eventsender);
 
-    // TODO: Put mouse initialization stuff in its own method?
-    // We may have to redo it every time the window changes
+    // Mouse initialization
     HWND hwnd = ::GetActiveWindow();
     ::SetCapture(hwnd);
     while (::ShowCursor(FALSE) >= 0)
@@ -60,8 +59,6 @@ void ostrich::InputWindows::ProcessKBM() {
     POINT point = { };
 
     ::GetCursorPos(&point);
-
-    // TODO: actually translate to the window
 
     m_EventSender.Send(ostrich::Message::CreateMousePosMessage(point.x, point.y, m_Classname));
 }

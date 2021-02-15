@@ -32,10 +32,6 @@ int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
     if (!m_ConsolePrinter.isValid())
         throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
 
-    /*
-    TODO: Hardcode resolution - use constants
-    */
-
     int result = this->CheckCaps();
     if (result != OST_ERROR_OK) {
         m_ConsolePrinter.WriteMessage(u8"Last GL Error: %", { std::to_string(::glGetError()) });

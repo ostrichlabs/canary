@@ -23,7 +23,7 @@ volatile int ostrich::InputX11::ms_LastRaisedSignal = 0;
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 KeySym ostrich::x11::GetVKey(XKeyEvent *ev) {
-    return ::XLookupKeysym(ev, 0); // TODO: maybe use XLookupString later for debugging?;
+    return ::XLookupKeysym(ev, 0); 
 }
 
 /////////////////////////////////////////////////
@@ -341,7 +341,7 @@ void ostrich::InputX11::ProcessKBM() {
 /////////////////////////////////////////////////
 void ostrich::InputX11::ProcessOSMessages() {
     if (InputX11::ms_LastRaisedSignal != 0) {
-        int32_t code = 0; // TODO: reserved for when system messages get their own defines
+        int32_t code = 0;
         if (InputX11::ms_SignalInfo) {
             code = InputX11::ms_SignalInfo->si_code;
         }

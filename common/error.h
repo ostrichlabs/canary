@@ -3,8 +3,6 @@
 Copyright (c) 2020 Ostrich Labs
 
 Error and exception definitions
-
-TODO: when a game is localized/has a string database, the error strings should be loaded from that database
 ==========================================
 */
 

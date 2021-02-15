@@ -3,8 +3,6 @@
 Copyright (c) 2020 Ostrich Labs
 
 Utility functions that don't quite belong anywhere else
-
-TODO: Needs to be unit tested
 ==========================================
 */
 

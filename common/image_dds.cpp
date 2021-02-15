@@ -140,7 +140,7 @@ ostrich::Image ostrich::Image::LoadDDS(const char *filename) {
 
     // determine data size
     auto &path = file.getPath();
-    auto datasize = std::filesystem::file_size(path) - 128; // TODO: replace magic number with sizeof(header)
+    auto datasize = std::filesystem::file_size(path) - sizeof(header);
 
     // everything after the header is pixel data regardless of compression
     uint8_t *imgdata = new uint8_t[datasize];

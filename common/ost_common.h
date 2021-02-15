@@ -126,7 +126,6 @@ const char *const g_PlatformString = u8"Windows";
 #if (OST_DEBUG_BUILD == 1)
 #endif
 
-// TODO: Work on memory tracker
 #define OST_USE_MEMORYTRACKER 0
 //#include "sys_memory.h"
 

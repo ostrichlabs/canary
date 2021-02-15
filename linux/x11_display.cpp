@@ -180,7 +180,7 @@ int ostrich::DisplayX11::InitWindow() {
 
     ::XFree(visual);
 
-    ::XStoreName(m_Display, m_GLWindow, "Canary Test"); // TODO: take from global constants
+    ::XStoreName(m_Display, m_GLWindow, "Canary Test");
     ::XMapWindow(m_Display, m_GLWindow);
 
     return OST_ERROR_OK;

@@ -57,7 +57,6 @@ public:
 
     /////////////////////////////////////////////////
     // accessor methods
-    // TODO: while I'm pretty sure GetEntityList() is fine as-is, may want to make sure its data is actually const at some point
     /////////////////////////////////////////////////
 
     float getClearColorRed() const noexcept { return m_ClearColorRed; }

@@ -233,7 +233,7 @@ void ostrich::InputUDev::ProcessKBM() {
 /////////////////////////////////////////////////
 void ostrich::InputUDev::ProcessOSMessages() {
     if (InputUDev::ms_LastRaisedSignal != 0) {
-        int32_t code = 0; // TODO: reserved for when system messages get their own defines
+        int32_t code = 0; // reserved for when system messages get their own defines
         if (InputUDev::ms_SignalInfo) {
             code = InputUDev::ms_SignalInfo->si_code;
         }

@@ -51,7 +51,6 @@ public:
     /////////////////////////////////////////////////
     // Clean up the game after a successful (or unsuccessful) run.
     // Should be called manually after Start() returns.
-    // TODO: Does it need to be called outside the class, or should the class Destroy() itself?
     //
     // returns:
     //      void
@@ -120,7 +119,6 @@ private:
     EventQueue m_EventQueue;
 
     // game dependent - lives in the game's folder
-    // TODO: has to be a better way to do this dynamically
     ms::StateMachine m_GameState;
 };
 

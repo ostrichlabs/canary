@@ -90,8 +90,6 @@ ostrich::GL4Texture ostrich::GL4Texture::CreateTexture(const ostrich::Image &ima
         ::glTexImage2D(GL_TEXTURE_2D, 0, internalformat, image.getWidth(), image.getHeight(), 0, pixelformat, GL_UNSIGNED_BYTE, imgdata);
     }
 
-    // TODO: glGetError() - and maybe return a pair
-
     return ostrich::GL4Texture(image.getFilename(), tex);
 }
 

@@ -14,8 +14,6 @@ A logging console.
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::Console::Initialize() {
-    // TODO: LogSizeMax and WriteLogOnExit should be hardcoded constants
-    // TODO: debug log should be a toggle
     if (!m_DebugMessageLog.Open(u8"debug.log", ostrich::FileMode::OPEN_WRITETRUNCATE)) {
         m_MessageLog.push_back(u8"Unable to open debug.log");
     }
@@ -95,7 +93,7 @@ ostrich::ConsolePrinter ostrich::Console::CreatePrinter() noexcept {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::Console::TrimLog() {
-    const uint32_t maxlogsize = INT32_MAX; // TODO: when the console becomes A Console, change this
+    const uint32_t maxlogsize = INT32_MAX;
     if (m_MessageLog.size() >= maxlogsize)
         m_MessageLog.pop_front();
 }

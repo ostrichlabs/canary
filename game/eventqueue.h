@@ -94,7 +94,7 @@ private:
     void WriteToJournal(const Message &msg);
 
     std::queue<Message> m_MessageQueue;
-    ostrich::File m_MessageJournal; // TODO: maybe make this a debug toggle
+    ostrich::File m_MessageJournal;
 };
 
 /////////////////////////////////////////////////

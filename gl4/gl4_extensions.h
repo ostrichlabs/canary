@@ -91,7 +91,6 @@ private:
     // Load required OpenGL core function pointers.
     // Assumes anything in OpenGL 4 will be here.
     // Something added in later versions will have to check for an extension
-    // TODO: Consider, in the future, having a fallback for core functions that were once extensions.
     //
     // in:
     //      consoleprinter - an initialized ConsolePrinter for logging

@@ -125,7 +125,6 @@ public:
     /////////////////////////////////////////////////
     // Create a Mouse Position message.
     // Note that mouse messages will need to be changed, because window systems will report coordinates differently.
-    // TODO: Come up with a standard for this.
     //
     // in:
     //      xpos - the mouse's current xpos as reported by the window system

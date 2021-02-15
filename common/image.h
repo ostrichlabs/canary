@@ -52,7 +52,6 @@ enum class PixelFormat : int32_t {
 // Data should be immutable once constructed
 // 
 // If an image load failed, the type is IMGTYPE_NONE
-// TODO: Consider adding a status code that gives why an image may have failed to load
 class Image {
 public:
 
