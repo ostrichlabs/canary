@@ -31,7 +31,7 @@ const wchar_t *FILEModesW[] = {
 /////////////////////////////////////////////////
 bool OpenWide(const std::string_view filename, const wchar_t *mode, FILE **filehandle) {
     std::wstring widename;
-    ostrich::UTF8toUTF16(std::string(filename.data()), widename);
+    ostrich::utility::UTF8toUTF16(std::string(filename.data()), widename);
     return (::_wfopen_s(filehandle, widename.c_str(), mode) == 0);
 }
 

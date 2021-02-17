@@ -38,6 +38,7 @@ int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
         return result;
     }
 
+    // loading extensions
     result = m_Ext.Load(m_ConsolePrinter);
     if (result != OST_ERROR_OK) {
         return result;

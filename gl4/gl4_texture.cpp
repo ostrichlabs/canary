@@ -6,6 +6,8 @@ Copyright (c) 2020 Ostrich Labs
 
 #include "gl4_texture.h"
 
+#include "../common/utility.h"
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::GL4Texture::~GL4Texture() {
@@ -90,7 +92,7 @@ ostrich::GL4Texture ostrich::GL4Texture::CreateTexture(const ostrich::Image &ima
         ::glTexImage2D(GL_TEXTURE_2D, 0, internalformat, image.getWidth(), image.getHeight(), 0, pixelformat, GL_UNSIGNED_BYTE, imgdata);
     }
 
-    return ostrich::GL4Texture(image.getFilename(), tex);
+    return ostrich::GL4Texture(ostrich::utility::HashString(image.getFilename()), tex);
 }
 
 /////////////////////////////////////////////////

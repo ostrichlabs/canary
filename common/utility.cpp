@@ -17,13 +17,20 @@ Utility functions that don't quite belong anywhere else
 #include "utility.h"
 
 #include <codecvt>
+#include <functional>
 #include <locale>
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+std::size_t ostrich::utility::HashString(std::string_view target) {
+    return std::hash<std::string_view>{}(target);
+}
 
 /////////////////////////////////////////////////
 // uses standard functionality that is deprecated in C++17
 // give me better standard library support and I will use it
 /////////////////////////////////////////////////
-void ostrich::UTF8toUTF16(const std::string &source, std::wstring &destination) {
+void ostrich::utility::UTF8toUTF16(const std::string &source, std::wstring &destination) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     destination = converter.from_bytes(source);
 }
@@ -33,7 +40,7 @@ void ostrich::UTF8toUTF16(const std::string &source, std::wstring &destination) 
 // uses standard functionality that is deprecated in C++17
 // give me better standard library support and I will use it
 /////////////////////////////////////////////////
-void ostrich::UTF16toUTF8(const std::wstring &source, std::string &destination) {
+void ostrich::utility::UTF16toUTF8(const std::wstring &source, std::string &destination) {
     static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
     destination = converter.to_bytes(source);
 }

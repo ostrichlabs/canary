@@ -5,7 +5,7 @@ Copyright(c) 2020 Ostrich Labs
 Extension loader and keeper for OpenGL 4
 
 This is more necessary for Windows, as the Microsoft GL driver only exposes up to 1.1.
-Other extensions like ARB_debug_output are necessary here too though.
+Other extensions like KHR_debug are necessary here too though.
 
 For consistency and simplicity, even non-Windows platforms should access functions in GL >1.1 using this object.
 
@@ -33,18 +33,15 @@ class GL4Extensions {
 public:
 
     /////////////////////////////////////////////////
-    // Currently unused
-    enum class Supported : int32_t {
-        ARB_POWER_OF_TWO = 0,
-        EXTENSION_MAX
-    };
-
-    /////////////////////////////////////////////////
     // Constructor simply sets defaults.
     // Destructor does nothing; no memory is allocated.
     // Data is all either simple or copyable, so copy/move constructors/operators are default
     GL4Extensions() noexcept :
-        m_glGetStringi(nullptr), m_glCompressedTexImage2D(nullptr), m_EXT_texture_compression_s3tc(false) {}
+        m_glGetStringi(nullptr), m_glCompressedTexImage2D(nullptr), m_glDebugMessageControl(nullptr),
+        m_glDebugMessageInsert(nullptr), m_glDebugMessageCallback(nullptr), m_glGetDebugMessageLog(nullptr), 
+        m_glGetPointerv(nullptr), m_glPushDebugGroup(nullptr), m_glPopDebugGroup(nullptr), m_glObjectLabel(nullptr),
+        m_glGetObjectLabel(nullptr), m_glObjectPtrLabel(nullptr), m_glGetObjectPtrLabel(nullptr),
+        m_EXT_texture_compression_s3tc(false) {}
     virtual ~GL4Extensions() {}
     GL4Extensions(GL4Extensions &&) = default;
     GL4Extensions(const GL4Extensions &) = default;
@@ -62,20 +59,65 @@ public:
 
     /////////////////////////////////////////////////
     // OpenGL 4 core functions
-    // these should all exist, or something is seriously wrong
+    // These should all exist, or something is seriously wrong
+    // Refer to OpenGL documentation for a full explanation of each function
     /////////////////////////////////////////////////
     
+    /////////////////////////////////////////////////
     // 1.3 - GL_ARB_texture_compression
     void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data)
-    { if (this->m_glCompressedTexImage2D != nullptr) m_glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data); }
+    {
+        if (this->m_glCompressedTexImage2D != nullptr) m_glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
+    }
 
+    /////////////////////////////////////////////////
     // 3.0
-    const GLubyte *glGetStringi(GLenum name, GLuint index) { return (this->m_glGetStringi != nullptr) ? m_glGetStringi(name, index) : nullptr; }
+    const GLubyte *glGetStringi(GLenum name, GLuint index)
+    {
+        return (this->m_glGetStringi != nullptr) ? m_glGetStringi(name, index) : nullptr;
+    }
 
     /////////////////////////////////////////////////
     // OpenGL extensions
     // For some, checking for their presence is enough
+    // Refer to OpenGL documentation for a full explanation of each function
     /////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////
+    // KHR_debug
+    /////////////////////////////////////////////////
+    void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint *ids, GLboolean enabled)
+    { if (this->m_glDebugMessageControl != nullptr) m_glDebugMessageControl(source, type, severity, count, ids, enabled); }
+
+    void glDebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *buf)
+    { if (this->m_glDebugMessageInsert != nullptr) m_glDebugMessageInsert(source, type, id, severity, length, buf); }
+
+    void glDebugMessageCallback(GLDEBUGPROC callback, const void *userParam)
+    { if (this->m_glDebugMessageCallback != nullptr) m_glDebugMessageCallback(callback, userParam); }
+
+    GLuint glGetDebugMessageLog(GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum *severities, GLsizei *lengths, GLchar *messageLog)
+    { return (this->m_glGetDebugMessageLog != nullptr) ? m_glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog) : 0; }
+
+    void glGetPointerv(GLenum pname, void **params) // technically a 4.3 core function, but only used with KHR_debug
+    { if (this->m_glGetPointerv != nullptr) m_glGetPointerv(pname, params); }
+
+    void glPushDebugGroup(GLenum source, GLuint id, GLsizei length, const GLchar *message)
+    { if (m_glPushDebugGroup != nullptr) m_glPushDebugGroup(source, id, length, message); }
+
+    void glPopDebugGroup()
+    { if (m_glPopDebugGroup != nullptr) m_glPopDebugGroup(); }
+
+    void glObjectLabel(GLenum identifier, GLuint name, GLsizei length, const GLchar *label)
+    { if (m_glObjectLabel != nullptr) m_glObjectLabel(identifier, name, length, label); }
+
+    void glGetObjectLabel(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei *length, GLchar *label)
+    { if (m_glGetObjectLabel != nullptr) m_glGetObjectLabel(identifier, name, bufSize, length, label); }
+
+    void glObjectPtrLabel(void *ptr, GLsizei length, const GLchar *label)
+    { if (m_glObjectPtrLabel != nullptr) m_glObjectPtrLabel(ptr, length, label); }
+    
+    void glGetObjectPtrLabel(void *ptr, GLsizei bufSize, GLsizei *length, GLchar *label)
+    { if (m_glGetObjectPtrLabel != nullptr) m_glGetObjectPtrLabel(ptr, bufSize, length, label); }
     
     /////////////////////////////////////////////////
     // Checks if S3TC texture compression is supported.
@@ -109,6 +151,18 @@ private:
 
     PFNGLGETSTRINGIPROC m_glGetStringi;
     PFNGLCOMPRESSEDTEXIMAGE2DPROC m_glCompressedTexImage2D;
+
+    PFNGLDEBUGMESSAGECONTROLPROC m_glDebugMessageControl;
+    PFNGLDEBUGMESSAGEINSERTPROC m_glDebugMessageInsert;
+    PFNGLDEBUGMESSAGECALLBACKPROC m_glDebugMessageCallback;
+    PFNGLGETDEBUGMESSAGELOGPROC m_glGetDebugMessageLog;
+    PFNGLGETPOINTERVPROC m_glGetPointerv;
+    PFNGLPUSHDEBUGGROUPPROC m_glPushDebugGroup;
+    PFNGLPOPDEBUGGROUPPROC m_glPopDebugGroup;
+    PFNGLOBJECTLABELPROC m_glObjectLabel;
+    PFNGLGETOBJECTLABELPROC m_glGetObjectLabel;
+    PFNGLOBJECTPTRLABELPROC m_glObjectPtrLabel;
+    PFNGLGETOBJECTPTRLABELPROC m_glGetObjectPtrLabel;
 
     bool m_EXT_texture_compression_s3tc;
 };

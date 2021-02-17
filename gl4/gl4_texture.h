@@ -4,7 +4,7 @@ Copyright (c) 2020 Ostrich Labs
 
 Helper structure to map a bound GL texture to a file name.
 
-The file name is used as the common ID because it's there.
+Going to use std::hash of the filename as the ID until there's problems. Then I'll figure something else out.
 ==========================================
 */
 
@@ -47,7 +47,7 @@ public:
     //      image - constructed Image object with valid data
     //      ext - GL extension object with pre-loaded functions
     // returns:
-    //      on success, a GL4Texture with a valid GL texture ID and a name copied from image
+    //      on success, a GL4Texture with a valid GL texture ID and a unique ID generated from a hash function
     //      on failure, a default-constructed object (reference glGetError())
     static GL4Texture CreateTexture(const ostrich::Image &image, GL4Extensions &ext);
 
@@ -63,20 +63,20 @@ public:
     /////////////////////////////////////////////////
     // accessor methods
     /////////////////////////////////////////////////
-    std::string_view getFilename() const noexcept { return m_Name; }
+    std::size_t getUniqueID() const noexcept { return m_UniqueID; }
     GLuint getTexObject() const noexcept { return m_Texture; }
 
 private:
 
     /////////////////////////////////////////////////
     // Default constructor, when no data is available
-    GL4Texture() noexcept : m_Name(""), m_Texture(0) {}
+    GL4Texture() noexcept : m_UniqueID(0), m_Texture(0) {}
 
     /////////////////////////////////////////////////
     // Creates an object with provided data
-    GL4Texture(std::string_view name, GLuint tex) noexcept : m_Name(std::string(name)), m_Texture(tex) {}
+    GL4Texture(std::size_t uid, GLuint tex) noexcept : m_UniqueID(uid), m_Texture(tex) {}
 
-    std::string m_Name;
+    std::size_t m_UniqueID;
     GLuint m_Texture;
 };
 
