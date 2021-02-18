@@ -1,6 +1,6 @@
 /*
 ==========================================
-Copyright (c) 2020 Ostrich Labs
+Copyright (c) 2020-2021 Ostrich Labs
 
 OpenGL 4.0 interface
 ==========================================

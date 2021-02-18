@@ -1,6 +1,6 @@
 /*
 ==========================================
-Copyright (c) 2020 Ostrich Labs
+Copyright (c) 2020-2021 Ostrich Labs
 
 Helper structure to map a bound GL texture to a file name.
 

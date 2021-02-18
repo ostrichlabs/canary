@@ -1,6 +1,6 @@
 /*
 ==========================================
-Copyright (c) 2020 Ostrich Labs
+Copyright (c) 2020-2021 Ostrich Labs
 
 Entry point for Linux using X11
 ==========================================
