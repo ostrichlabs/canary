@@ -16,6 +16,18 @@ Copyright (c) 2020 Ostrich Labs
 #include "../common/error.h"
 #include "../game/errorcodes.h"
 
+namespace {
+
+/////////////////////////////////////////////////
+// Dummy message pump that doesn't use the event queue
+// Used specifically to help create the temporary WGL context
+/////////////////////////////////////////////////
+LRESULT CALLBACK DummyWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
+    return ::DefWindowProcW(hWnd, message, wParam, lParam);
+}
+
+} // anonymous namespace
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 int ostrich::WGLExtensions::Retrieve(HDC hdc) {
@@ -205,7 +217,7 @@ ostrich::WGLExtensions ostrich::DisplayWindows::GetWGLExtensions() {
 // generic descriptions just to get a dummy window
     LPCWSTR tmpclassname = L"WGLDummyClassName";
     WNDCLASSW wndclass = { };
-    wndclass.lpfnWndProc = ostrich::WndProc;
+    wndclass.lpfnWndProc = ::DummyWndProc;
     wndclass.hInstance = m_HInstance;
     wndclass.lpszClassName = tmpclassname;
     wndclass.style = CS_OWNDC;

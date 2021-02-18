@@ -39,7 +39,7 @@ public:
     GL4Extensions() noexcept :
         m_glGetStringi(nullptr), m_glCompressedTexImage2D(nullptr), m_glDebugMessageControl(nullptr),
         m_glDebugMessageInsert(nullptr), m_glDebugMessageCallback(nullptr), m_glGetDebugMessageLog(nullptr), 
-        m_glGetPointerv(nullptr), m_glPushDebugGroup(nullptr), m_glPopDebugGroup(nullptr), m_glObjectLabel(nullptr),
+        m_glPushDebugGroup(nullptr), m_glPopDebugGroup(nullptr), m_glObjectLabel(nullptr),
         m_glGetObjectLabel(nullptr), m_glObjectPtrLabel(nullptr), m_glGetObjectPtrLabel(nullptr),
         m_EXT_texture_compression_s3tc(false) {}
     virtual ~GL4Extensions() {}
@@ -98,9 +98,6 @@ public:
     GLuint glGetDebugMessageLog(GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum *severities, GLsizei *lengths, GLchar *messageLog)
     { return (this->m_glGetDebugMessageLog != nullptr) ? m_glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog) : 0; }
 
-    void glGetPointerv(GLenum pname, void **params) // technically a 4.3 core function, but only used with KHR_debug
-    { if (this->m_glGetPointerv != nullptr) m_glGetPointerv(pname, params); }
-
     void glPushDebugGroup(GLenum source, GLuint id, GLsizei length, const GLchar *message)
     { if (m_glPushDebugGroup != nullptr) m_glPushDebugGroup(source, id, length, message); }
 
@@ -156,7 +153,6 @@ private:
     PFNGLDEBUGMESSAGEINSERTPROC m_glDebugMessageInsert;
     PFNGLDEBUGMESSAGECALLBACKPROC m_glDebugMessageCallback;
     PFNGLGETDEBUGMESSAGELOGPROC m_glGetDebugMessageLog;
-    PFNGLGETPOINTERVPROC m_glGetPointerv;
     PFNGLPUSHDEBUGGROUPPROC m_glPushDebugGroup;
     PFNGLPOPDEBUGGROUPPROC m_glPopDebugGroup;
     PFNGLOBJECTLABELPROC m_glObjectLabel;

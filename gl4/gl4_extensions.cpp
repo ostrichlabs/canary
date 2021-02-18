@@ -62,7 +62,6 @@ int ostrich::GL4Extensions::LoadExtensions(ostrich::ConsolePrinter consoleprinte
             m_glDebugMessageInsert = (PFNGLDEBUGMESSAGEINSERTPROC)ostrich::glGetProcAddress("glDebugMessageInsert");
             m_glDebugMessageCallback = (PFNGLDEBUGMESSAGECALLBACKPROC)ostrich::glGetProcAddress("glDebugMessageCallback");
             m_glGetDebugMessageLog = (PFNGLGETDEBUGMESSAGELOGPROC)ostrich::glGetProcAddress("glGetDebugMessageLog");
-            m_glGetPointerv = (PFNGLGETPOINTERVPROC)ostrich::glGetProcAddress("glGetPointerv");
             m_glPushDebugGroup = (PFNGLPUSHDEBUGGROUPPROC)ostrich::glGetProcAddress("glPushDebugGroup");
             m_glPopDebugGroup = (PFNGLPOPDEBUGGROUPPROC)ostrich::glGetProcAddress("glPopDebugGroup");
             m_glObjectLabel = (PFNGLOBJECTLABELPROC)ostrich::glGetProcAddress("glObjectLabel");
@@ -73,7 +72,6 @@ int ostrich::GL4Extensions::LoadExtensions(ostrich::ConsolePrinter consoleprinte
                 m_glDebugMessageInsert != nullptr &&
                 m_glDebugMessageCallback != nullptr &&
                 m_glGetDebugMessageLog != nullptr &&
-                m_glGetPointerv != nullptr &&
                 m_glPushDebugGroup != nullptr &&
                 m_glPopDebugGroup != nullptr &&
                 m_glObjectLabel != nullptr &&

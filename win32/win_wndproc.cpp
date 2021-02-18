@@ -231,8 +231,7 @@ void ostrich::InitWndProc(ostrich::EventSender eventsender) {
 /////////////////////////////////////////////////
 // Messages handling:
 //
-// WM_DESTROY - this is sent after OpenGL is initialized, because we create a window to get WGL
-//              so we can't really respond to this message cleanly
+// WM_DESTROY - how it's generated and when will determine how it's handled
 //
 // WM_CREATE, WM_ACTIVATE, WM_MOVE all need to be implemented
 /////////////////////////////////////////////////
