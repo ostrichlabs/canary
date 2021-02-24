@@ -248,7 +248,7 @@ bool ostrich::Main::ProcessSystemMessage(const ostrich::Message &msg) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::Main::RenderScene(int32_t extrapolation) {
-    UNUSED_PARAMETER(extrapolation);
+    OST_UNUSED_PARAMETER(extrapolation);
     if (m_Renderer && m_Display) {
         auto scenedata = m_GameState.GetSceneData();
         if (scenedata == nullptr) {

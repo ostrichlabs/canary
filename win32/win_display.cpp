@@ -195,12 +195,19 @@ int ostrich::DisplayWindows::InitRenderer() {
     if (::SetPixelFormat(m_HDC, pixelfmt, &pfd) == false)
         return OST_ERROR_WINSETFORMAT;
 
+    int contextflags = 0;
+    if (ostrich::g_DebugBuild) {
+        contextflags = WGL_CONTEXT_DEBUG_BIT_ARB;
+    }
+
     const int contextattribs[] = {
         WGL_CONTEXT_MAJOR_VERSION_ARB, 4,
         WGL_CONTEXT_MINOR_VERSION_ARB, 0,
         WGL_CONTEXT_PROFILE_MASK_ARB, WGL_CONTEXT_CORE_PROFILE_BIT_ARB,
+        WGL_CONTEXT_FLAGS_ARB, contextflags,
         0
     };
+
     if (m_WGLExt.wglCreateContextAttribsARB)
         m_HGLRC = m_WGLExt.wglCreateContextAttribsARB(m_HDC, nullptr, contextattribs);
     if (m_HGLRC == nullptr)

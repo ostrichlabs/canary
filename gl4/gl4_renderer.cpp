@@ -44,6 +44,15 @@ int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
         return result;
     }
 
+    // initializing debug extension
+    // only bother if we have a debug context
+    if (m_Ext.debugSupported()) {
+        GLint flag = 0;
+        glGetIntegerv(GL_CONTEXT_FLAGS, &flag);
+        if (flag & GL_CONTEXT_FLAG_DEBUG_BIT) {
+            this->InitDebugExtension(m_Ext, m_ConsolePrinter);
+        }
+    }
 
     ::glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
 
@@ -64,7 +73,7 @@ int ostrich::GL4Renderer::Destroy() {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::GL4Renderer::RenderScene(const SceneData *scenedata, int32_t extrapolation) {
-    UNUSED_PARAMETER(extrapolation);
+    OST_UNUSED_PARAMETER(extrapolation);
     if (this->isActive()) {
         if (scenedata == nullptr) {
             m_ConsolePrinter.DebugMessage(u8"Warning: SceneData pointer is null in OpenGL 4 renderer");
@@ -119,4 +128,23 @@ int ostrich::GL4Renderer::CheckCaps() {
     }
 
     return OST_ERROR_OK;
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::GL4Renderer::InitDebugExtension(ostrich::GL4Extensions &ext, ostrich::ConsolePrinter consoleprinter) {
+    ext.glDebugMessageCallback(&ostrich::GL4Renderer::DebugMessageCallback, nullptr);
+    if (consoleprinter.isValid()) {
+        ms_DebugPrinter = consoleprinter;
+        ms_DebugPrinter.WriteMessage(u8"Installed GL debug callback");
+    }
+}
+
+/////////////////////////////////////////////////
+/////////////////////////////////////////////////
+void ostrich::GL4Renderer::DebugMessageCallback(GLenum source, GLenum type, GLuint id,
+    GLenum severity, GLsizei length, const GLchar *message, const void *userParam) {
+    std::string msg;
+
+    OST_UNUSED_PARAMETER(source);
 }

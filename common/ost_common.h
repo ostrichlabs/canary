@@ -45,15 +45,13 @@ const int32_t g_PlatformLinux = 3;
 
 namespace ost_char = ostrich::character;
 
-#undef UNUSED_PARAMETER
-#define UNUSED_PARAMETER(P) (void(sizeof(P)))
+#define OST_UNUSED_PARAMETER(P) (void(sizeof(P)))
 
 /////////////////////////////////////////////////
 // Platform defines
 // RASPI has to be defined at the command line for this to function properly
 // For GCC debug builds, -DGCC_DEBUG should be specified
 // Each platform needs to define g_Platform and g_PlatformString
-#undef OST_DEBUG_BUILD
 #undef OST_LINUX
 #undef OST_RASPI
 #undef OST_WINDOWS
@@ -62,11 +60,15 @@ namespace ost_char = ostrich::character;
 #undef OST_MACHINE_X32
 #undef OST_FUNCTION_SIGNATURE
 
+#undef OST_DEBUG_BUILD
+#define OST_DEBUG_BUILD 0
+
 #if defined(RASPI) // Raspberry Pi - must be defined globally via compiler setting
 
 #   define OST_RASPI 1
 
 #   if defined(GCC_DEBUG)
+#       undef OST_DEBUG_BUILD
 #       define OST_DEBUG_BUILD 1
 #   endif
 
@@ -82,6 +84,7 @@ const char *const g_PlatformString = u8"Raspberry Pi";
 #   define OST_LINUX 1
 
 #   if defined(GCC_DEBUG)
+#       undef OST_DEBUG_BUILD
 #       define OST_DEBUG_BUILD 1
 #   endif
 
@@ -103,6 +106,7 @@ const char *const g_PlatformString = u8"Linux";
 #   endif
 
 #   if (_DEBUG == 1)
+#       undef OST_DEBUG_BUILD
 #       define OST_DEBUG_BUILD 1
 #   endif
 
@@ -120,6 +124,10 @@ const char *const g_PlatformString = u8"Windows";
 #if ((OST_RASPI != 1) && (OST_WINDOWS != 1) && (OST_LINUX != 1))
 #   error "Platform not specified or unsupported; check ost_common.h"
 #endif
+
+namespace ostrich {
+constexpr bool g_DebugBuild = (OST_DEBUG_BUILD == 1) ? true : false;
+}
 
 /////////////////////////////////////////////////
 // debug-specific defines can go here

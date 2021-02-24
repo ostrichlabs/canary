@@ -39,10 +39,10 @@ ostrich::IInput*        InputPtr = &Input;
 /////////////////////////////////////////////////
 int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     _In_ LPWSTR lpCmdLine, _In_ int nCmdShow) {
-    UNUSED_PARAMETER(hInstance);
-    UNUSED_PARAMETER(hPrevInstance);
-    UNUSED_PARAMETER(lpCmdLine);
-    UNUSED_PARAMETER(nCmdShow);
+    OST_UNUSED_PARAMETER(hInstance);
+    OST_UNUSED_PARAMETER(hPrevInstance);
+    OST_UNUSED_PARAMETER(lpCmdLine);
+    OST_UNUSED_PARAMETER(nCmdShow);
     
     int returncode = 0;
 

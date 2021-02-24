@@ -36,8 +36,8 @@ ostrich::IInput*        InputPtr = &Input;
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 int main(int argc, char *argv[]) {
-    UNUSED_PARAMETER(argc);
-    UNUSED_PARAMETER(argv);
+    OST_UNUSED_PARAMETER(argc);
+    OST_UNUSED_PARAMETER(argv);
 
     int returncode = 0;
 

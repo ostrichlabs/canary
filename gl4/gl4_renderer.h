@@ -93,6 +93,15 @@ private:
     ConsolePrinter m_ConsolePrinter;
 
     GL4Extensions m_Ext;
+
+    /////////////////////////////////////////////////
+    // for use with KHR_debug
+    // static methods/variables are necessary to interface with the extension
+    // This kind of wrecks the ability to have two renderer objects but I don't think that's a big concern right now
+    static void InitDebugExtension(GL4Extensions &ext, ConsolePrinter consoleprinter);
+    static void DebugMessageCallback(GLenum source, GLenum type, GLuint id,
+        GLenum severity, GLsizei length, const GLchar *message, const void *userParam);
+    static ConsolePrinter ms_DebugPrinter;
 };
 
 } // namespace ostrich

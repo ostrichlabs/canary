@@ -203,11 +203,18 @@ int ostrich::DisplayX11::InitRenderer() {
     std::string glxextlist = ::glXQueryExtensionsString(m_Display, DefaultScreen(m_Display));
     bool supportcontext = (glxextlist.find("GLX_ARB_create_context") != std::string::npos);
     bool supportprofile = (glxextlist.find("GLX_ARB_create_context_profile") != std::string::npos);
+
+    int contextflags = 0;
+    if (ostrich::g_DebugBuild) {
+        contextflags = WGL_CONTEXT_DEBUG_BIT_ARB;
+    }
+
     if ((supportcontext) && (supportprofile) && (glXCreateContextAttribsARB != nullptr)) {
         int contextattribs[] = {
             GLX_CONTEXT_MAJOR_VERSION_ARB, 4,
             GLX_CONTEXT_MINOR_VERSION_ARB, 0,
             GLX_CONTEXT_PROFILE_MASK_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
+            GLX_CONTEXT_FLAGS_ARB, contextflags,
             None
         };
         m_GLContext = glXCreateContextAttribsARB(m_Display, m_FrameBufferConfig, 0, True, contextattribs);

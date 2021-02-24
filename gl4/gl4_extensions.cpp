@@ -78,8 +78,13 @@ int ostrich::GL4Extensions::LoadExtensions(ostrich::ConsolePrinter consoleprinte
                 m_glGetObjectLabel != nullptr &&
                 m_glObjectPtrLabel != nullptr &&
                 m_glGetObjectPtrLabel != nullptr) {
-                consoleprinter.DebugMessage("GL_KHR_debug supported");
+                m_DebugExtensionSupported = true;
+                consoleprinter.WriteMessage("GL_KHR_debug supported");
             }
+        }
+        else if (ext.find("GL_EXT_texture_compression_s3tc")) {
+            m_EXT_texture_compression_s3tc = true;
+            consoleprinter.WriteMessage("GL_EXT_texture_compression_s3tc supported");
         }
     }
     consoleprinter.DebugMessage(u8"Supported extensions: %", { extlist });

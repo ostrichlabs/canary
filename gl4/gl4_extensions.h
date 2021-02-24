@@ -41,7 +41,7 @@ public:
         m_glDebugMessageInsert(nullptr), m_glDebugMessageCallback(nullptr), m_glGetDebugMessageLog(nullptr), 
         m_glPushDebugGroup(nullptr), m_glPopDebugGroup(nullptr), m_glObjectLabel(nullptr),
         m_glGetObjectLabel(nullptr), m_glObjectPtrLabel(nullptr), m_glGetObjectPtrLabel(nullptr),
-        m_EXT_texture_compression_s3tc(false) {}
+        m_DebugExtensionSupported(false), m_EXT_texture_compression_s3tc(false) {}
     virtual ~GL4Extensions() {}
     GL4Extensions(GL4Extensions &&) = default;
     GL4Extensions(const GL4Extensions &) = default;
@@ -86,6 +86,8 @@ public:
     /////////////////////////////////////////////////
     // KHR_debug
     /////////////////////////////////////////////////
+    bool debugSupported() const noexcept { return m_DebugExtensionSupported; }
+
     void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint *ids, GLboolean enabled)
     { if (this->m_glDebugMessageControl != nullptr) m_glDebugMessageControl(source, type, severity, count, ids, enabled); }
 
@@ -160,6 +162,7 @@ private:
     PFNGLOBJECTPTRLABELPROC m_glObjectPtrLabel;
     PFNGLGETOBJECTPTRLABELPROC m_glGetObjectPtrLabel;
 
+    bool m_DebugExtensionSupported;
     bool m_EXT_texture_compression_s3tc;
 };
 

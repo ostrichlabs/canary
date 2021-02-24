@@ -12,7 +12,7 @@ PNG functions
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 ostrich::Image ostrich::Image::LoadPNG(const char *filename) {
-    UNUSED_PARAMETER(filename);
+    OST_UNUSED_PARAMETER(filename);
     return ostrich::Image();
 }
 
