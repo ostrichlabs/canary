@@ -41,10 +41,6 @@ const int32_t g_PlatformWindows = 1;
 const int32_t g_PlatformRaspi = 2;
 const int32_t g_PlatformLinux = 3;
 
-} // namespace ostrich
-
-namespace ost_char = ostrich::character;
-
 #define OST_UNUSED_PARAMETER(P) (void(sizeof(P)))
 
 /////////////////////////////////////////////////
@@ -63,6 +59,8 @@ namespace ost_char = ostrich::character;
 #undef OST_DEBUG_BUILD
 #define OST_DEBUG_BUILD 0
 
+namespace platform {
+
 #if defined(RASPI) // Raspberry Pi - must be defined globally via compiler setting
 
 #   define OST_RASPI 1
@@ -74,10 +72,8 @@ namespace ost_char = ostrich::character;
 
 #   define OST_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
 
-namespace ostrich {
 const int32_t g_Platform = g_PlatformRaspi;
 const char *const g_PlatformString = u8"Raspberry Pi";
-}
 
 #elif defined(__linux__) // non-Raspberry Pi Linux flavors
 
@@ -90,10 +86,8 @@ const char *const g_PlatformString = u8"Raspberry Pi";
 
 #   define OST_FUNCTION_SIGNATURE __PRETTY_FUNCTION__
 
-namespace ostrich {
 const int32_t g_Platform = g_PlatformLinux;
 const char *const g_PlatformString = u8"Linux";
-}
 
 #elif ((_WIN32 == 1) && defined(_MSC_VER)) // Windows (any modern flavor)
 
@@ -114,10 +108,8 @@ const char *const g_PlatformString = u8"Linux";
 
 #   define SIGHUP 1 // SIGHUP is POSIX, not standard C/C++
 
-namespace ostrich {
 const int32_t g_Platform = g_PlatformWindows;
 const char *const g_PlatformString = u8"Windows";
-}
 
 #endif
 
@@ -125,16 +117,21 @@ const char *const g_PlatformString = u8"Windows";
 #   error "Platform not specified or unsupported; check ost_common.h"
 #endif
 
-namespace ostrich {
-constexpr bool g_DebugBuild = (OST_DEBUG_BUILD == 1) ? true : false;
-}
+} // namespace platform
 
 /////////////////////////////////////////////////
 // debug-specific defines can go here
 #if (OST_DEBUG_BUILD == 1)
 #endif
 
+constexpr bool g_DebugBuild = (OST_DEBUG_BUILD == 1) ? true : false;
+
 #define OST_USE_MEMORYTRACKER 0
 //#include "sys_memory.h"
+
+} // namespace ostrich
+
+namespace ost_char = ostrich::character;
+namespace ost_platform = ostrich::platform;
 
 #endif /* OSTRICH_COMMON_H_ */

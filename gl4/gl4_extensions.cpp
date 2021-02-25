@@ -5,13 +5,13 @@ Copyright(c) 2020-2021 Ostrich Labs
 */
 
 #include "gl4_extensions.h"
+#include "../common/ost_common.h"
 
 #if (OST_WINDOWS == 1)
 #   include <windows.h> // required for GL.h
 #endif
 
 #include <GL/gl.h>
-#include "../common/ost_common.h"
 #include "../game/errorcodes.h"
 
 /////////////////////////////////////////////////
@@ -28,6 +28,8 @@ int ostrich::GL4Extensions::Load(ostrich::ConsolePrinter consoleprinter) {
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 int ostrich::GL4Extensions::LoadCore(ostrich::ConsolePrinter consoleprinter) {
+    OST_UNUSED_PARAMETER(consoleprinter);
+
     m_glGetStringi = (PFNGLGETSTRINGIPROC)ostrich::glGetProcAddress("glGetStringi");
     if (m_glGetStringi == nullptr) {
         return OST_ERROR_GL4COREGETPROCADDR;
@@ -42,52 +44,66 @@ int ostrich::GL4Extensions::LoadCore(ostrich::ConsolePrinter consoleprinter) {
 }
 
 /////////////////////////////////////////////////
-// NOTE FOR TOMORROW:
-// I need to check for specific extensions here too, starting with KHR_debug
 /////////////////////////////////////////////////
 int ostrich::GL4Extensions::LoadExtensions(ostrich::ConsolePrinter consoleprinter) {
     GLint extcount = 0;
-    bool supported = false;
     std::string_view ext;
     std::string extlist;
     ::glGetIntegerv(GL_NUM_EXTENSIONS, &extcount);
     for (GLint i = 0; i < extcount; i++) {
-        supported = true;
         ext = (const char *)(this->glGetStringi(GL_EXTENSIONS, i));
         extlist.append(ext);
         extlist += ost_char::g_Space;
-
-        if (ext.find("GL_KHR_debug")) {
-            m_glDebugMessageControl = (PFNGLDEBUGMESSAGECONTROLPROC)ostrich::glGetProcAddress("glDebugMessageControl");
-            m_glDebugMessageInsert = (PFNGLDEBUGMESSAGEINSERTPROC)ostrich::glGetProcAddress("glDebugMessageInsert");
-            m_glDebugMessageCallback = (PFNGLDEBUGMESSAGECALLBACKPROC)ostrich::glGetProcAddress("glDebugMessageCallback");
-            m_glGetDebugMessageLog = (PFNGLGETDEBUGMESSAGELOGPROC)ostrich::glGetProcAddress("glGetDebugMessageLog");
-            m_glPushDebugGroup = (PFNGLPUSHDEBUGGROUPPROC)ostrich::glGetProcAddress("glPushDebugGroup");
-            m_glPopDebugGroup = (PFNGLPOPDEBUGGROUPPROC)ostrich::glGetProcAddress("glPopDebugGroup");
-            m_glObjectLabel = (PFNGLOBJECTLABELPROC)ostrich::glGetProcAddress("glObjectLabel");
-            m_glGetObjectLabel = (PFNGLGETOBJECTLABELPROC)ostrich::glGetProcAddress("glGetObjectLabel");
-            m_glObjectPtrLabel = (PFNGLOBJECTPTRLABELPROC)ostrich::glGetProcAddress("glObjectPtrLabel");
-            m_glGetObjectPtrLabel = (PFNGLGETOBJECTPTRLABELPROC)ostrich::glGetProcAddress("glGetObjectPtrLabel");
-            if (m_glDebugMessageControl != nullptr &&
-                m_glDebugMessageInsert != nullptr &&
-                m_glDebugMessageCallback != nullptr &&
-                m_glGetDebugMessageLog != nullptr &&
-                m_glPushDebugGroup != nullptr &&
-                m_glPopDebugGroup != nullptr &&
-                m_glObjectLabel != nullptr &&
-                m_glGetObjectLabel != nullptr &&
-                m_glObjectPtrLabel != nullptr &&
-                m_glGetObjectPtrLabel != nullptr) {
-                m_DebugExtensionSupported = true;
-                consoleprinter.WriteMessage("GL_KHR_debug supported");
-            }
-        }
-        else if (ext.find("GL_EXT_texture_compression_s3tc")) {
-            m_EXT_texture_compression_s3tc = true;
-            consoleprinter.WriteMessage("GL_EXT_texture_compression_s3tc supported");
-        }
     }
     consoleprinter.DebugMessage(u8"Supported extensions: %", { extlist });
+
+    if (extlist.find("GL_KHR_debug")) {
+        m_glDebugMessageControl = (PFNGLDEBUGMESSAGECONTROLPROC)ostrich::glGetProcAddress("glDebugMessageControl");
+        m_glDebugMessageInsert = (PFNGLDEBUGMESSAGEINSERTPROC)ostrich::glGetProcAddress("glDebugMessageInsert");
+        m_glDebugMessageCallback = (PFNGLDEBUGMESSAGECALLBACKPROC)ostrich::glGetProcAddress("glDebugMessageCallback");
+        m_glGetDebugMessageLog = (PFNGLGETDEBUGMESSAGELOGPROC)ostrich::glGetProcAddress("glGetDebugMessageLog");
+        m_glPushDebugGroup = (PFNGLPUSHDEBUGGROUPPROC)ostrich::glGetProcAddress("glPushDebugGroup");
+        m_glPopDebugGroup = (PFNGLPOPDEBUGGROUPPROC)ostrich::glGetProcAddress("glPopDebugGroup");
+        m_glObjectLabel = (PFNGLOBJECTLABELPROC)ostrich::glGetProcAddress("glObjectLabel");
+        m_glGetObjectLabel = (PFNGLGETOBJECTLABELPROC)ostrich::glGetProcAddress("glGetObjectLabel");
+        m_glObjectPtrLabel = (PFNGLOBJECTPTRLABELPROC)ostrich::glGetProcAddress("glObjectPtrLabel");
+        m_glGetObjectPtrLabel = (PFNGLGETOBJECTPTRLABELPROC)ostrich::glGetProcAddress("glGetObjectPtrLabel");
+        if (m_glDebugMessageControl != nullptr &&
+            m_glDebugMessageInsert != nullptr &&
+            m_glDebugMessageCallback != nullptr &&
+            m_glGetDebugMessageLog != nullptr &&
+            m_glPushDebugGroup != nullptr &&
+            m_glPopDebugGroup != nullptr &&
+            m_glObjectLabel != nullptr &&
+            m_glGetObjectLabel != nullptr &&
+            m_glObjectPtrLabel != nullptr &&
+            m_glGetObjectPtrLabel != nullptr) {
+            m_DebugExtensionSupported = ostrich::GL4Extensions::DebugExtensionUsed::EXT_KHR;
+            consoleprinter.WriteMessage("OpenGL Extension Supported: GL_KHR_debug");
+        }
+    }
+    else if (extlist.find("GL_ARB_debug_output")) {
+        m_glDebugMessageControlARB = (PFNGLDEBUGMESSAGECONTROLARBPROC)ostrich::glGetProcAddress("glDebugMessageControlARB");
+        m_glDebugMessageInsertARB = (PFNGLDEBUGMESSAGEINSERTARBPROC)ostrich::glGetProcAddress("glDebugMessageInsertARB");
+        m_glDebugMessageCallbackARB = (PFNGLDEBUGMESSAGECALLBACKARBPROC)ostrich::glGetProcAddress("glDebugMessageCallbackARB");
+        m_glGetDebugMessageLogARB = (PFNGLGETDEBUGMESSAGELOGARBPROC)ostrich::glGetProcAddress("glGetDebugMessageLogARB");
+        if (m_glDebugMessageControlARB != nullptr &&
+            m_glDebugMessageInsertARB != nullptr &&
+            m_glDebugMessageCallbackARB != nullptr &&
+            m_glGetDebugMessageLogARB != nullptr) {
+            m_DebugExtensionSupported = ostrich::GL4Extensions::DebugExtensionUsed::EXT_ARB;
+            consoleprinter.WriteMessage("OpenGL Extension Supported: GL_ARB_debug_output");
+        }
+    }
+    else {
+        m_DebugExtensionSupported = ostrich::GL4Extensions::DebugExtensionUsed::EXT_NONE;
+        consoleprinter.WriteMessage("OpenGL: No Debug Extension found");
+    }
+
+    if (extlist.find("GL_EXT_texture_compression_s3tc")) {
+        m_EXT_texture_compression_s3tc = true;
+        consoleprinter.WriteMessage("OpenGL Extension Supported: GL_EXT_texture_compression_s3tc");
+    }
 
     return OST_ERROR_OK;
 }

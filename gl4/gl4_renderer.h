@@ -90,17 +90,38 @@ private:
     const char GL_SHADING_LANGUAGE_VERSION_MINIMUM = '4';
 
     bool m_isActive;
+    bool m_DebugContext;
     ConsolePrinter m_ConsolePrinter;
 
     GL4Extensions m_Ext;
 
     /////////////////////////////////////////////////
-    // for use with KHR_debug
+    // for use with debug extensions
     // static methods/variables are necessary to interface with the extension
     // This kind of wrecks the ability to have two renderer objects but I don't think that's a big concern right now
+    /////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////
+    // Install the callback function and a console printer
+    //
+    // in:
+    //      ext - Loaded OpenGL extensions
+    //      consoleprinter - A copy of a ConsolePrinter object
+    // returns:
+    //      void
     static void InitDebugExtension(GL4Extensions &ext, ConsolePrinter consoleprinter);
+
+    /////////////////////////////////////////////////
+    // Logs the debug message to the console but does nothing else for now
+    // Future revisions might send messages to an EventQueue but not yet
+    //
+    // in:
+    //      see KHR_debug or ARB_debug_output documentation
+    // returns:
+    //      void
     static void DebugMessageCallback(GLenum source, GLenum type, GLuint id,
         GLenum severity, GLsizei length, const GLchar *message, const void *userParam);
+
     static ConsolePrinter ms_DebugPrinter;
 };
 

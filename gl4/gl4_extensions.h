@@ -41,7 +41,9 @@ public:
         m_glDebugMessageInsert(nullptr), m_glDebugMessageCallback(nullptr), m_glGetDebugMessageLog(nullptr), 
         m_glPushDebugGroup(nullptr), m_glPopDebugGroup(nullptr), m_glObjectLabel(nullptr),
         m_glGetObjectLabel(nullptr), m_glObjectPtrLabel(nullptr), m_glGetObjectPtrLabel(nullptr),
-        m_DebugExtensionSupported(false), m_EXT_texture_compression_s3tc(false) {}
+        m_glDebugMessageControlARB(nullptr), m_glDebugMessageInsertARB(nullptr),
+        m_glDebugMessageCallbackARB(nullptr), m_glGetDebugMessageLogARB(nullptr),
+        m_DebugExtensionSupported(DebugExtensionUsed::EXT_NONE), m_EXT_texture_compression_s3tc(false) {}
     virtual ~GL4Extensions() {}
     GL4Extensions(GL4Extensions &&) = default;
     GL4Extensions(const GL4Extensions &) = default;
@@ -84,21 +86,34 @@ public:
     /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
-    // KHR_debug
+    // KHR_debug or ARB_debug_output
+    // The functions are identical between the two extensions (with the former having more of them),
+    //  and performance isn't a huge concern with debug builds, so they can share interface methods
     /////////////////////////////////////////////////
-    bool debugSupported() const noexcept { return m_DebugExtensionSupported; }
+    enum class DebugExtensionUsed : int32_t { EXT_NONE, EXT_KHR, EXT_ARB };
 
-    void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint *ids, GLboolean enabled)
-    { if (this->m_glDebugMessageControl != nullptr) m_glDebugMessageControl(source, type, severity, count, ids, enabled); }
+    bool debugSupported() const noexcept { return (m_DebugExtensionSupported == DebugExtensionUsed::EXT_NONE) ? false : true; }
 
-    void glDebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *buf)
-    { if (this->m_glDebugMessageInsert != nullptr) m_glDebugMessageInsert(source, type, id, severity, length, buf); }
+    void glDebugMessageControl(GLenum source, GLenum type, GLenum severity, GLsizei count, const GLuint *ids, GLboolean enabled) {
+        if (this->m_glDebugMessageControl != nullptr) { m_glDebugMessageControl(source, type, severity, count, ids, enabled); }
+        else if (this->m_glDebugMessageControlARB != nullptr) { m_glDebugMessageControlARB(source, type, severity, count, ids, enabled); }
+    }
 
-    void glDebugMessageCallback(GLDEBUGPROC callback, const void *userParam)
-    { if (this->m_glDebugMessageCallback != nullptr) m_glDebugMessageCallback(callback, userParam); }
+    void glDebugMessageInsert(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar *buf) {
+        if (this->m_glDebugMessageInsert != nullptr) { m_glDebugMessageInsert(source, type, id, severity, length, buf); }
+        else if (this->m_glDebugMessageInsertARB != nullptr) { m_glDebugMessageInsertARB(source, type, id, severity, length, buf); }
+    }
 
-    GLuint glGetDebugMessageLog(GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum *severities, GLsizei *lengths, GLchar *messageLog)
-    { return (this->m_glGetDebugMessageLog != nullptr) ? m_glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog) : 0; }
+    void glDebugMessageCallback(GLDEBUGPROC callback, const void *userParam) {
+        if (this->m_glDebugMessageCallback != nullptr) { m_glDebugMessageCallback(callback, userParam); }
+        else if (this->m_glDebugMessageCallbackARB != nullptr) { m_glDebugMessageCallbackARB(callback, userParam); }
+    }
+
+    GLuint glGetDebugMessageLog(GLuint count, GLsizei bufSize, GLenum *sources, GLenum *types, GLuint *ids, GLenum *severities, GLsizei *lengths, GLchar *messageLog) {
+        if (this->m_glGetDebugMessageLog != nullptr) { return m_glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog); }
+        else if (this->m_glGetDebugMessageLogARB != nullptr) { return m_glGetDebugMessageLogARB(count, bufSize, sources, types, ids, severities, lengths, messageLog); }
+        else return 0;
+    }
 
     void glPushDebugGroup(GLenum source, GLuint id, GLsizei length, const GLchar *message)
     { if (m_glPushDebugGroup != nullptr) m_glPushDebugGroup(source, id, length, message); }
@@ -162,7 +177,12 @@ private:
     PFNGLOBJECTPTRLABELPROC m_glObjectPtrLabel;
     PFNGLGETOBJECTPTRLABELPROC m_glGetObjectPtrLabel;
 
-    bool m_DebugExtensionSupported;
+    PFNGLDEBUGMESSAGECONTROLARBPROC m_glDebugMessageControlARB;
+    PFNGLDEBUGMESSAGEINSERTARBPROC m_glDebugMessageInsertARB;
+    PFNGLDEBUGMESSAGECALLBACKARBPROC m_glDebugMessageCallbackARB;
+    PFNGLGETDEBUGMESSAGELOGARBPROC m_glGetDebugMessageLogARB;
+
+    DebugExtensionUsed m_DebugExtensionSupported;
     bool m_EXT_texture_compression_s3tc;
 };
 

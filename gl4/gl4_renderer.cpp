@@ -10,9 +10,11 @@ OpenGL 4.0 interface
 #include "../common/error.h"
 #include "../game/errorcodes.h"
 
+ostrich::ConsolePrinter ostrich::GL4Renderer::ms_DebugPrinter;
+
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-ostrich::GL4Renderer::GL4Renderer() noexcept : m_isActive(false) {
+ostrich::GL4Renderer::GL4Renderer() noexcept : m_isActive(false), m_DebugContext(false) {
 
 }
 
@@ -46,12 +48,11 @@ int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
 
     // initializing debug extension
     // only bother if we have a debug context
-    if (m_Ext.debugSupported()) {
-        GLint flag = 0;
-        glGetIntegerv(GL_CONTEXT_FLAGS, &flag);
-        if (flag & GL_CONTEXT_FLAG_DEBUG_BIT) {
-            this->InitDebugExtension(m_Ext, m_ConsolePrinter);
-        }
+    GLint flag = 0;
+    ::glGetIntegerv(GL_CONTEXT_FLAGS, &flag);
+    if (flag & GL_CONTEXT_FLAG_DEBUG_BIT) {
+        m_DebugContext = true;
+        this->InitDebugExtension(m_Ext, m_ConsolePrinter);
     }
 
     ::glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
@@ -66,6 +67,7 @@ int ostrich::GL4Renderer::Initialize(ostrich::ConsolePrinter conprinter) {
 int ostrich::GL4Renderer::Destroy() {
     if (this->isActive()) {
         m_isActive = false;
+        m_DebugContext = false;
     }
     return OST_ERROR_OK;
 }
@@ -136,7 +138,10 @@ void ostrich::GL4Renderer::InitDebugExtension(ostrich::GL4Extensions &ext, ostri
     ext.glDebugMessageCallback(&ostrich::GL4Renderer::DebugMessageCallback, nullptr);
     if (consoleprinter.isValid()) {
         ms_DebugPrinter = consoleprinter;
-        ms_DebugPrinter.WriteMessage(u8"Installed GL debug callback");
+        ms_DebugPrinter.WriteMessage(u8"OpenGL: Installed debug callback");
+    }
+    else {
+        throw ostrich::ProxyException(OST_FUNCTION_SIGNATURE);
     }
 }
 
@@ -144,7 +149,13 @@ void ostrich::GL4Renderer::InitDebugExtension(ostrich::GL4Extensions &ext, ostri
 /////////////////////////////////////////////////
 void ostrich::GL4Renderer::DebugMessageCallback(GLenum source, GLenum type, GLuint id,
     GLenum severity, GLsizei length, const GLchar *message, const void *userParam) {
-    std::string msg;
-
     OST_UNUSED_PARAMETER(source);
+    OST_UNUSED_PARAMETER(type);
+    OST_UNUSED_PARAMETER(id);
+    OST_UNUSED_PARAMETER(severity);
+    OST_UNUSED_PARAMETER(length);
+    OST_UNUSED_PARAMETER(message);
+    OST_UNUSED_PARAMETER(userParam);
+
+    std::string msg;
 }

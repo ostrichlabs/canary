@@ -56,7 +56,7 @@ int ostrich::Main::Initialize() {
     m_ConsolePrinter = m_Console.CreatePrinter();
 
     m_ConsolePrinter.WriteMessage(u8"Running % version %", { ostrich::g_EngineName, ostrich::version::g_EngineVersion });
-    m_ConsolePrinter.WriteMessage(u8"Platform: %", { ostrich::g_PlatformString });
+    m_ConsolePrinter.WriteMessage(u8"Platform: %", { ostrich::platform::g_PlatformString });
     m_ConsolePrinter.WriteMessage(u8"Started at: %", { ostrich::datetime::timestamp() });
 
     int initresult = OST_ERROR_OK;
