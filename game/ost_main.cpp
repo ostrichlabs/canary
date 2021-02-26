@@ -194,8 +194,8 @@ void ostrich::Main::ProcessInput() {
 bool ostrich::Main::UpdateState() {
     while (m_EventQueue.isPending()) {
         auto queuemsg = m_EventQueue.Pop();
-        if (queuemsg.second == true) {
-            ostrich::Message msg = queuemsg.first;
+        if (queuemsg.has_value()) {
+            ostrich::Message msg = queuemsg.value();
             if ((msg.getType() >= ostrich::Message::Type::INPUT_START) &&
                 (msg.getType() <= ostrich::Message::Type::INPUT_LAST)) {
                 // update state based on input

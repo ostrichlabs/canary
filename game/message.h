@@ -70,21 +70,6 @@ public:
     Message &operator=(const Message &) = default;
 
     /////////////////////////////////////////////////
-    // Create an empty message.
-    // Used when trying to remove a message from an empty event queue.
-    //
-    // returns:
-    //      A default-constructed NULLTYPE message.
-    static Message CreateNullMessage() { return Message(); }
-
-    /////////////////////////////////////////////////
-    // Create an empty message where the sender is known.
-    //
-    // returns:
-    //      A default-constructed NULLTYPE message with a known sender.
-    static Message CreateNullMessage(const char *sender) { return Message(sender); }
-
-    /////////////////////////////////////////////////
     // Create a system message.
     //
     // in:

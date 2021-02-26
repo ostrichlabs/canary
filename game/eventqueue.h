@@ -9,8 +9,8 @@ The EventQueue and its wrappers
 #ifndef OSTRICH_EVENTQUEUE_H_
 #define OSTRICH_EVENTQUEUE_H_
 
+#include <optional>
 #include <queue>
-#include <utility>
 #include "message.h"
 #include "../common/filesystem.h"
 
@@ -79,8 +79,8 @@ public:
     // Maybe removing the message should be separate, or there should be a Peek(), but for now this works
     //
     // returns:
-    //      A pair containing a Message object and a flag which is false if there is no message in the queue at the time of the call
-    std::pair<Message, bool> Pop();
+    //      An optional<> possibly containing a Message object
+    std::optional<Message> Pop();
 
 private:
 

@@ -27,13 +27,13 @@ void ostrich::EventQueue::Push(const Message &msg) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-std::pair<ostrich::Message, bool> ostrich::EventQueue::Pop() {
+std::optional<ostrich::Message> ostrich::EventQueue::Pop() {
     if (!m_MessageQueue.empty()) {
         ostrich::Message msg = m_MessageQueue.front();
         m_MessageQueue.pop();
-        return std::make_pair(msg, true);
+        return std::make_optional(msg);
     }
-    return std::make_pair(ostrich::Message::CreateNullMessage(), false);
+    return std::nullopt;
 }
 
 /////////////////////////////////////////////////
