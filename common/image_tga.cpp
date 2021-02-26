@@ -1,6 +1,6 @@
 /*
 ==========================================
-Copyright (c) 2020 Ostrich Labs
+Copyright (c) 2020-2021 Ostrich Labs
 
 TGA functions
 
@@ -165,10 +165,12 @@ ostrich::Image ostrich::Image::LoadTGA(const char *filename) {
     }
 
     // Detecting TGA version - this only means something once RLE is supported, maybe
+    /*
     int TGAversion = 1;
     if (::memcmp(&footer.m_Signature, "TRUEVISION-XFILE.", sizeof(footer.m_Signature)) == 0) {
         TGAversion = 2;
     }
+    */
 
     handle.seekg(TGAHeader::SIZE, std::ios_base::beg);
 

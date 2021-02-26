@@ -159,15 +159,17 @@ void ostrich::Main::Run() {
     auto currtick = prevtick;
     bool done = false;
     int32_t elapsedtime = 0;
-    double fps = 0.0;
+    //double fps = 0.0;
     while (!done) {
         currtick = ostrich::timer::now();
         elapsedtime = ostrich::timer::interval(prevtick, currtick);
         prevtick = currtick;
         lag += elapsedtime;
 
+        /*
         if (elapsedtime > 0)
             fps = static_cast<double>(1.0 / static_cast<double>(elapsedtime)) * 1000.0;
+        */
 
         this->ProcessInput();
         while ((lag >= msperupdate) && (!done)) { // no need to update state if done

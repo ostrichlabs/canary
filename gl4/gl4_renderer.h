@@ -116,7 +116,7 @@ private:
     // Future revisions might send messages to an EventQueue but not yet
     //
     // in:
-    //      see KHR_debug or ARB_debug_output documentation
+    //      see KHR_debug documentation
     // returns:
     //      void
     static void DebugMessageCallback(GLenum source, GLenum type, GLuint id,
