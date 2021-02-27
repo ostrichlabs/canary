@@ -135,6 +135,9 @@
     <ClCompile Include="linux\udev_device.cpp">
       <Filter>linux</Filter>
     </ClCompile>
+    <ClCompile Include="gl4\gl4_debug.cpp">
+      <Filter>gl4</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="win32\win_display.h">

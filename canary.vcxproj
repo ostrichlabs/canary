@@ -216,6 +216,7 @@
     <ClCompile Include="common\win32\win_filesystem.cpp" />
     <ClCompile Include="game\eventqueue.cpp" />
     <ClCompile Include="game\ost_main.cpp" />
+    <ClCompile Include="gl4\gl4_debug.cpp" />
     <ClCompile Include="gl4\gl4_extensions.cpp" />
     <ClCompile Include="gl4\gl4_renderer.cpp" />
     <ClCompile Include="gl4\gl4_texture.cpp" />
