@@ -76,7 +76,6 @@ void ostrich::GL4Renderer::RenderScene(const SceneData *scenedata, int32_t extra
     OST_UNUSED_PARAMETER(extrapolation);
     if (this->isActive()) {
         if (scenedata == nullptr) {
-            m_ConsolePrinter.DebugMessage(u8"Warning: SceneData pointer is null in OpenGL 4 renderer");
             throw ostrich::Exception(u8"SceneData pointer is null");
         }
         ::glClearColor(scenedata->getClearColorRed(), scenedata->getClearColorGreen(),

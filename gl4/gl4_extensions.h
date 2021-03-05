@@ -5,7 +5,6 @@ Copyright(c) 2020-2021 Ostrich Labs
 Extension loader and keeper for OpenGL 4
 
 This is more necessary for Windows, as the Microsoft GL driver only exposes up to 1.1.
-Other extensions like KHR_debug are necessary here too though.
 
 For consistency and simplicity, even non-Windows platforms should access functions in GL >1.1 using this object.
 
@@ -15,6 +14,12 @@ Actually retrieving function pointers is platform specific, through a common ost
 
 #ifndef OSTRICH_GL4_EXTENSIONS_H_
 #define OSTRICH_GL4_EXTENSIONS_H_
+
+#include "../common/ost_common.h"
+
+#if (OST_WINDOWS == 1)
+#   include <windows.h> // required for GL headers
+#endif
 
 #include "gl/glcorearb.h"
 #include "gl/glext.h"
@@ -41,7 +46,8 @@ public:
         m_glDebugMessageInsert(nullptr), m_glDebugMessageCallback(nullptr), m_glGetDebugMessageLog(nullptr), 
         m_glPushDebugGroup(nullptr), m_glPopDebugGroup(nullptr), m_glObjectLabel(nullptr),
         m_glGetObjectLabel(nullptr), m_glObjectPtrLabel(nullptr), m_glGetObjectPtrLabel(nullptr),
-        m_KHR_debug(false), m_EXT_texture_compression_s3tc(false) {}
+        m_glCreateTextures(nullptr), m_glTextureParameteri(nullptr),
+        m_KHR_debug(false), m_EXT_texture_compression_s3tc(false), m_ARB_direct_state_access(false) {}
     virtual ~GL4Extensions() {}
     GL4Extensions(GL4Extensions &&) = default;
     GL4Extensions(const GL4Extensions &) = default;
@@ -126,6 +132,19 @@ public:
     //      true/false if GL_EXT_texture_compression_s3tc extension is supported.
     bool supportsS3TCCompression() const noexcept { return m_EXT_texture_compression_s3tc; }
 
+    /////////////////////////////////////////////////
+    // ARB_direct_state_access
+    // Adding functions as I need them, rather than all of them
+    /////////////////////////////////////////////////
+
+    bool DSAsupported() const noexcept { return m_ARB_direct_state_access; }
+
+    void glCreateTextures(GLenum target, GLsizei n, GLuint *textures)
+    { if (m_glCreateTextures != nullptr) { this->m_glCreateTextures(target, n, textures); } }
+
+    void glTextureParameteri(GLuint texture, GLenum pname, GLint param)
+    { if (m_glTextureParameteri != nullptr) { this->m_glTextureParameteri(texture, pname, param); } }
+
 private:
 
     /////////////////////////////////////////////////
@@ -162,8 +181,12 @@ private:
     PFNGLOBJECTPTRLABELPROC m_glObjectPtrLabel;
     PFNGLGETOBJECTPTRLABELPROC m_glGetObjectPtrLabel;
 
+    PFNGLCREATETEXTURESPROC m_glCreateTextures;
+    PFNGLTEXTUREPARAMETERIPROC m_glTextureParameteri;
+
     bool m_KHR_debug;
     bool m_EXT_texture_compression_s3tc;
+    bool m_ARB_direct_state_access;
 };
 
 } // namespace ostrich

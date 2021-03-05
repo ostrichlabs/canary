@@ -88,5 +88,14 @@ int ostrich::GL4Extensions::LoadExtensions(ostrich::ConsolePrinter consoleprinte
         consoleprinter.WriteMessage("OpenGL Extension Supported: GL_EXT_texture_compression_s3tc");
     }
 
+    if (extlist.find("GL_ARB_direct_state_access")) {
+        m_glCreateTextures = (PFNGLCREATETEXTURESPROC)ostrich::glGetProcAddress("glCreateTextures");
+        m_glTextureParameteri = (PFNGLTEXTUREPARAMETERIPROC)ostrich::glGetProcAddress("glTextureParameteri");
+        if (m_glCreateTextures != nullptr) {
+            m_ARB_direct_state_access = true;
+            consoleprinter.WriteMessage("OpenGL Extension Supported: GL_ARB_direct_state_access");
+        }
+    }
+
     return OST_ERROR_OK;
 }

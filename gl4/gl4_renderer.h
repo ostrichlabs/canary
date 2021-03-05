@@ -12,12 +12,12 @@ OpenGL 4.0 interface
 #include "../common/ost_common.h"
 
 #if (OST_WINDOWS == 1)
-#   include <windows.h> // required for GL.h
+#   include <windows.h> // required for GL headers
 #endif
 
 #include <GL/gl.h>
-#include "GL/glcorearb.h"   // taken from https://github.com/KhronosGroup/OpenGL-Registry
-#include "GL/glext.h"       // taken from https://github.com/KhronosGroup/OpenGL-Registry
+#include "gl/glcorearb.h"   // taken from https://github.com/KhronosGroup/OpenGL-Registry
+#include "gl/glext.h"       // taken from https://github.com/KhronosGroup/OpenGL-Registry
 #include "gl4_extensions.h"
 #include "gl4_texture.h"
 #include "../game/i_renderer.h"
