@@ -14,7 +14,7 @@ Entry point for Windows
 
 #include <Windows.h>
 
-#include "win_display.h"
+#include "win_gl4display.h"
 #include "win_input.h"
 #include "../common/error.h"
 #include "../game/ost_main.h"
@@ -24,14 +24,14 @@ namespace {
 
 ostrich::Main Game;
 
-ostrich::DisplayWindows Display;
-ostrich::IDisplay*      DisplayPtr = &Display;
+ostrich::DisplayGL4Windows  Display;
+ostrich::IDisplay*          DisplayPtr = &Display;
 
-ostrich::GL4Renderer    Renderer;
-ostrich::IRenderer*     RendererPtr = &Renderer;
+ostrich::GL4Renderer        Renderer;
+ostrich::IRenderer*         RendererPtr = &Renderer;
 
-ostrich::InputWindows   Input;
-ostrich::IInput*        InputPtr = &Input;
+ostrich::InputWindows       Input;
+ostrich::IInput*            InputPtr = &Input;
 
 }
 

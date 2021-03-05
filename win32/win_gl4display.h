@@ -2,12 +2,12 @@
 ==========================================
 Copyright (c) 2020-2021 Ostrich Labs
 
-IDisplay implementation for Windows
+IDisplay implementation for Windows using OpenGL 4
 ==========================================
 */
 
-#ifndef OSTRICH_WIN_DISPLAY_H_
-#define OSTRICH_WIN_DISPLAY_H_
+#ifndef OSTRICH_WIN_GL4DISPLAY_H_
+#define OSTRICH_WIN_GL4DISPLAY_H_
 
 #include <windows.h>
 #include <gl/GL.h>
@@ -58,7 +58,7 @@ struct WGLExtensions {
 
 /////////////////////////////////////////////////
 //
-class DisplayWindows : public IDisplay {
+class DisplayGL4Windows : public IDisplay {
 public:
 
     /////////////////////////////////////////////////
@@ -66,12 +66,12 @@ public:
     // Destructor is defined but does nothing so I don't know if I should bother.
     // Copy/move constructors/operators are deleted to prevent accidentally creating two windows
     // (if you want to make another, you can do it manually)
-    DisplayWindows() noexcept;
-    virtual ~DisplayWindows();
-    DisplayWindows(DisplayWindows &&) = delete;
-    DisplayWindows(const DisplayWindows &) = delete;
-    DisplayWindows &operator=(DisplayWindows &&) = delete;
-    DisplayWindows &operator=(const DisplayWindows &) = delete;
+    DisplayGL4Windows() noexcept;
+    virtual ~DisplayGL4Windows();
+    DisplayGL4Windows(DisplayGL4Windows &&) = delete;
+    DisplayGL4Windows(const DisplayGL4Windows &) = delete;
+    DisplayGL4Windows &operator=(DisplayGL4Windows &&) = delete;
+    DisplayGL4Windows &operator=(const DisplayGL4Windows &) = delete;
 
     /////////////////////////////////////////////////
     // Initialize the display.
@@ -144,4 +144,4 @@ private:
 
 } // namespace ostrich
 
-#endif /* OSTRICH_WIN_DISPLAY_H */
+#endif /* OSTRICH_WIN_GL4DISPLAY_H */

@@ -10,7 +10,7 @@ Copyright (c) 2020-2021 Ostrich Labs
 #   error "This module should only be included in Windows builds"
 #endif
 
-#include "win_display.h"
+#include "win_gl4display.h"
 #include <string>
 #include "win_wndproc.h"
 #include "../common/error.h"
@@ -63,7 +63,7 @@ int ostrich::WGLExtensions::Retrieve(HDC hdc) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-ostrich::DisplayWindows::DisplayWindows() noexcept :
+ostrich::DisplayGL4Windows::DisplayGL4Windows() noexcept :
 m_isActive(false),
 m_WindowClassName(L"Canary"),
 m_HInstance(nullptr), m_HWnd(nullptr), m_HDC(nullptr), m_HGLRC(nullptr) {
@@ -72,12 +72,12 @@ m_HInstance(nullptr), m_HWnd(nullptr), m_HDC(nullptr), m_HGLRC(nullptr) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-ostrich::DisplayWindows::~DisplayWindows() {
+ostrich::DisplayGL4Windows::~DisplayGL4Windows() {
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayWindows::Initialize(ostrich::ConsolePrinter conprinter) {
+int ostrich::DisplayGL4Windows::Initialize(ostrich::ConsolePrinter conprinter) {
     if (this->isActive())
         return OST_ERROR_ISACTIVE;
 
@@ -99,7 +99,7 @@ int ostrich::DisplayWindows::Initialize(ostrich::ConsolePrinter conprinter) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayWindows::Destroy() {
+int ostrich::DisplayGL4Windows::Destroy() {
     if (this->isActive()) {
         ::wglMakeCurrent(m_HDC, NULL);
         ::wglDeleteContext(m_HGLRC);
@@ -113,7 +113,7 @@ int ostrich::DisplayWindows::Destroy() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-bool ostrich::DisplayWindows::SwapBuffers() {
+bool ostrich::DisplayGL4Windows::SwapBuffers() {
     if (!this->isActive())
         return false;
 
@@ -122,7 +122,7 @@ bool ostrich::DisplayWindows::SwapBuffers() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayWindows::InitWindow() {
+int ostrich::DisplayGL4Windows::InitWindow() {
     if (this->isActive())
         return OST_ERROR_ISACTIVE;
 
@@ -163,7 +163,7 @@ int ostrich::DisplayWindows::InitWindow() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayWindows::InitRenderer() {
+int ostrich::DisplayGL4Windows::InitRenderer() {
     const int pixelformatattribs[] = {
         WGL_DRAW_TO_WINDOW_ARB, GL_TRUE,
         WGL_SUPPORT_OPENGL_ARB, GL_TRUE,
@@ -220,7 +220,7 @@ int ostrich::DisplayWindows::InitRenderer() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-ostrich::WGLExtensions ostrich::DisplayWindows::GetWGLExtensions() {
+ostrich::WGLExtensions ostrich::DisplayGL4Windows::GetWGLExtensions() {
 // generic descriptions just to get a dummy window
     LPCWSTR tmpclassname = L"WGLDummyClassName";
     WNDCLASSW wndclass = { };
