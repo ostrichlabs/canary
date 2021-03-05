@@ -275,7 +275,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="win32\win_display.cpp" />
+    <ClCompile Include="win32\win_gl4display.cpp" />
     <ClCompile Include="win32\win_gl4extensions.cpp" />
     <ClCompile Include="win32\win_input.cpp" />
     <ClCompile Include="win32\win_main.cpp" />
@@ -341,7 +341,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="win32\win_display.h" />
+    <ClInclude Include="win32\win_gl4display.h" />
     <ClInclude Include="win32\win_input.h" />
     <ClInclude Include="win32\win_wndproc.h" />
   </ItemGroup>

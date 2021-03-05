@@ -42,7 +42,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="win32\win_display.cpp">
+    <ClCompile Include="win32\win_gl4display.cpp">
       <Filter>win32</Filter>
     </ClCompile>
     <ClCompile Include="win32\win_input.cpp">
@@ -140,7 +140,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="win32\win_display.h">
+    <ClInclude Include="win32\win_gl4display.h">
       <Filter>win32</Filter>
     </ClInclude>
     <ClInclude Include="win32\win_input.h">
