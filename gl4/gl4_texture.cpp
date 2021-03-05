@@ -29,7 +29,6 @@ ostrich::GL4Texture ostrich::GL4Texture::CreateTexture(GL4Extensions &ext, const
     }
 
     GLuint tex = 0;
-
     if (ext.DSAsupported()) {
         tex = ostrich::GL4Texture::CreateTextureObject(ext, image, internalformat, pixelformat);
     }
@@ -58,7 +57,7 @@ GLuint ostrich::GL4Texture::CreateTextureCore(GL4Extensions &ext, const ostrich:
     ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
     auto imgdataptr = image.getData().lock();
-    auto *imgdata = imgdataptr.get();
+    uint8_t *imgdata = imgdataptr.get();
 
     if (image.isCompressed()) {
         ext.glCompressedTexImage2D(GL_TEXTURE_2D, 0, GLinternalformat, image.getWidth(), image.getHeight(), 0, image.getDataSize(), imgdata);
@@ -79,6 +78,9 @@ GLuint ostrich::GL4Texture::CreateTextureObject(GL4Extensions &ext, const ostric
 
     ext.glTextureParameteri(tex, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     ext.glTextureParameteri(tex, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    auto imgdataptr = image.getData().lock();
+    uint8_t *imgdata = imgdataptr.get();
 }
 
 /////////////////////////////////////////////////

@@ -41,7 +41,7 @@ int main(int argc, char *argv[]) {
 
     int returncode = 0;
 
-    //magpie::InitMemoryTracker();
+    //InitMemoryTracker();
 
     try {
         returncode = Game.Start(DisplayPtr, RendererPtr, InputPtr);
@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
 
     Game.Destroy();
 
-    //magpie::PrintMemoryTracker();
-    //magpie::DestroyMemoryTracker();
+    //PrintMemoryTracker();
+    //DestroyMemoryTracker();
 
     return returncode;
 }

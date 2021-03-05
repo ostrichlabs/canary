@@ -46,7 +46,7 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
     
     int returncode = 0;
 
-    //magpie::InitMemoryTracker();
+    //InitMemoryTracker();
 
     try {
         returncode = Game.Start(DisplayPtr, RendererPtr, InputPtr);
@@ -57,8 +57,8 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
     Game.Destroy();
 
-    //magpie::PrintMemoryTracker();
-    //magpie::DestroyMemoryTracker();
+    //PrintMemoryTracker();
+    //DestroyMemoryTracker();
 
     if (returncode == 0)
         returncode = ::GetLastError();
