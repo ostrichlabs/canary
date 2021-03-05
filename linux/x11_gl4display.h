@@ -2,12 +2,12 @@
 ==========================================
 Copyright (c) 2020-2021 Ostrich Labs
 
-IDisplay implementation for Linux, using X11
+IDisplay implementation for Linux, using X11 and OpenGL 4
 ==========================================
 */
 
-#ifndef OSTRICH_X11_DISPLAY_H_
-#define OSTRICH_X11_DISPLAY_H_
+#ifndef OSTRICH_X11_GL4DISPLAY_H_
+#define OSTRICH_X11_GL4DISPLAY_H_
 
 #include <GL/glx.h>
 #include "../game/i_display.h"
@@ -16,7 +16,7 @@ namespace ostrich {
 
 /////////////////////////////////////////////////
 //
-class DisplayX11 : public IDisplay {
+class DisplayGL4X11 : public IDisplay {
 public:
 
     /////////////////////////////////////////////////
@@ -24,12 +24,12 @@ public:
     // Destructor is defined but does nothing so I don't know if I should bother.
     // Copy/move constructors/operators are deleted to prevent accidentally creating two windows
     // (if you want to make another, you can do it manually)
-    DisplayX11() noexcept;
-    virtual ~DisplayX11();
-    DisplayX11(DisplayX11 &&) = delete;
-    DisplayX11(const DisplayX11 &) = delete;
-    DisplayX11 &operator=(DisplayX11 &&) = delete;
-    DisplayX11 &operator=(const DisplayX11 &) = delete;
+    DisplayGL4X11() noexcept;
+    virtual ~DisplayGL4X11();
+    DisplayGL4X11(DisplayGL4X11 &&) = delete;
+    DisplayGL4X11(const DisplayGL4X11 &) = delete;
+    DisplayGL4X11 &operator=(DisplayGL4X11 &&) = delete;
+    DisplayGL4X11 &operator=(const DisplayGL4X11 &) = delete;
 
     /////////////////////////////////////////////////
     // Initialize the display.
@@ -99,4 +99,4 @@ private:
 } // namespace ostrich
 
 
-#endif /* OSTRICH_X11_DISPLAY_H_ */
+#endif /* OSTRICH_X11_GL4DISPLAY_H_ */

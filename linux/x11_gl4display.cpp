@@ -10,25 +10,25 @@ Copyright (c) 2020-2021 Ostrich Labs
 #   error "This module should only be included in Linux builds using X11"
 #endif
 
-#include "x11_display.h"
+#include "x11_gl4display.h"
 #include <GL/glxext.h>
 #include <X11/Xutil.h>
 #include "../common/error.h"
 #include "../game/errorcodes.h"
 #include "../gl4/gl4_extensions.h"
 
-bool ostrich::DisplayX11::ms_XError = false;
+bool ostrich::DisplayGL4X11::ms_XError = false;
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayX11::GLXErrorHandler(Display *display, XErrorEvent *event) {
+int ostrich::DisplayGL4X11::GLXErrorHandler(Display *display, XErrorEvent *event) {
     ms_XError = true;
     return 0;
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-ostrich::DisplayX11::DisplayX11() noexcept :
+ostrich::DisplayGL4X11::DisplayGL4X11() noexcept :
 m_isActive(false), m_FrameBufferConfig(nullptr), m_Display(nullptr),
 m_Colormap(0), m_GLWindow(0), m_GLContext(nullptr) {
 
@@ -36,12 +36,12 @@ m_Colormap(0), m_GLWindow(0), m_GLContext(nullptr) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-ostrich::DisplayX11::~DisplayX11() {
+ostrich::DisplayGL4X11::~DisplayGL4X11() {
 }
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayX11::Initialize(ostrich::ConsolePrinter consoleprinter) {
+int ostrich::DisplayGL4X11::Initialize(ostrich::ConsolePrinter consoleprinter) {
     if (this->isActive())
         return OST_ERROR_ISACTIVE;
 
@@ -63,7 +63,7 @@ int ostrich::DisplayX11::Initialize(ostrich::ConsolePrinter consoleprinter) {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayX11::Destroy() {
+int ostrich::DisplayGL4X11::Destroy() {
     if (this->isActive()) {
         ::glXMakeCurrent(m_Display, 0, nullptr);
         ::glXDestroyContext(m_Display, m_GLContext);
@@ -77,7 +77,7 @@ int ostrich::DisplayX11::Destroy() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-bool ostrich::DisplayX11::SwapBuffers() {
+bool ostrich::DisplayGL4X11::SwapBuffers() {
     if (!this->isActive())
         return false;
 
@@ -87,7 +87,7 @@ bool ostrich::DisplayX11::SwapBuffers() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayX11::InitWindow() {
+int ostrich::DisplayGL4X11::InitWindow() {
     if (this->isActive()) {
         return OST_ERROR_ISACTIVE;
     }
@@ -188,7 +188,7 @@ int ostrich::DisplayX11::InitWindow() {
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
-int ostrich::DisplayX11::InitRenderer() {
+int ostrich::DisplayGL4X11::InitRenderer() {
     if (this->isActive()) {
         return OST_ERROR_ISACTIVE;
     }
