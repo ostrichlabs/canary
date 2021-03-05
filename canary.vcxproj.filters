@@ -123,7 +123,7 @@
     <ClCompile Include="linux\linux_main.cpp">
       <Filter>linux</Filter>
     </ClCompile>
-    <ClCompile Include="linux\x11_display.cpp">
+    <ClCompile Include="linux\x11_gl4display.cpp">
       <Filter>linux</Filter>
     </ClCompile>
     <ClCompile Include="linux\x11_input.cpp">
@@ -224,7 +224,7 @@
     <ClInclude Include="gl4\gl4_texture.h">
       <Filter>gl4</Filter>
     </ClInclude>
-    <ClInclude Include="linux\x11_display.h">
+    <ClInclude Include="linux\x11_gl4display.h">
       <Filter>linux</Filter>
     </ClInclude>
     <ClInclude Include="linux\x11_input.h">
