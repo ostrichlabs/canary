@@ -11,10 +11,9 @@ IDisplay implementation for Windows using OpenGL 4
 
 #include <windows.h>
 #include <gl/GL.h>
-#include "../external/gl/glcorearb.h"
-#include "../external/gl/glext.h"
-#include "../external/gl/wgl.h"
-#include "../external/gl/wglext.h"
+#include "../external/gl/glext.h"   // taken from https://github.com/KhronosGroup/OpenGL-Registry
+#include "../external/gl/wgl.h"     // taken from https://github.com/KhronosGroup/OpenGL-Registry
+#include "../external/gl/wglext.h"  // taken from https://github.com/KhronosGroup/OpenGL-Registry
 #include "../game/i_display.h"
 
 namespace ostrich {

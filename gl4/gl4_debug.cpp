@@ -15,8 +15,8 @@ ostrich::ConsolePrinter ostrich::GL4Renderer::ms_DebugPrinter;
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
 void ostrich::GL4Renderer::InitDebugExtension(ostrich::GL4Extensions &ext, ostrich::ConsolePrinter consoleprinter) {
-    ext.glDebugMessageCallback(&ostrich::GL4Renderer::DebugMessageCallback, nullptr);
     ms_DebugPrinter = consoleprinter;
+    ext.glDebugMessageCallback(&ostrich::GL4Renderer::DebugMessageCallback, nullptr);
 
     ext.glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE); // enable everything for now
     ::glEnable(GL_DEBUG_OUTPUT);
@@ -45,73 +45,73 @@ void ostrich::GL4Renderer::DebugMessageCallback(GLenum source, GLenum type, GLui
         std::string msg(u8"OpenGL Debug Message: Source=>");
 
         switch (source) {
-        case GL_DEBUG_SOURCE_API:
-            msg.append(u8"API");
-            break;
-        case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
-            msg.append(u8"System");
-            break;
-        case GL_DEBUG_SOURCE_SHADER_COMPILER:
-            msg.append(u8"Shader compiler");
-            break;
-        case GL_DEBUG_SOURCE_THIRD_PARTY:
-            msg.append(u8"Third party");
-            break;
-        case GL_DEBUG_SOURCE_APPLICATION:
-            msg.append(ostrich::g_EngineName);
-            break;
-        case GL_DEBUG_SOURCE_OTHER:
-            msg.append(u8"Other");
-            break;
-        default:
-            msg.append(u8"Unknown");
-            break;
+            case GL_DEBUG_SOURCE_API:
+                msg.append(u8"API");
+                break;
+            case GL_DEBUG_SOURCE_WINDOW_SYSTEM:
+                msg.append(u8"System");
+                break;
+            case GL_DEBUG_SOURCE_SHADER_COMPILER:
+                msg.append(u8"Shader compiler");
+                break;
+            case GL_DEBUG_SOURCE_THIRD_PARTY:
+                msg.append(u8"Third party");
+                break;
+            case GL_DEBUG_SOURCE_APPLICATION:
+                msg.append(ostrich::g_EngineName);
+                break;
+            case GL_DEBUG_SOURCE_OTHER:
+                msg.append(u8"Other");
+                break;
+            default:
+                msg.append(u8"Unknown");
+                break;
         }
 
         msg.append(u8"< Type=>");
 
         switch (type) {
-        case GL_DEBUG_TYPE_ERROR:
-            msg.append(u8"Error");
-            break;
-        case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
-            msg.append(u8"Deprecated behavior");
-            break;
-        case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
-            msg.append(u8"Undefined behavior");
-            break;
-        case GL_DEBUG_TYPE_PERFORMANCE:
-            msg.append(u8"Performance");
-            break;
-        case GL_DEBUG_TYPE_PORTABILITY:
-            msg.append(u8"Portability");
-            break;
-        case GL_DEBUG_TYPE_OTHER:
-            msg.append(u8"Other");
-            break;
-        default:
-            msg.append(u8"Unknown");
-            break;
+            case GL_DEBUG_TYPE_ERROR:
+                msg.append(u8"Error");
+                break;
+            case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR:
+                msg.append(u8"Deprecated behavior");
+                break;
+            case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR:
+                msg.append(u8"Undefined behavior");
+                break;
+            case GL_DEBUG_TYPE_PERFORMANCE:
+                msg.append(u8"Performance");
+                break;
+            case GL_DEBUG_TYPE_PORTABILITY:
+                msg.append(u8"Portability");
+                break;
+            case GL_DEBUG_TYPE_OTHER:
+                msg.append(u8"Other");
+                break;
+            default:
+                msg.append(u8"Unknown");
+                break;
         }
 
         msg.append(u8"< ID=>%< Severity=>");
 
         switch (severity) {
-        case GL_DEBUG_SEVERITY_HIGH:
-            msg.append(u8"HIGH");
-            break;
-        case GL_DEBUG_SEVERITY_MEDIUM:
-            msg.append(u8"MEDIUM");
-            break;
-        case GL_DEBUG_SEVERITY_LOW:
-            msg.append(u8"LOW");
-            break;
-        case GL_DEBUG_SEVERITY_NOTIFICATION:
-            msg.append(u8"NOTIFICATION");
-            break;
-        default:
-            msg.append(u8"UNKNOWN");
-            break;
+            case GL_DEBUG_SEVERITY_HIGH:
+                msg.append(u8"HIGH");
+                break;
+            case GL_DEBUG_SEVERITY_MEDIUM:
+                msg.append(u8"MEDIUM");
+                break;
+            case GL_DEBUG_SEVERITY_LOW:
+                msg.append(u8"LOW");
+                break;
+            case GL_DEBUG_SEVERITY_NOTIFICATION:
+                msg.append(u8"NOTIFICATION");
+                break;
+            default:
+                msg.append(u8"UNKNOWN");
+                break;
         }
 
         msg.append(u8"<");

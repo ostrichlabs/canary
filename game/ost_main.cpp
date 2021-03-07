@@ -4,8 +4,8 @@ Copyright (c) 2020-2021 Ostrich Labs
 ==========================================
 */
 
-#include "ost_main.h"
 #include <csignal>
+#include "ost_main.h"
 #include "ost_version.h"
 #include "../common/datetime.h"
 #include "../common/error.h"

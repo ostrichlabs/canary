@@ -29,7 +29,7 @@ ostrich::GL4Texture ostrich::GL4Texture::CreateTexture(GL4Extensions &ext, const
     }
 
     GLuint tex = 0;
-    if (ext.DSAsupported()) {
+    if (ext.DirectStateAccessSupported()) {
         tex = ostrich::GL4Texture::CreateTextureObject(ext, image, internalformat, pixelformat);
     }
     else {
@@ -55,16 +55,16 @@ GLuint ostrich::GL4Texture::CreateTextureCore(GL4Extensions &ext, const ostrich:
 
     ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    ::glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     auto imgdataptr = image.getData().lock();
-    uint8_t *imgdata = imgdataptr.get();
+    auto *imgdata = imgdataptr.get();
 
-    if (image.isCompressed()) {
-        ext.glCompressedTexImage2D(GL_TEXTURE_2D, 0, GLinternalformat, image.getWidth(), image.getHeight(), 0, image.getDataSize(), imgdata);
-    }
-    else {
-        ::glTexImage2D(GL_TEXTURE_2D, 0, GLinternalformat, image.getWidth(), image.getHeight(), 0, GLpixelformat, GL_UNSIGNED_BYTE, imgdata);
-    }
+    ::glTexImage2D(GL_TEXTURE_2D, 0, GLinternalformat, image.getWidth(), image.getHeight(), 0, GLpixelformat, GL_UNSIGNED_BYTE, imgdata);
+    ext.glGenerateMipmap(GL_TEXTURE_2D);
+    
+    ::glBindTexture(GL_TEXTURE_2D, 0);
 
     return tex;
 }
@@ -78,9 +78,17 @@ GLuint ostrich::GL4Texture::CreateTextureObject(GL4Extensions &ext, const ostric
 
     ext.glTextureParameteri(tex, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     ext.glTextureParameteri(tex, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    ext.glTextureParameteri(tex, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    ext.glTextureParameteri(tex, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     auto imgdataptr = image.getData().lock();
-    uint8_t *imgdata = imgdataptr.get();
+    auto *imgdata = imgdataptr.get();
+
+    ext.glTextureStorage2D(tex, 1, GLinternalformat, image.getWidth(), image.getHeight());
+    ext.glTextureSubImage2D(tex, 0, 0, 0, image.getWidth(), image.getHeight(), GLpixelformat, GL_UNSIGNED_BYTE, imgdata);
+    ext.glGenerateTextureMipmap(tex);
+
+    return tex;
 }
 
 /////////////////////////////////////////////////

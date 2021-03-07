@@ -7,6 +7,7 @@ Extension loader and keeper for OpenGL 4
 This is more necessary for Windows, as the Microsoft GL driver only exposes up to 1.1.
 
 For consistency and simplicity, even non-Windows platforms should access functions in GL >1.1 using this object.
+Pre-4.0 OpenGL functions will be loaded as Core, 4.0 and later will access via extensions
 
 Actually retrieving function pointers is platform specific, through a common ostrich::glGetProcAddress() function.
 ==========================================
@@ -21,8 +22,8 @@ Actually retrieving function pointers is platform specific, through a common ost
 #   include <windows.h> // required for GL headers
 #endif
 
-#include "gl/glcorearb.h"
-#include "gl/glext.h"
+#include <gl/GL.h>
+#include "gl/glext.h"       // taken from https://github.com/KhronosGroup/OpenGL-Registry
 #include "../common/console.h"
 
 namespace ostrich {
@@ -30,6 +31,11 @@ namespace ostrich {
 /////////////////////////////////////////////////
 // Common function for retrieving extension function pointers
 // Note: win_display modules do not use this to retrieve WGL extensions, because they do not need to
+//
+// in:
+//      name - full name of OpenGL function to retrieve
+// returns:
+//      void pointer to the function - cast this to the function you need
 void *glGetProcAddress(const char *name);
 
 /////////////////////////////////////////////////
@@ -42,11 +48,12 @@ public:
     // Destructor does nothing; no memory is allocated.
     // Data is all either simple or copyable, so copy/move constructors/operators are default
     GL4Extensions() noexcept :
-        m_glGetStringi(nullptr), m_glCompressedTexImage2D(nullptr), m_glDebugMessageControl(nullptr),
-        m_glDebugMessageInsert(nullptr), m_glDebugMessageCallback(nullptr), m_glGetDebugMessageLog(nullptr), 
-        m_glPushDebugGroup(nullptr), m_glPopDebugGroup(nullptr), m_glObjectLabel(nullptr),
-        m_glGetObjectLabel(nullptr), m_glObjectPtrLabel(nullptr), m_glGetObjectPtrLabel(nullptr),
-        m_glCreateTextures(nullptr), m_glTextureParameteri(nullptr),
+        m_glCompressedTexImage2D(nullptr), m_glGetStringi(nullptr), m_glGenerateMipmap(nullptr),
+        m_glDebugMessageControl(nullptr), m_glDebugMessageInsert(nullptr), m_glDebugMessageCallback(nullptr),
+        m_glGetDebugMessageLog(nullptr), m_glPushDebugGroup(nullptr), m_glPopDebugGroup(nullptr),
+        m_glObjectLabel(nullptr), m_glGetObjectLabel(nullptr), m_glObjectPtrLabel(nullptr), m_glGetObjectPtrLabel(nullptr),
+        m_glCreateTextures(nullptr), m_glTextureParameteri(nullptr), m_glTextureStorage2D(nullptr),
+        m_glTextureSubImage2D(nullptr), m_glGenerateTextureMipmap(nullptr),
         m_KHR_debug(false), m_EXT_texture_compression_s3tc(false), m_ARB_direct_state_access(false) {}
     virtual ~GL4Extensions() {}
     GL4Extensions(GL4Extensions &&) = default;
@@ -64,7 +71,7 @@ public:
     int Load(ConsolePrinter consoleprinter);
 
     /////////////////////////////////////////////////
-    // OpenGL 4 core functions
+    // OpenGL core functions
     // These should all exist, or something is seriously wrong
     // Refer to OpenGL documentation for a full explanation of each function
     /////////////////////////////////////////////////
@@ -72,16 +79,17 @@ public:
     /////////////////////////////////////////////////
     // 1.3 - GL_ARB_texture_compression
     void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, const GLvoid *data)
-    {
-        if (this->m_glCompressedTexImage2D != nullptr) m_glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
-    }
+    { if (this->m_glCompressedTexImage2D != nullptr) { this->m_glCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data); } }
 
     /////////////////////////////////////////////////
     // 3.0
     const GLubyte *glGetStringi(GLenum name, GLuint index)
-    {
-        return (this->m_glGetStringi != nullptr) ? m_glGetStringi(name, index) : nullptr;
-    }
+    { return ((this->m_glGetStringi != nullptr) ? this->m_glGetStringi(name, index) : nullptr); }
+
+    /////////////////////////////////////////////////
+    // 3.0 - GL_ARB_framebuffer_object
+    void glGenerateMipmap(GLenum target)
+    { if (this->m_glGenerateMipmap != nullptr) { this->m_glGenerateMipmap(target); } }
 
     /////////////////////////////////////////////////
     // OpenGL extensions
@@ -107,22 +115,22 @@ public:
     { return ((this->m_glGetDebugMessageLog != nullptr) ? this->m_glGetDebugMessageLog(count, bufSize, sources, types, ids, severities, lengths, messageLog) : 0); }
 
     void glPushDebugGroup(GLenum source, GLuint id, GLsizei length, const GLchar *message)
-    { if (m_glPushDebugGroup != nullptr) this->m_glPushDebugGroup(source, id, length, message); }
+    { if (this->m_glPushDebugGroup != nullptr) { this->m_glPushDebugGroup(source, id, length, message); } }
 
     void glPopDebugGroup()
-    { if (m_glPopDebugGroup != nullptr) this->m_glPopDebugGroup(); }
+    { if (this->m_glPopDebugGroup != nullptr) { this->m_glPopDebugGroup(); } }
 
     void glObjectLabel(GLenum identifier, GLuint name, GLsizei length, const GLchar *label)
-    { if (m_glObjectLabel != nullptr) this->m_glObjectLabel(identifier, name, length, label); }
+    { if (this->m_glObjectLabel != nullptr) { this->m_glObjectLabel(identifier, name, length, label); } }
 
     void glGetObjectLabel(GLenum identifier, GLuint name, GLsizei bufSize, GLsizei *length, GLchar *label)
-    { if (m_glGetObjectLabel != nullptr) this->m_glGetObjectLabel(identifier, name, bufSize, length, label); }
+    { if (this->m_glGetObjectLabel != nullptr) { this->m_glGetObjectLabel(identifier, name, bufSize, length, label); } }
 
     void glObjectPtrLabel(void *ptr, GLsizei length, const GLchar *label)
-    { if (m_glObjectPtrLabel != nullptr) this->m_glObjectPtrLabel(ptr, length, label); }
+    { if (this->m_glObjectPtrLabel != nullptr) { this->m_glObjectPtrLabel(ptr, length, label); } }
     
     void glGetObjectPtrLabel(void *ptr, GLsizei bufSize, GLsizei *length, GLchar *label)
-    { if (m_glGetObjectPtrLabel != nullptr) this->m_glGetObjectPtrLabel(ptr, bufSize, length, label); }
+    { if (this->m_glGetObjectPtrLabel != nullptr) { this->m_glGetObjectPtrLabel(ptr, bufSize, length, label); } }
     
     /////////////////////////////////////////////////
     // Checks if S3TC texture compression is supported.
@@ -137,13 +145,22 @@ public:
     // Adding functions as I need them, rather than all of them
     /////////////////////////////////////////////////
 
-    bool DSAsupported() const noexcept { return m_ARB_direct_state_access; }
+    bool DirectStateAccessSupported() const noexcept { return m_ARB_direct_state_access; }
 
     void glCreateTextures(GLenum target, GLsizei n, GLuint *textures)
-    { if (m_glCreateTextures != nullptr) { this->m_glCreateTextures(target, n, textures); } }
+    { if (this->m_glCreateTextures != nullptr) { this->m_glCreateTextures(target, n, textures); } }
 
     void glTextureParameteri(GLuint texture, GLenum pname, GLint param)
-    { if (m_glTextureParameteri != nullptr) { this->m_glTextureParameteri(texture, pname, param); } }
+    { if (this->m_glTextureParameteri != nullptr) { this->m_glTextureParameteri(texture, pname, param); } }
+
+    void glTextureStorage2D(GLuint texture, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height)
+    { if (this->m_glTextureStorage2D != nullptr) { this->m_glTextureStorage2D(texture, levels, internalformat, width, height); } }
+
+    void glTextureSubImage2D(GLuint texture, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, const void *pixels)
+    { if (this->m_glTextureSubImage2D != nullptr) { this->m_glTextureSubImage2D(texture, level, xoffset, yoffset, width, height, format, type, pixels); } }
+
+    void glGenerateTextureMipmap(GLuint texture)
+    { if (this->m_glGenerateTextureMipmap != nullptr) { this->m_glGenerateTextureMipmap(texture); } }
 
 private:
 
@@ -167,8 +184,9 @@ private:
     //      An error code (OST_ERROR_OK (0) is the only successful code)
     int LoadExtensions(ConsolePrinter consoleprinter);
 
-    PFNGLGETSTRINGIPROC m_glGetStringi;
     PFNGLCOMPRESSEDTEXIMAGE2DPROC m_glCompressedTexImage2D;
+    PFNGLGETSTRINGIPROC m_glGetStringi;
+    PFNGLGENERATEMIPMAPPROC m_glGenerateMipmap;
 
     PFNGLDEBUGMESSAGECONTROLPROC m_glDebugMessageControl;
     PFNGLDEBUGMESSAGEINSERTPROC m_glDebugMessageInsert;
@@ -183,6 +201,9 @@ private:
 
     PFNGLCREATETEXTURESPROC m_glCreateTextures;
     PFNGLTEXTUREPARAMETERIPROC m_glTextureParameteri;
+    PFNGLTEXTURESTORAGE2DPROC m_glTextureStorage2D;
+    PFNGLTEXTURESUBIMAGE2DPROC m_glTextureSubImage2D;
+    PFNGLGENERATETEXTUREMIPMAPPROC m_glGenerateTextureMipmap;
 
     bool m_KHR_debug;
     bool m_EXT_texture_compression_s3tc;

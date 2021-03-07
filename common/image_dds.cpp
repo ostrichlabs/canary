@@ -58,12 +58,14 @@ struct DDSHeader {
 /////////////////////////////////////////////////
 ostrich::PixelFormat DeterminePixelFormat(const DDSHeader &header) {
     const uint32_t FIRSTMASK = 0xFF00'0000;
-    const uint32_t DXT1 = 0x44585431; // "DXT1"
-    const uint32_t DXT3 = 0x44585433; // "DXT3"
-    const uint32_t DXT5 = 0x44585435; // "DXT5"
+    //const uint32_t DXT1 = 0x44585431; // "DXT1"
+    //const uint32_t DXT3 = 0x44585433; // "DXT3"
+    //const uint32_t DXT5 = 0x44585435; // "DXT5"
 
-    // compressed
+    // compressed - unsupported
     if (header.m_PixelFormatFlags & 0x4) { // DDPF_FOURCC
+        return ostrich::PixelFormat::FORMAT_NONE;
+        /*
         switch (header.m_FourCC) {
             case DXT1:
             {
@@ -81,7 +83,7 @@ ostrich::PixelFormat DeterminePixelFormat(const DDSHeader &header) {
             {
                 return ostrich::PixelFormat::FORMAT_NONE;
             }
-        }
+        }*/
     }
 
     // uncompressed

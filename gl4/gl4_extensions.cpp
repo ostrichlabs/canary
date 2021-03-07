@@ -5,13 +5,6 @@ Copyright(c) 2020-2021 Ostrich Labs
 */
 
 #include "gl4_extensions.h"
-#include "../common/ost_common.h"
-
-#if (OST_WINDOWS == 1)
-#   include <windows.h> // required for GL.h
-#endif
-
-#include <GL/gl.h>
 #include "../game/errorcodes.h"
 
 /////////////////////////////////////////////////
@@ -30,13 +23,18 @@ int ostrich::GL4Extensions::Load(ostrich::ConsolePrinter consoleprinter) {
 int ostrich::GL4Extensions::LoadCore(ostrich::ConsolePrinter consoleprinter) {
     OST_UNUSED_PARAMETER(consoleprinter);
 
+    m_glCompressedTexImage2D = (PFNGLCOMPRESSEDTEXIMAGE2DPROC)ostrich::glGetProcAddress("glCompressedTexImage2D");
+    if (m_glCompressedTexImage2D == nullptr) {
+        return OST_ERROR_GL4COREGETPROCADDR;
+    }
+
     m_glGetStringi = (PFNGLGETSTRINGIPROC)ostrich::glGetProcAddress("glGetStringi");
     if (m_glGetStringi == nullptr) {
         return OST_ERROR_GL4COREGETPROCADDR;
     }
 
-    m_glCompressedTexImage2D = (PFNGLCOMPRESSEDTEXIMAGE2DPROC)ostrich::glGetProcAddress("glCompressedTexImage2D");
-    if (m_glCompressedTexImage2D == nullptr) {
+    m_glGenerateMipmap = (PFNGLGENERATEMIPMAPPROC)ostrich::glGetProcAddress("glGenerateMipmap");
+    if (m_glGenerateMipmap == nullptr) {
         return OST_ERROR_GL4COREGETPROCADDR;
     }
 
@@ -53,7 +51,7 @@ int ostrich::GL4Extensions::LoadExtensions(ostrich::ConsolePrinter consoleprinte
     for (GLint i = 0; i < extcount; i++) {
         ext = (const char *)(this->glGetStringi(GL_EXTENSIONS, i));
         extlist.append(ext);
-        extlist += ost_char::g_Space;
+        extlist += ost_char::g_NewLine;
     }
     consoleprinter.DebugMessage(u8"Supported extensions: %", { extlist });
 
@@ -91,7 +89,14 @@ int ostrich::GL4Extensions::LoadExtensions(ostrich::ConsolePrinter consoleprinte
     if (extlist.find("GL_ARB_direct_state_access")) {
         m_glCreateTextures = (PFNGLCREATETEXTURESPROC)ostrich::glGetProcAddress("glCreateTextures");
         m_glTextureParameteri = (PFNGLTEXTUREPARAMETERIPROC)ostrich::glGetProcAddress("glTextureParameteri");
-        if (m_glCreateTextures != nullptr) {
+        m_glTextureStorage2D = (PFNGLTEXTURESTORAGE2DPROC)ostrich::glGetProcAddress("glTextureStorage2D");
+        m_glTextureSubImage2D = (PFNGLTEXTURESUBIMAGE2DPROC)ostrich::glGetProcAddress("glTextureSubImage2D");
+        m_glGenerateTextureMipmap = (PFNGLGENERATETEXTUREMIPMAPPROC)ostrich::glGetProcAddress("glGenerateTextureMipmap");
+        if (m_glCreateTextures != nullptr &&
+            m_glTextureParameteri != nullptr &&
+            m_glTextureStorage2D != nullptr &&
+            m_glTextureSubImage2D != nullptr &&
+            m_glGenerateTextureMipmap != nullptr) {
             m_ARB_direct_state_access = true;
             consoleprinter.WriteMessage("OpenGL Extension Supported: GL_ARB_direct_state_access");
         }

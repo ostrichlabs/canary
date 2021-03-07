@@ -16,7 +16,6 @@ OpenGL 4.0 interface
 #endif
 
 #include <GL/gl.h>
-#include "gl/glcorearb.h"   // taken from https://github.com/KhronosGroup/OpenGL-Registry
 #include "gl/glext.h"       // taken from https://github.com/KhronosGroup/OpenGL-Registry
 #include "gl4_extensions.h"
 #include "gl4_texture.h"
